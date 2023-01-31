@@ -1,0 +1,6 @@
+flutter:
+  assets:
+    - assets/languages/
+    - assets/images/
+    - assets/svg/
+  assets_generated: "lib/generated/"

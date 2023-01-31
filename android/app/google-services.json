@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "683841762944",
+    "project_id": "cha-cmms",
+    "storage_bucket": "cha-cmms.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:683841762944:android:b61390ac490123511d9865",
+        "android_client_info": {
+          "package_name": "com.example.chacmms"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "683841762944-851bcb2445cfo1sqe5cc65f8lo3d8qi3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnHWppSLuf_GkbUhYwrZGmp6-6eG8vBkY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "683841762944-851bcb2445cfo1sqe5cc65f8lo3d8qi3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "683841762944-8ojratdiiqlhq3e68g7b6a7kpdjv6k1l.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.chacmms"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
