@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart' as dio_p;
 import 'package:equatable/equatable.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 import '../../../common/client_info.dart';
+import '../../../common/components/graphql/graphql.dart';
 import '../../../common/config.dart';
 import '../../../common/constants.dart';
 import '../../../common/services/firebase/firebase_auth_service.dart';
@@ -22,6 +24,7 @@ ApiServiceDelegate? apiServiceDelegate;
 class AppApiService {
   late dio_p.Dio _dio;
   late RestApiRepository restClient;
+  late GraphQLClient graphQLClient;
 
   AppApiService() {
     _config();
@@ -89,6 +92,46 @@ class AppApiService {
         };
         return client;
       };
+    }
+
+    void _createGraphQLClient() {
+      graphQLClient = createGraphQLClient(
+        baseUri: Config.instance.appConfig.baseGraphQLUrl,
+        getToken: () async {
+          return refreshToken('');
+        },
+        onError: (err, linkException) {
+          // final error = GraphQLException.fromJson({
+          //   'message': err?.message,
+          //   'locations': err?.locations,
+          //   'path': err?.path,
+          //   'extensions': err?.extensions,
+          // });
+          // handleErrorObserve.fireError(
+          //   ErrorData.fromGraphQL(
+          //     error: error,
+          //     exception:
+          //         error.isAccessDenied ? RefreshTokenException() : linkException,
+          //   ),
+          // );
+
+          // Hide duplicate delegate error
+          // apiServiceDelegate?.onError(
+          //   ErrorData.fromGraphQL(
+          //     error: error,
+          //     exception:
+          //         error.isAccessDenied ? RefreshTokenException() : linkException,
+          //   ),
+          // );
+        },
+
+        /// Remove old `authorization` bcs of GraphQl will get new from `getToken`
+        headers: _getDefaultHeader()..remove(HttpConstants.authorization),
+        customHeaderFnc: () {
+          return {..._getDefaultHeader()}..remove(HttpConstants.authorization);
+        },
+        onRefreshToken: refreshToken,
+      );
     }
 
     /// Dio InterceptorsWrapper
