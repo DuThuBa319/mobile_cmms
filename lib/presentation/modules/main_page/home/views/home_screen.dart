@@ -6,6 +6,7 @@ import '../../../../../common/utils/singletons.dart';
 import '../../../../../generated/assets.dart';
 import '../../../../base/base.dart';
 import '../../../../common_widget/smart_refresher_wrapper.dart';
+import '../../../../route/route_list.dart';
 import '../bloc/home_bloc.dart';
 
 part 'home.action.dart';
@@ -32,9 +33,7 @@ class _HomeScreenState extends StateBase<HomeScreen> {
         return Scaffold(
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _buildHeader(isLogin),
-            ],
+            children: [_buildHeader(isLogin), _buildBody(state)],
           ),
         );
       },
@@ -106,10 +105,14 @@ class _HomeScreenState extends StateBase<HomeScreen> {
       child: Column(
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: const [
-          SizedBox(height: 24),
-
-          SizedBox(height: 24),
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          TextButton(
+            onPressed: () {
+              Navigator.pushNamed(context, RouteList.example);
+            },
+            child: const Text('Go to Example Screen'),
+          )
           // Padding(
           //   padding: const EdgeInsets.symmetric(horizontal: 16),
           //   child: Text(

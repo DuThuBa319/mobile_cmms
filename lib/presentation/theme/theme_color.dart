@@ -37,7 +37,15 @@ class AppColor {
 
   //Custom color
   static const Color gray767676 = Color(0xFF767676);
-
+  static const Color graydcdcdc = Color(0xFFDCDCDC);
+  static const Color graybebebe = Color(0xFFBEBEBE);
+  static const Color yellowFFF59D = Color(0xFFFFF59D);
+  static const Color blue81D4FA = Color(0xFF81D4FA);
+  static const Color blue03A1E4 = Color(0xFF03A1E4);
+  static const Color green24A148 = Color(0xFF24A148);
+  static const Color green9DEEB2 = Color(0xFF9DEEB2);
+  static const Color redFB4B53 = Color(0xFFFB4B53);
+  static const Color redFFF0F1 = Color(0xFFFFF0F1);
   //light
   static const Color primaryText = Colors.black;
   static const Color subText = Color(0xFF767676);

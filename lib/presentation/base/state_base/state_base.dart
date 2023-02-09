@@ -158,18 +158,18 @@ abstract class StateBase<T extends StatefulWidget> extends State<T>
       onSuccess.call();
       return;
     }
-    final trans = translate(context);
-    showNoticeConfirmDialog(
-      context: context,
-      message: 'Yêu cầu đăng nhập',
-      title: 'Thông báo',
-      titleBtnDone: 'Đăng nhập',
-      titleBtnCancel: 'Bỏ qua',
-      onCanceled: onSkip,
-      onConfirmed: () {
-        _showLoginScreen(onSuccess, onSkip);
-      },
-    );
+    // final trans = translate(context);
+    // showNoticeConfirmDialog(
+    //   context: context,
+    //   message: 'Yêu cầu đăng nhập',
+    //   title: 'Thông báo',
+    //   titleBtnDone: 'Đăng nhập',
+    //   titleBtnCancel: 'Bỏ qua',
+    //   onCanceled: onSkip,
+    //   onConfirmed: () {
+    //     _showLoginScreen(onSuccess, onSkip);
+    //   },
+    // );
   }
 
   void _showLoginScreen(Function() onSuccess, Function()? onSkip) {

@@ -18,6 +18,43 @@ class _RestApiRepository implements RestApiRepository {
 
   String? baseUrl;
 
+  @override
+  Future<WeatherModel> getWeather(
+    latitude,
+    longtitude,
+    daily,
+    timezone,
+    startDate,
+    endDate,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'latitude': latitude,
+      r'longitude': longtitude,
+      r'daily': daily,
+      r'timezone': timezone,
+      r'start_date': startDate,
+      r'end_date': endDate,
+    };
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<WeatherModel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'forecast',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = WeatherModel.fromJson(_result.data!);
+    return value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

@@ -5,4 +5,5 @@ class RouteList {
   static const String webview = '/webview';
   static const String profile = '/profile';
   static const String loginRoute = '/login';
+  static const String example = 'example'; //Declare in Route List
 }

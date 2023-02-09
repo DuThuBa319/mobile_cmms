@@ -38,6 +38,8 @@ class DateUtils {
   ];
 
   static const List<String> normalUTCFormat = [yyyy, '/', mm, '/', dd];
+
+  static const List<String> vnDateOnly = [dd, ' tháng ', mm, ', ', yyyy];
 }
 
 extension DateUtilsExtention on DateTime {
@@ -73,6 +75,13 @@ extension DateUtilsExtention on DateTime {
     return formatDate(
       toLocal(),
       DateUtils.dateOfWeekFormat,
+    );
+  }
+
+  String serverToVnDateOnly() {
+    return formatDate(
+      toLocal(),
+      DateUtils.vnDateOnly,
     );
   }
 

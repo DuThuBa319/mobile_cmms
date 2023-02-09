@@ -2,10 +2,72 @@ import 'package:flutter/material.dart';
 import 'theme_color.dart';
 
 class AppTextTheme {
+  static const fontSize1 = 22.0;
+  static const fontSize2 = 18.0;
+  static const fontSize3 = 16.0;
+  static const fontSize4 = 14.0;
+  static const fontSize5 = 12.0;
+  static const fontSize6 = 10.0;
+  static const fontSize7 = 8.0;
   static TextStyle textLinkStyle = const TextStyle(
     decoration: TextDecoration.underline,
     color: AppColor.primaryColorLight,
     fontSize: 14,
+  );
+
+  static TextStyle body1 = const TextStyle(
+    color: Colors.black,
+    fontSize: fontSize1,
+  );
+
+  static TextStyle body2 = const TextStyle(
+    color: Colors.black,
+    fontSize: fontSize2,
+  );
+
+  static TextStyle body3 = const TextStyle(
+    color: Colors.black,
+    fontSize: fontSize3,
+  );
+
+  static TextStyle body4 = const TextStyle(
+    color: Colors.black,
+    fontSize: fontSize4,
+  );
+
+  static TextStyle body5 = const TextStyle(
+    color: Colors.black,
+    fontSize: fontSize5,
+  );
+
+  static TextStyle title1 = const TextStyle(
+    color: AppColor.gray767676,
+    fontSize: fontSize1,
+    fontWeight: FontWeight.bold,
+  );
+
+  static TextStyle title2 = const TextStyle(
+    color: AppColor.gray767676,
+    fontSize: fontSize2,
+    fontWeight: FontWeight.bold,
+  );
+
+  static TextStyle title3 = const TextStyle(
+    color: AppColor.gray767676,
+    fontSize: fontSize3,
+    fontWeight: FontWeight.bold,
+  );
+
+  static TextStyle title4 = const TextStyle(
+    color: AppColor.gray767676,
+    fontSize: fontSize4,
+    fontWeight: FontWeight.bold,
+  );
+
+  static TextStyle title5 = const TextStyle(
+    color: AppColor.gray767676,
+    fontSize: fontSize5,
+    fontWeight: FontWeight.bold,
   );
 
   static TextTheme getDefaultTextTheme() => const TextTheme(

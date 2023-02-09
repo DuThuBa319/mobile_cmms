@@ -16,7 +16,7 @@ class Env {
     environment: devEnvName,
     developmentMode: kDebugMode,
     appName: 'Daikin Keeper Dev',
-    baseApiLayer: '',
+    baseApiLayer: 'https://api.open-meteo.com/v1/',
     baseGraphQLUrl: 'https://dev-data-app.daikin.com.vn:8082/v1/graphql',
     onesignalAppID: '',
   };
