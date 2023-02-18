@@ -46,6 +46,8 @@ class AppColor {
   static const Color green9DEEB2 = Color(0xFF9DEEB2);
   static const Color redFB4B53 = Color(0xFFFB4B53);
   static const Color redFFF0F1 = Color(0xFFFFF0F1);
+  static const Color blue001D37 = Color(0xFF001D37);
+
   //light
   static const Color primaryText = Colors.black;
   static const Color subText = Color(0xFF767676);

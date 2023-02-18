@@ -5,6 +5,7 @@ import 'item_devider.dart';
 
 class MenuItemView extends StatelessWidget {
   final String title;
+  final double? titleSize;
   final Function()? onTap;
   final Widget icon;
   final Color? color;
@@ -17,6 +18,7 @@ class MenuItemView extends StatelessWidget {
   const MenuItemView({
     Key? key,
     required this.title,
+    this.titleSize,
     required this.icon,
     this.onTap,
     this.color,
@@ -61,10 +63,10 @@ class MenuItemView extends StatelessWidget {
                   Expanded(
                     child: Text(
                       title,
-                      style: Theme.of(context)
-                          .textTheme
-                          .subtitle2
-                          ?.copyWith(color: Colors.black),
+                      style: Theme.of(context).textTheme.subtitle2?.copyWith(
+                          color: Colors.black,
+                          fontSize: titleSize,
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
                   if (tailIcon != null) tailIcon!,

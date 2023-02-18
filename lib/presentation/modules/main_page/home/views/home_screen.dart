@@ -109,9 +109,15 @@ class _HomeScreenState extends StateBase<HomeScreen> {
         children: [
           TextButton(
             onPressed: () {
-              Navigator.pushNamed(context, RouteList.example);
+              Navigator.pushNamed(context, RouteList.exampleTempHumid);
             },
             child: const Text('Go to Example Screen'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pushNamed(context, RouteList.home);
+            },
+            child: const Text('Go to CMMS Screen'),
           )
           // Padding(
           //   padding: const EdgeInsets.symmetric(horizontal: 16),

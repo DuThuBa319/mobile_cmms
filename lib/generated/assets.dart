@@ -17,4 +17,9 @@ class Assets {
   static const String icRainy = 'assets/images/ic_rainy.png';
   static const String icThunderstorm = 'assets/images/ic_thunderstorm.png';
   static const String icFoggy = 'assets/images/ic_foggy.png';
+  static const String icMoon = 'assets/images/ic_moon.png';
+  static const String icHome = 'assets/images/ic_home.png';
+  static const String icHistory = 'assets/images/ic_history.png';
+  static const String icAccount = 'assets/images/ic_account.png';
+  static const String icNotification = 'assets/images/ic_notification.png';
 }
