@@ -6,5 +6,10 @@ import '../repository/example_repository.dart';
 part 'example_usecase.impl.dart';
 
 abstract class ExampleUsecase {
-  Future<List<WeatherEntity>?> getWeather();
+  Future<List<WeatherEntity>?> getWeather({
+    String latitude,
+    String longtitude,
+    String startDate,
+    String endDate,
+  });
 }

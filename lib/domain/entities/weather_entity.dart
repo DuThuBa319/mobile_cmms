@@ -8,6 +8,7 @@ import '../../presentation/theme/theme_color.dart';
 class WeatherEntity {
   String? time;
   int? weatherCode;
+
   WeatherEntity({
     this.time,
     this.weatherCode,
@@ -73,7 +74,7 @@ class WeatherEntity {
   }
 
   String get dateDisplay {
-    return dateTime?.serverToVnDateOnly() ?? '--';
+    return dateTime?.serverToTransaction() ?? '--';
   }
 
   Color get weatherColor {

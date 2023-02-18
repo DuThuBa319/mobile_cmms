@@ -10,7 +10,17 @@ class ExampleRepositoryImpl extends ExampleRepository {
     this._resApi,
   );
   @override
-  Future<WeatherModel> getWeather() {
-    return _resApi.getWeather();
+  Future<WeatherModel> getWeather({
+    String latitude = '10.83',
+    String longtitude = '106.83',
+    String startDate = '2023-01-01',
+    String endDate = '2023-02-08',
+  }) {
+    return _resApi.getWeather(
+      latitude: latitude,
+      longtitude: longtitude,
+      startDate: startDate,
+      endDate: endDate,
+    );
   }
 }

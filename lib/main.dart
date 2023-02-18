@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'common/components/navigation/navigation_observer.dart';
 import 'common/components/navigation/navigation_service.dart';
@@ -60,10 +61,15 @@ class _MyAppState extends State<App> {
       child: BlocBuilder<AppDataBloc, AppData?>(
         builder: (context, appData) {
           return MaterialApp(
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
             navigatorKey: injector<NavigationService>().navigatorKey,
             debugShowCheckedModeBanner: false,
             theme: appData?.themeData ?? buildDarkTheme().data,
-            localizationsDelegates: const [],
+            //localizationsDelegates: const [],
             supportedLocales: AppLocale.supportedLocales,
             locale: appData?.locale ?? AppLocale.vi,
             onGenerateRoute: RouteGenerator.generateRoute,
