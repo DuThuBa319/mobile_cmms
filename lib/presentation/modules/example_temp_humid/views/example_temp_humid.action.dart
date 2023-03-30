@@ -10,9 +10,17 @@ extension ExampleTempHumidAction on _ExampleTempHumidState {
         state.status == BlocStatusState.success) {
       showToast('Đã tải dữ liệu thành công');
     }
+    if (state is ExampleGetTemperatureState &&
+        state.status == BlocStatusState.loading) {
+      showToast('Đang tải dữ liệu');
+    }
+    if (state is ExampleGetTemperatureState &&
+        state.status == BlocStatusState.failure) {
+      showToast('Không tải được dữ liệu');
+    }
   }
 
-  Future<void> onGetTemperature() async {
+  Future<void> onGetTemperatureHourly() async {
     final startDate = DateFormat('yyyy-MM-dd').format(date);
     final endDate = DateFormat('yyyy-MM-dd').format(date);
     bloc.add(

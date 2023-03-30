@@ -7,7 +7,7 @@ import '../../../../data/models/example_temp_humid/temperature_model.dart';
 part 'example_temp_humid_repository.impl.dart';
 
 abstract class ExampleTempHumidRepository {
-  Future<TemperatureModel> getTemperature({
+  Future<TemperatureModel> getTemperatureHourly({
     String latitude,
     String longtitude,
     String startDate,

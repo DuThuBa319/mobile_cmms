@@ -18,6 +18,7 @@ class AppConfig {
   bool developmentMode;
   String appName;
   String baseApiLayer;
+  String mockApiLayer;
   String baseGraphQLUrl;
   String onesignalAppID;
 
@@ -26,6 +27,7 @@ class AppConfig {
     this.developmentMode,
     this.appName,
     this.baseApiLayer,
+    this.mockApiLayer,
     this.baseGraphQLUrl,
     this.onesignalAppID,
   );
@@ -35,6 +37,7 @@ class AppConfig {
         developmentMode = env[Env.developmentMode],
         appName = env[Env.appName],
         baseApiLayer = env[Env.baseApiLayer],
+        mockApiLayer = env[Env.mockApiLayer],
         baseGraphQLUrl = env[Env.baseGraphQLUrl],
         onesignalAppID = env[Env.onesignalAppID];
 

@@ -24,6 +24,7 @@ ApiServiceDelegate? apiServiceDelegate;
 class AppApiService {
   late dio_p.Dio _dio;
   late RestApiRepository restClient;
+  late MockApiRepository mockClient;
   late GraphQLClient graphQLClient;
 
   AppApiService() {
@@ -34,6 +35,7 @@ class AppApiService {
     _setupDioClient();
 
     _createRestClient();
+    _createMockClient();
   }
 
   Map<String, String> _getDefaultHeader() {
@@ -158,6 +160,13 @@ class AppApiService {
     restClient = RestApiRepository(
       _dio,
       baseUrl: Config.instance.appConfig.baseApiLayer,
+    );
+  }
+
+  void _createMockClient() {
+    mockClient = MockApiRepository(
+      _dio,
+      baseUrl: Config.instance.appConfig.mockApiLayer,
     );
   }
 

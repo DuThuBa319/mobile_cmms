@@ -26,23 +26,24 @@ class BottomBarItemData {
   });
 }
 
-class CustomBottomNavigationBar extends StatefulWidget {
+class CustomBottomNavigationBarV2 extends StatefulWidget {
   final Future<bool> Function(int)? onItemSelection;
   final int? selectedIdx;
   final List<BottomBarItemData>? items;
 
-  const CustomBottomNavigationBar({
+  const CustomBottomNavigationBarV2({
     Key? key,
     this.onItemSelection,
     this.selectedIdx = 0,
     this.items,
   }) : super(key: key);
   @override
-  _CustomBottomNavigationBarState createState() =>
-      _CustomBottomNavigationBarState();
+  _CustomBottomNavigationBarV2State createState() =>
+      _CustomBottomNavigationBarV2State();
 }
 
-class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
+class _CustomBottomNavigationBarV2State
+    extends State<CustomBottomNavigationBarV2> {
   late ValueNotifier<int?> idxNotifier;
 
   @override
@@ -58,7 +59,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   }
 
   @override
-  void didUpdateWidget(covariant CustomBottomNavigationBar oldWidget) {
+  void didUpdateWidget(covariant CustomBottomNavigationBarV2 oldWidget) {
     idxNotifier = ValueNotifier(widget.selectedIdx);
     super.didUpdateWidget(oldWidget);
   }

@@ -1,12 +1,11 @@
 import 'package:flutter/cupertino.dart';
 
 import '../common_widget/text_scale_fixed.dart';
-
 import '../modules/example/example_route.dart';
 import '../modules/example_temp_humid/example_temp_humid_route.dart';
-
-import '../modules/home_main/home_main_route.dart';
+import '../modules/home_main/main_screen_route.dart';
 import '../modules/main_page/main_page_route.dart';
+import '../modules/maintenance_request/maintenance_request_route.dart';
 import '../modules/schedule/schedule_route.dart';
 
 class RouteGenerator {
@@ -16,6 +15,7 @@ class RouteGenerator {
         ...ExampleTempHumidRoute.getAll(settings),
         ...HomeMainRoute.getAll(settings),
         ...ScheduleRoute.getAll(settings),
+        ...RequestRoute.getAll(settings),
       }; // Add into Route Generator
 
   static Route<dynamic> generateRoute(RouteSettings settings) {

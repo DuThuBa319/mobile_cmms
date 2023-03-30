@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../base/base.dart';
+import '../../../base/state_base/bloc_status_state.dart';
+import '../../../common_widget/loading.dart';
+import '../../../common_widget/smart_refresher_wrapper.dart';
 import '../../../route/route_list.dart';
 import '../../../theme/theme_color.dart';
+import '../../schedule/bloc/schedule_bloc.dart';
+
+part 'main_screen.action.dart';
 
 class MainScreenView extends StatefulWidget {
   const MainScreenView({super.key});
@@ -10,59 +20,101 @@ class MainScreenView extends StatefulWidget {
   State<MainScreenView> createState() => _MainScreenViewState();
 }
 
-class _MainScreenViewState extends State<MainScreenView> {
+class _MainScreenViewState extends StateBase<MainScreenView> {
+  late String textController;
+  final _refreshController = RefreshController(initialRefresh: false);
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          margin: const EdgeInsets.fromLTRB(16, 16, 16, 24),
-          color: const Color.fromARGB(255, 234, 234, 234),
-          width: 396,
-          height: 170,
-        ),
-        LineDivider(),
-        Row(
-          children: [
-            BoxIcon(
-              Icons.calendar_month,
-              'Lịch sửa chữa',
-              function: scheduleNavigator,
-            ),
-            BoxIcon(Icons.qr_code_scanner, 'Quét mã'),
-            BoxIcon(Icons.dns, 'Kho phụ kiện'),
-          ],
-        ),
-        LineDivider(),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(23, 24, 0, 8),
-          child: Text(
-            'Gần đây',
-            style: Theme.of(context).textTheme.caption,
+  ScheduleBloc get bloc => BlocProvider.of(context);
+
+  @override
+  Widget buildBase(BuildContext context) {
+    return BlocBuilder<ScheduleBloc, ScheduleState>(
+      builder: (context, state) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            margin: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+            color: const Color.fromARGB(255, 234, 234, 234),
+            width: 396,
+            height: 170,
           ),
-        ),
-        Expanded(
-          child: Container(
-            margin: const EdgeInsets.only(top: 3, bottom: 20),
-            child: ListView.builder(
-              itemCount: 20,
-              itemBuilder: (context, index) =>
-                  InfoCard(index == 0 ? Icons.build : Icons.invert_colors),
+          LineDivider(),
+          Row(
+            children: [
+              BoxIcon(
+                Icons.calendar_month,
+                'Lịch sửa chữa',
+                function: scheduleNavigator,
+              ),
+              BoxIcon(Icons.qr_code_scanner, 'Quét mã', function: scanQR),
+              BoxIcon(Icons.dns, 'Kho phụ kiện'),
+              BoxIcon(
+                Icons.send,
+                'Tạo yêu cầu',
+                function: maintenanceRequestNavigator,
+              )
+            ],
+          ),
+          LineDivider(),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(23, 24, 0, 8),
+            child: Text(
+              'Gần đây',
+              style: Theme.of(context).textTheme.caption,
             ),
           ),
-        )
-      ],
+          Builder(
+            builder: (context) {
+              if (state is ScheduleInitialState) {
+                onGetWorkOrder();
+              }
+              if (state is ScheduleGetWorkOrderState &&
+                  state.status == BlocStatusState.loading) {
+                return const Expanded(
+                  child: Center(
+                    child: Loading(
+                      brightness: Brightness.light,
+                    ),
+                  ),
+                );
+              }
+              return Expanded(
+                child: Container(
+                  margin: const EdgeInsets.only(top: 3, bottom: 20),
+                  child: SmartRefresher(
+                    controller: _refreshController,
+                    onRefresh: onRefresh,
+                    header: const WaterDropHeader(),
+                    child: ListView.builder(
+                      padding: EdgeInsets.zero,
+                      itemCount: state.viewModel.workOrders?.length,
+                      itemBuilder: (context, index) => InfoCard(
+                        icon: taskIcon(
+                          task: state.viewModel.workOrders?[index].task,
+                        ),
+                        deviceName:
+                            state.viewModel.workOrders?[index].deviceName ??
+                                '--',
+                        updateTime:
+                            state.viewModel.workOrders?[index].timeUpdate ??
+                                '--',
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 
-  void scheduleNavigator() {
-    setState(() {
-      Navigator.pushNamed(context, RouteList.schedule);
-    });
-  }
-
-  Card InfoCard(IconData icon) {
+  Card InfoCard({
+    Widget? icon,
+    String? deviceName,
+    String? updateTime,
+  }) {
     final textStyle =
         Theme.of(context).textTheme.headline4?.copyWith(fontSize: 12);
     return Card(
@@ -75,12 +127,12 @@ class _MainScreenViewState extends State<MainScreenView> {
         dense: true,
         visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
         contentPadding: const EdgeInsets.fromLTRB(14, 3, 7, 2),
-        leading: Icon(icon, color: Colors.black, size: 18),
+        leading: icon,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'A012345',
+              deviceName!,
               style: Theme.of(context)
                   .textTheme
                   .headline4
@@ -108,7 +160,7 @@ class _MainScreenViewState extends State<MainScreenView> {
           ],
         ),
         subtitle: Text(
-          '14:23 3/2/2023',
+          updateTime!,
           style: Theme.of(context).textTheme.subtitle1?.copyWith(
                 height: 2,
               ),

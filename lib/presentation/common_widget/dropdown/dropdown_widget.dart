@@ -10,6 +10,8 @@ class DropdownWidget<T> extends StatelessWidget {
   final Widget Function(T) itemBuilder;
   final DropdownController<T, DropdownData<T>> controller;
   final Color? borderColor;
+  final Color? iconColor;
+  final IconData? iconData;
 
   DropdownWidget({
     required this.controller,
@@ -19,6 +21,8 @@ class DropdownWidget<T> extends StatelessWidget {
     this.hint,
     this.defaultItem,
     this.borderColor,
+    this.iconColor,
+    this.iconData = Icons.keyboard_arrow_right,
   });
 
   @override
@@ -44,9 +48,10 @@ class DropdownWidget<T> extends StatelessWidget {
             controller.setData(value);
             onChanged?.call(value);
           },
-          icon: const Icon(
-            Icons.keyboard_arrow_down,
+          icon: Icon(
+            iconData,
             size: 16,
+            color: iconColor ?? (Colors.black),
           ),
           iconSize: 16,
           decoration: InputDecoration(

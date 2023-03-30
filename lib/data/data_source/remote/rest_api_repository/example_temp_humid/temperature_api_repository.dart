@@ -1,7 +1,7 @@
 import '../../../../models/example_temp_humid/temperature_model.dart';
 
 abstract class TemperatureApiRespository {
-  Future<TemperatureModel> getTemperature({
+  Future<TemperatureModel> getTemperatureHourly({
     String latitude,
     String longtitude,
     List<String> hourly,

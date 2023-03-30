@@ -37,6 +37,7 @@ abstract class AppBlocBase<E, S> extends Bloc<E, S> {
     if (error is OperationException) {
       final glError = error.graphqlErrors.firstOrNull;
       ErrorData(message: 'Đã xảy ra lỗi OperationException');
+      showToast('message trong AppBlocBase');
     } else if (error is Exception) {
       errorHandler?.call(ErrorData(message: 'Đã xảy ra lỗi Exception'));
     } else {

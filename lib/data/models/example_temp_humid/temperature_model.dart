@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:json_annotation/json_annotation.dart';
 import 'hourly_model.dart';
-part '../example_temp_humid/temperature_model.g.dart';
+part 'temperature_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 // ignore: must_be_immutable

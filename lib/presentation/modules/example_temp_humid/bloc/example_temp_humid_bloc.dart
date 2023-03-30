@@ -16,10 +16,10 @@ class ExampleTempHumidBloc
   final ExampleTempHumidUsecase _usecase;
 
   ExampleTempHumidBloc(this._usecase) : super(ExampleInitialState()) {
-    on<GetTemperatureEvent>(_onGetTemperature);
+    on<GetTemperatureEvent>(_onGetTemperatureHourly);
   }
 
-  Future<void> _onGetTemperature(
+  Future<void> _onGetTemperatureHourly(
     GetTemperatureEvent event,
     Emitter<ExampleTempHumidState> emit,
   ) async {
@@ -28,7 +28,7 @@ class ExampleTempHumidBloc
         status: BlocStatusState.loading,
       ),
     );
-    final response = await _usecase.getTemperature(
+    final response = await _usecase.getTemperatureHourly(
       startDate: event.startDate,
       endDate: event.endDate,
       latitude: event.latitude,

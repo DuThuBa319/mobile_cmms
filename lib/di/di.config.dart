@@ -34,38 +34,48 @@ import 'package:cha_cmms/data/data_source/remote/rest_api_repository/example_tem
     as _i16;
 import 'package:cha_cmms/data/data_source/remote/rest_api_repository/example_temp_humid/temperature_api_repository_impl.dart'
     as _i17;
-import 'package:cha_cmms/presentation/modules/example/bloc/example_bloc.dart'
-    as _i29;
-import 'package:cha_cmms/presentation/modules/example/repository/example_repository.dart'
-    as _i23;
-import 'package:cha_cmms/presentation/modules/example/usecase/example_usecase.dart'
-    as _i26;
-import 'package:cha_cmms/presentation/modules/example_temp_humid/bloc/example_temp_humid_bloc.dart'
-    as _i30;
-import 'package:cha_cmms/presentation/modules/example_temp_humid/repository/example_temp_humid_repository.dart'
-    as _i24;
-import 'package:cha_cmms/presentation/modules/example_temp_humid/usecase/example_temp_humid_usecase.dart'
-    as _i25;
-import 'package:cha_cmms/presentation/modules/main_page/account/bloc/account_bloc.dart'
+import 'package:cha_cmms/data/data_source/remote/rest_api_repository/mock_work_order/work_order_api_repository.dart'
     as _i22;
+import 'package:cha_cmms/data/data_source/remote/rest_api_repository/mock_work_order/work_order_api_repository_impl.dart'
+    as _i23;
+import 'package:cha_cmms/presentation/modules/example/bloc/example_bloc.dart'
+    as _i33;
+import 'package:cha_cmms/presentation/modules/example/repository/example_repository.dart'
+    as _i25;
+import 'package:cha_cmms/presentation/modules/example/usecase/example_usecase.dart'
+    as _i28;
+import 'package:cha_cmms/presentation/modules/example_temp_humid/bloc/example_temp_humid_bloc.dart'
+    as _i34;
+import 'package:cha_cmms/presentation/modules/example_temp_humid/repository/example_temp_humid_repository.dart'
+    as _i26;
+import 'package:cha_cmms/presentation/modules/example_temp_humid/usecase/example_temp_humid_usecase.dart'
+    as _i27;
+import 'package:cha_cmms/presentation/modules/main_page/account/bloc/account_bloc.dart'
+    as _i24;
 import 'package:cha_cmms/presentation/modules/main_page/account/interactor/account_interactor.dart'
     as _i3;
 import 'package:cha_cmms/presentation/modules/main_page/account/repository/account_repository.dart'
     as _i4;
 import 'package:cha_cmms/presentation/modules/main_page/home/bloc/home_bloc.dart'
-    as _i31;
+    as _i35;
 import 'package:cha_cmms/presentation/modules/main_page/home/interactor/home_interactor.dart'
-    as _i27;
+    as _i29;
 import 'package:cha_cmms/presentation/modules/main_page/home/repository/home_repository.dart'
     as _i9;
+import 'package:cha_cmms/presentation/modules/schedule/bloc/schedule_bloc.dart'
+    as _i36;
+import 'package:cha_cmms/presentation/modules/schedule/repository/schedule_repository.dart'
+    as _i30;
+import 'package:cha_cmms/presentation/modules/schedule/usecase/schedule_usecase.dart'
+    as _i31;
 import 'package:cha_cmms/presentation/modules/welcome/splash/bloc/splash_bloc.dart'
-    as _i28;
+    as _i32;
 import 'package:cha_cmms/presentation/modules/welcome/splash/interactor/splash_interactor.dart'
     as _i14;
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 
-import 'di.dart' as _i32;
+import 'di.dart' as _i37;
 
 /// ignore_for_file: unnecessary_lambdas
 /// ignore_for_file: lines_longer_than_80_chars
@@ -99,27 +109,35 @@ _i1.GetIt $initGetIt(
   gh.factory<_i18.UserDataDataSource>(() => _i19.UserDataDataSourceImpl());
   gh.factory<_i20.WeatherApiRespository>(
       () => _i21.WeatherApiRespositoryImpl());
-  gh.factory<_i22.AccountBloc>(
-      () => _i22.AccountBloc(gh<_i3.AccountInteractor>()));
-  gh.factory<_i23.ExampleRepository>(
-      () => _i23.ExampleRepositoryImpl(gh<_i20.WeatherApiRespository>()));
-  gh.factory<_i24.ExampleTempHumidRepository>(() =>
-      _i24.ExampleTempHumidRepositoryImpl(
+  gh.factory<_i22.WorkOrderApiRespository>(
+      () => _i23.WorkOrderApiRespositoryImpl());
+  gh.factory<_i24.AccountBloc>(
+      () => _i24.AccountBloc(gh<_i3.AccountInteractor>()));
+  gh.factory<_i25.ExampleRepository>(
+      () => _i25.ExampleRepositoryImpl(gh<_i20.WeatherApiRespository>()));
+  gh.factory<_i26.ExampleTempHumidRepository>(() =>
+      _i26.ExampleTempHumidRepositoryImpl(
           gh<_i16.TemperatureApiRespository>()));
-  gh.factory<_i25.ExampleTempHumidUsecase>(() =>
-      _i25.ExampleTempHumidUsecaseImpl(gh<_i24.ExampleTempHumidRepository>()));
-  gh.factory<_i26.ExampleUsecase>(
-      () => _i26.ExampleUsecaseImpl(gh<_i23.ExampleRepository>()));
-  gh.factory<_i27.HomeInteractor>(
-      () => _i27.HomeInteractorImpl(gh<_i9.HomeRepository>()));
-  gh.factory<_i28.SplashBloc>(
-      () => _i28.SplashBloc(gh<_i14.SplashInteractor>()));
-  gh.factory<_i29.ExampleBloc>(
-      () => _i29.ExampleBloc(gh<_i26.ExampleUsecase>()));
-  gh.factory<_i30.ExampleTempHumidBloc>(
-      () => _i30.ExampleTempHumidBloc(gh<_i25.ExampleTempHumidUsecase>()));
-  gh.factory<_i31.HomeBloc>(() => _i31.HomeBloc(gh<_i27.HomeInteractor>()));
+  gh.factory<_i27.ExampleTempHumidUsecase>(() =>
+      _i27.ExampleTempHumidUsecaseImpl(gh<_i26.ExampleTempHumidRepository>()));
+  gh.factory<_i28.ExampleUsecase>(
+      () => _i28.ExampleUsecaseImpl(gh<_i25.ExampleRepository>()));
+  gh.factory<_i29.HomeInteractor>(
+      () => _i29.HomeInteractorImpl(gh<_i9.HomeRepository>()));
+  gh.factory<_i30.ScheduleRepository>(
+      () => _i30.ScheduleRepositoryImpl(gh<_i22.WorkOrderApiRespository>()));
+  gh.factory<_i31.ScheduleUsecase>(
+      () => _i31.ScheduleUsecaseImpl(gh<_i30.ScheduleRepository>()));
+  gh.factory<_i32.SplashBloc>(
+      () => _i32.SplashBloc(gh<_i14.SplashInteractor>()));
+  gh.factory<_i33.ExampleBloc>(
+      () => _i33.ExampleBloc(gh<_i28.ExampleUsecase>()));
+  gh.factory<_i34.ExampleTempHumidBloc>(
+      () => _i34.ExampleTempHumidBloc(gh<_i27.ExampleTempHumidUsecase>()));
+  gh.factory<_i35.HomeBloc>(() => _i35.HomeBloc(gh<_i29.HomeInteractor>()));
+  gh.factory<_i36.ScheduleBloc>(
+      () => _i36.ScheduleBloc(gh<_i31.ScheduleUsecase>()));
   return getIt;
 }
 
-class _$AppModule extends _i32.AppModule {}
+class _$AppModule extends _i37.AppModule {}

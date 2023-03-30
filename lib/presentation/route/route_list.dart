@@ -10,4 +10,7 @@ class RouteList {
       'exampleTempHumid'; //Declare in Route List
   static const String home = 'home';
   static const String schedule = 'schedule';
+  static const String repairTask = 'repair';
+  static const String generalCheck = 'check';
+  static const String request = 'request';
 }

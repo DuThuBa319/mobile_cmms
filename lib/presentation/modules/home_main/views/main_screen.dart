@@ -13,6 +13,10 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
-    return const CustomScreenForm(child: MainScreenView());
+    return CustomScreenForm(
+      title: 'Home',
+      isShowBottomAppBar: true,
+      child: const MainScreenView(),
+    );
   }
 }

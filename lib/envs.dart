@@ -5,6 +5,7 @@ class Env {
   static const developmentMode = 'developmentMode';
   static const appName = 'appname';
   static const baseApiLayer = 'baseApiLayer';
+  static const mockApiLayer = 'mockApiLayer';
   static const baseGraphQLUrl = 'baseGraphQLUrl';
   static const onesignalAppID = 'onesignalAppID';
 
@@ -17,6 +18,7 @@ class Env {
     developmentMode: kDebugMode,
     appName: 'Daikin Keeper Dev',
     baseApiLayer: 'https://api.open-meteo.com/v1/',
+    mockApiLayer: 'https://my.api.mockaroo.com/',
     baseGraphQLUrl: 'https://dev-data-app.daikin.com.vn:8082/v1/graphql',
     onesignalAppID: '',
   };
@@ -26,6 +28,7 @@ class Env {
     developmentMode: kDebugMode,
     appName: 'Daikin Keeper Staging',
     baseApiLayer: '',
+    mockApiLayer: '',
     baseGraphQLUrl: 'https://stag2-data-app.daikin.com.vn:8082/v1/graphql',
     onesignalAppID: '',
   };
@@ -35,6 +38,7 @@ class Env {
     developmentMode: kDebugMode,
     appName: 'Daikin Keeper',
     baseApiLayer: '',
+    mockApiLayer: '',
     baseGraphQLUrl: '',
     onesignalAppID: '',
   };

@@ -11,7 +11,7 @@ mixin DataRepository {
   );
 
   RestApiRepository get restApi => appApiService.restClient;
-
+  MockApiRepository get mockApi => appApiService.mockClient;
   void resetClient() {
     appApiService = injector.get<AppApiService>();
     graphqlProvider = GraphqlProvider(

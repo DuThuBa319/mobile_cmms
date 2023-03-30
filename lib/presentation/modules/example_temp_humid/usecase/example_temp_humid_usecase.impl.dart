@@ -9,13 +9,13 @@ class ExampleTempHumidUsecaseImpl extends ExampleTempHumidUsecase {
   ExampleTempHumidUsecaseImpl(this._repository);
 
   @override
-  Future<List<TemperatureEntity>?> getTemperature({
+  Future<List<TemperatureEntity>?> getTemperatureHourly({
     String latitude = '10.82',
     String longtitude = '106.83',
     String startDate = '2023-01-01',
     String endDate = '2023-02-08',
   }) async {
-    final response = await _repository.getTemperature(
+    final response = await _repository.getTemperatureHourly(
       latitude: latitude,
       longtitude: longtitude,
       startDate: startDate,

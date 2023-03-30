@@ -145,7 +145,7 @@ class _ExampleTempHumidState extends StateBase<ExampleTempHumidScreen> {
                   ),
                 ),
                 InkWell(
-                  onTap: onGetTemperature,
+                  onTap: onGetTemperatureHourly,
                   child: Container(
                     margin: const EdgeInsets.all(16),
                     padding: const EdgeInsets.all(16),

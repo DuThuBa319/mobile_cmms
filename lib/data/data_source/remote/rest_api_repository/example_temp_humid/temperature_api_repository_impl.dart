@@ -11,7 +11,7 @@ class TemperatureApiRespositoryImpl
     with DataRepository
     implements TemperatureApiRespository {
   @override
-  Future<TemperatureModel> getTemperature({
+  Future<TemperatureModel> getTemperatureHourly({
     String latitude = '10.82',
     String longtitude = '106.83',
     List<String> hourly = const [
@@ -23,7 +23,7 @@ class TemperatureApiRespositoryImpl
     String startDate = '2023-01-01',
     String endDate = '2023-02-08',
   }) {
-    return restApi.getTemperature(
+    return restApi.getTemperatureHourly(
       latitude,
       longtitude,
       hourly,

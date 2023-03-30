@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 import '../../../domain/entities/temperature_entity.dart';
 
-part '../example_temp_humid/hourly_model.g.dart';
+part 'hourly_model.g.dart';
 
 @JsonSerializable()
 class HourlyObjectModel {
@@ -23,7 +23,9 @@ class HourlyObjectModel {
 
   List<TemperatureEntity>? getTemperatureEntites() {
     final result = <TemperatureEntity>[];
-    if (time?.length != weatherCode?.length) {
+    if (time?.length != weatherCode?.length ||
+        time?.length != temperature?.length ||
+        time?.length != humidity?.length) {
       return null;
     } else {
       for (var i = 0; i < (time?.length ?? 0); i++) {
