@@ -10,6 +10,9 @@ import '../../../common_widget/smart_refresher_wrapper.dart';
 import '../../../route/route_list.dart';
 import '../../../theme/theme_color.dart';
 import '../../schedule/bloc/schedule_bloc.dart';
+import '../../task/general_check/view/general_check_screen.dart';
+import '../../task/repair_task/view/repair_task_screen.dart';
+import '../../task/replace_mold/view/replace_mold_screen.dart';
 
 part 'main_screen.action.dart';
 
@@ -98,6 +101,7 @@ class _MainScreenViewState extends StateBase<MainScreenView> {
                         updateTime:
                             state.viewModel.workOrders?[index].timeUpdate ??
                                 '--',
+                        task: state.viewModel.workOrders?[index].task ?? '--',
                       ),
                     ),
                   ),
@@ -114,6 +118,7 @@ class _MainScreenViewState extends StateBase<MainScreenView> {
     Widget? icon,
     String? deviceName,
     String? updateTime,
+    String? task,
   }) {
     final textStyle =
         Theme.of(context).textTheme.headline4?.copyWith(fontSize: 12);
@@ -122,7 +127,9 @@ class _MainScreenViewState extends StateBase<MainScreenView> {
       color: AppColor.greyF3,
       margin: const EdgeInsets.fromLTRB(24, 5, 24, 5),
       child: ListTile(
-        onTap: () {},
+        onTap: () {
+          onTapWorkOrder(task: task, title: deviceName);
+        },
         horizontalTitleGap: 0, // khoang cach gia icon va tiltle
         dense: true,
         visualDensity: const VisualDensity(horizontal: -4, vertical: -4),

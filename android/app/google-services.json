@@ -1,41 +1,34 @@
 {
   "project_info": {
-    "project_number": "683841762944",
-    "project_id": "cha-cmms",
-    "storage_bucket": "cha-cmms.appspot.com"
+    "project_number": "602605250319",
+    "project_id": "mobile-cmms-67966",
+    "storage_bucket": "mobile-cmms-67966.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:683841762944:android:b61390ac490123511d9865",
+        "mobilesdk_app_id": "1:602605250319:android:84ae8e05a606422033007a",
         "android_client_info": {
           "package_name": "com.example.chacmms"
         }
       },
       "oauth_client": [
         {
-          "client_id": "683841762944-851bcb2445cfo1sqe5cc65f8lo3d8qi3.apps.googleusercontent.com",
+          "client_id": "602605250319-go2r0e77oqhlve2a1qu1odrnl2lrp0uc.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDnHWppSLuf_GkbUhYwrZGmp6-6eG8vBkY"
+          "current_key": "AIzaSyAeByCGKIJqHPcAVLl2-aGD0dKBjf15450"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "683841762944-851bcb2445cfo1sqe5cc65f8lo3d8qi3.apps.googleusercontent.com",
+              "client_id": "602605250319-go2r0e77oqhlve2a1qu1odrnl2lrp0uc.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "683841762944-8ojratdiiqlhq3e68g7b6a7kpdjv6k1l.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.chacmms"
-              }
             }
           ]
         }

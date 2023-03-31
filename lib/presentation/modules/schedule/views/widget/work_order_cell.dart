@@ -33,19 +33,19 @@ class _WorkOrderCellState extends State<WorkOrderCell> {
     return GestureDetector(
       onTap: () {
         if (widget.workOrderEntity?.task == 'Sửa chữa') {
-          GoToScreen(
+          goToScreen(
             RepairTaskScreen(
               title: widget.workOrderEntity?.deviceName,
             ),
           );
         } else if (widget.workOrderEntity?.task == 'Thay khuôn') {
-          GoToScreen(
+          goToScreen(
             ReplaceMoldTaskScreen(
               title: widget.workOrderEntity?.deviceName,
             ),
           );
         } else {
-          GoToScreen(
+          goToScreen(
             GeneralCheckScreen(
               title: widget.workOrderEntity?.deviceName,
             ),
@@ -150,7 +150,7 @@ class _WorkOrderCellState extends State<WorkOrderCell> {
 
 //-------------------------------//
 
-  void GoToScreen(Widget screen) {
+  void goToScreen(Widget screen) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => screen));
   }
 

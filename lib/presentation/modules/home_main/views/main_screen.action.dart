@@ -32,12 +32,12 @@ extension MainScreenViewAction on _MainScreenViewState {
       barcodeScanRes = 'Failed to get platform version.';
     }
 
-    if (!mounted) return;
-
-    setState(() {
+    if (barcodeScanRes == '-1') {
+      showToast('Quét không thành công');
+    } else {
       textController = barcodeScanRes;
-      showToast('Quét thành công');
-    });
+      showToast(textController);
+    }
   }
 
   void scheduleNavigator() {
@@ -71,5 +71,29 @@ extension MainScreenViewAction on _MainScreenViewState {
       default:
         return const SizedBox();
     }
+  }
+
+  void onTapWorkOrder({String? task, String? title}) {
+    if (task == 'Sửa chữa') {
+      goToScreen(
+        RepairTaskScreen(
+          title: title,
+        ),
+      );
+    } else if (task == 'Thay khuôn') {
+      goToScreen(
+        ReplaceMoldTaskScreen(
+          title: title,
+        ),
+      );
+    } else {
+      goToScreen(
+        GeneralCheckScreen(title: title),
+      );
+    }
+  }
+
+  void goToScreen(Widget screen) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => screen));
   }
 }

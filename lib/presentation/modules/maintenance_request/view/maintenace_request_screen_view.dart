@@ -1,6 +1,11 @@
-import 'package:dotted_border/dotted_border.dart';
-import 'package:flutter/material.dart';
+import 'dart:io';
 
+import 'package:dotted_border/dotted_border.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
+import '../../../../common/services/firebase/firebase_storage_service.dart';
 import '../../../common_widget/dropdown/dropdown_widget.dart';
 import '../../../theme/theme_color.dart';
 import 'maintenance_request_screen.dart';
@@ -16,6 +21,14 @@ class MaintenanceRequestView extends StatefulWidget {
 
 class _MaintenanceRequestViewState extends State<MaintenanceRequestView> {
   bool moldSelected = false;
+  //step 1
+  File? file;
+  String fileName = '';
+  String selectFileName = '';
+  UploadTask? uploadTask;
+  List<File> imageFiles = [];
+  List<CloudStorageResult> uploadResults = [];
+  int imageCount = 0;
   @override
   Widget build(BuildContext context) {
     final bodyTextStyle =
@@ -127,7 +140,7 @@ class _MaintenanceRequestViewState extends State<MaintenanceRequestView> {
               Container(
                 padding: const EdgeInsets.only(right: 40, top: 10),
                 width: MediaQuery.of(context).size.width,
-                height: 210,
+                height: 105,
                 child: GridView.count(
                   padding: EdgeInsets.zero,
                   crossAxisSpacing: 15,
@@ -136,7 +149,7 @@ class _MaintenanceRequestViewState extends State<MaintenanceRequestView> {
                   physics: const NeverScrollableScrollPhysics(),
                   crossAxisCount: 4,
                   children: List.generate(
-                    6,
+                    imageCount + 1,
                     (index) => DottedBorder(
                       color: AppColor.blue0089D7,
                       strokeWidth: 1.5,
@@ -145,17 +158,25 @@ class _MaintenanceRequestViewState extends State<MaintenanceRequestView> {
                         2,
                       ],
                       radius: const Radius.circular(4),
-                      child: Container(
-                        width: 84,
-                        height: 84,
-                        child: IconButton(
-                          icon: const Icon(
-                            Icons.add,
-                            color: AppColor.blue0089D7,
-                            size: 40,
-                          ),
-                          onPressed: () {},
-                        ),
+                      child: GestureDetector(
+                        onTap: () {
+                          _showPicker(context);
+                        },
+                        child: index == imageCount
+                            ? Container(
+                                width: 84,
+                                height: 84,
+                                child: const Icon(
+                                  Icons.add,
+                                  color: AppColor.blue0089D7,
+                                  size: 40,
+                                ),
+                              )
+                            : Image.file(
+                                imageFiles[index],
+                                width: 84,
+                                height: 84,
+                              ),
                       ),
                     ),
                   ),
@@ -181,6 +202,9 @@ class _MaintenanceRequestViewState extends State<MaintenanceRequestView> {
                   onPressed: () {},
                 ),
               ),
+              const SizedBox(
+                height: 30,
+              ),
               const SizedBox(height: 30),
               Container(
                 decoration: BoxDecoration(
@@ -190,7 +214,7 @@ class _MaintenanceRequestViewState extends State<MaintenanceRequestView> {
                 width: 360,
                 height: 70,
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: _upLoadFile,
                   child: Text(
                     'Tạo yêu cầu',
                     style: Theme.of(context).textTheme.headline3?.copyWith(
@@ -265,13 +289,5 @@ class _MaintenanceRequestViewState extends State<MaintenanceRequestView> {
           .headline4
           ?.copyWith(color: AppColor.graybebebe, fontSize: 12),
     );
-  }
-
-  void equipmentChanged(dynamic value) {
-    if (value == 'Khuôn ép') {
-      setState(() {
-        moldSelected = true;
-      });
-    }
   }
 }

@@ -7,6 +7,7 @@ import '../../../../../common/utils/singletons.dart';
 import '../../../base/base.dart';
 import '../../../base/state_base/bloc_status_state.dart';
 import '../../../common_widget/date_picker/cupertino_date_picker_custom.dart';
+import '../../../common_widget/loading.dart';
 import '../../../common_widget/smart_refresher_wrapper.dart';
 import '../../../custom/custom_screen_form.dart';
 import '../bloc/schedule_bloc.dart';
@@ -140,55 +141,53 @@ class _ScheduleState extends StateBase<ScheduleScreen> {
                   ],
                 ),
               ),
-              Expanded(
-                child: SmartRefresher(
-                  controller: _refreshController,
-                  onRefresh: _onRefresh,
-                  header: const WaterDropHeader(),
-                  child: Builder(
-                    builder: (context) {
-                      if (state is ScheduleInitialState) {
-                        onGetWorkOrder();
-                      }
+              Builder(
+                builder: (context) {
+                  if (state is ScheduleInitialState) {
+                    onGetWorkOrder();
+                  }
 
-                      // if (state is ScheduleGetWorkOrderState &&
-                      //     state.status == BlocStatusState.loading) {
-                      //   return const Expanded(
-                      //     child: Center(
-                      //       child: Loading(
-                      //         brightness: Brightness.light,
-                      //       ),
-                      //     ),
-                      //   );
-                      // }
-                      if (state is ScheduleGetWorkOrderState &&
-                          state.status == BlocStatusState.failure) {
-                        return Text(
-                          'Xảy ra lỗi khi tải dữ liệu',
-                          style: Theme.of(context)
-                              .textTheme
-                              .caption
-                              ?.copyWith(color: Colors.red),
-                        );
-                      }
-                      if (state is ScheduleGetWorkOrderState &&
-                          state.status == BlocStatusState.success &&
-                          state.viewModel.workOrders?.isEmpty == true) {
-                        return Center(
-                          child: Text(
-                            'Ngày này không có dữ liệu',
-                            style: Theme.of(context)
-                                .textTheme
-                                .caption
-                                ?.copyWith(color: Colors.red),
-                          ),
-                        );
-                      }
-                      return Container(
-                        margin: const EdgeInsets.only(top: 5, bottom: 20),
+                  if (state is ScheduleGetWorkOrderState &&
+                      state.status == BlocStatusState.loading) {
+                    return const Expanded(
+                      child: Center(
+                        child: Loading(
+                          brightness: Brightness.light,
+                        ),
+                      ),
+                    );
+                  }
+                  if (state is ScheduleGetWorkOrderState &&
+                      state.status == BlocStatusState.failure) {
+                    return Text(
+                      'Xảy ra lỗi khi tải dữ liệu',
+                      style: Theme.of(context)
+                          .textTheme
+                          .caption
+                          ?.copyWith(color: Colors.red),
+                    );
+                  }
+                  if (state is ScheduleGetWorkOrderState &&
+                      state.status == BlocStatusState.success &&
+                      state.viewModel.workOrders?.isEmpty == true) {
+                    return Center(
+                      child: Text(
+                        'Ngày này không có dữ liệu',
+                        style: Theme.of(context)
+                            .textTheme
+                            .caption
+                            ?.copyWith(color: Colors.red),
+                      ),
+                    );
+                  }
+                  return Expanded(
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 5, bottom: 20),
+                      child: SmartRefresher(
+                        controller: _refreshController,
+                        onRefresh: _onRefresh,
+                        header: const WaterDropHeader(),
                         child: ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
                           padding: EdgeInsets.zero,
                           itemCount: state.viewModel.workOrders?.length ?? 0,
                           itemBuilder: (context, index) {
@@ -201,10 +200,10 @@ class _ScheduleState extends StateBase<ScheduleScreen> {
                             );
                           },
                         ),
-                      );
-                    },
-                  ),
-                ),
+                      ),
+                    ),
+                  );
+                },
               )
             ],
           ),

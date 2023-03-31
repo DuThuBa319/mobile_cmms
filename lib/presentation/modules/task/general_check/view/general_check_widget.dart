@@ -88,9 +88,6 @@ class _RowCheckBoxState extends State<RowCheckBox> {
             child: Container(
               width: 163,
               height: 30,
-              decoration: BoxDecoration(
-                border: Border.all(width: 0.5, color: AppColor.gray767676),
-              ),
               child: DropdownWidget<String>(
                 controller: taskDropdownControllers[widget.index],
                 itemBuilder: itemBuilder,

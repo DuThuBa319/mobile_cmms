@@ -11,22 +11,22 @@ extension ScheduleAction on _ScheduleState {
         state.status == BlocStatusState.loading) {
       showToast('Đang tải dữ liệu');
 
-      showDialog(
-        context: context,
-        builder: (BuildContext context) => const Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
+      //   showDialog(
+      //     context: context,
+      //     builder: (BuildContext context) => const Center(
+      //       child: CircularProgressIndicator(),
+      //     ),
+      //   );
     }
     if (state is ScheduleGetWorkOrderState &&
         state.status == BlocStatusState.success) {
       showToast('Đã tải dữ liệu thành công');
-      Navigator.of(context, rootNavigator: true).pop();
+      // Navigator.of(context, rootNavigator: true).pop();
     }
     if (state is ScheduleGetWorkOrderState &&
         state.status == BlocStatusState.failure) {
       showToast('Tải dữ liệu không thành công');
-      Navigator.of(context, rootNavigator: true).pop();
+      // Navigator.of(context, rootNavigator: true).pop();
     }
   }
 

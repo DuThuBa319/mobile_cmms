@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart';
 
@@ -15,9 +14,9 @@ class FirebaseStorageService {
     String? token,
     String? folder = 'uploads',
   }) async {
-    if (token != null && token.isNotEmpty == true) {
-      await FirebaseAuth.instance.signInWithCustomToken(token);
-    }
+    // if (token != null && token.isNotEmpty == true) {
+    //   await FirebaseAuth.instance.signInWithCustomToken(token);
+    // }
 
     final customFileName = fileName?.isNotEmpty == true
         ? '$fileName.${basename(file.path).split('.').last}'
