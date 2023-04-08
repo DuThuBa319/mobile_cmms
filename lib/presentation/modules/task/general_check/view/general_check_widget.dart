@@ -57,22 +57,22 @@ class _RowTileState extends State<RowTile> {
   }
 }
 
-class RowCheckBox extends StatefulWidget {
-  RowCheckBox({
+class CheckDropDown extends StatefulWidget {
+  CheckDropDown({
     super.key,
     required this.index,
   });
   int index;
   @override
-  State<RowCheckBox> createState() => _RowCheckBoxState();
+  State<CheckDropDown> createState() => _CheckDropDownState();
 }
 
-class _RowCheckBoxState extends State<RowCheckBox> {
+class _CheckDropDownState extends State<CheckDropDown> {
   @override
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: 45,
+      height: 60,
       padding: const EdgeInsets.only(
         left: 6,
       ),
@@ -84,10 +84,10 @@ class _RowCheckBoxState extends State<RowCheckBox> {
           ),
           Positioned(
             right: 50,
-            top: 15,
+            top: 0,
             child: Container(
               width: 163,
-              height: 30,
+              height: 60,
               child: DropdownWidget<String>(
                 controller: taskDropdownControllers[widget.index],
                 itemBuilder: itemBuilder,
@@ -102,17 +102,6 @@ class _RowCheckBoxState extends State<RowCheckBox> {
               ),
             ),
           ),
-          // Positioned(
-          //   right: 75,
-          //   child: Checkbox(
-          //     value: !(checkList[listWork[widget.index]] ?? false),
-          //     onChanged: (value) {
-          //       setState(() {
-          //         checkList[listWork[widget.index]] = !(value ?? true);
-          //       });
-          //     },
-          //   ),
-          // ),
           Positioned(
             right: 0,
             top: 5,
@@ -143,7 +132,8 @@ class _RowCheckBoxState extends State<RowCheckBox> {
   Widget itemBuilder(String item) {
     return Container(
       width: 120,
-      height: 20,
+      height: 25,
+      padding: const EdgeInsets.only(top: 4),
       child: Text(
         item,
         style: Theme.of(context).textTheme.bodyText2?.copyWith(fontSize: 14),

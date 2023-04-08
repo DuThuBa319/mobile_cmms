@@ -12,6 +12,7 @@ class DropdownWidget<T> extends StatelessWidget {
   final Color? borderColor;
   final Color? iconColor;
   final IconData? iconData;
+  final bool enable;
 
   DropdownWidget({
     required this.controller,
@@ -23,6 +24,7 @@ class DropdownWidget<T> extends StatelessWidget {
     this.borderColor,
     this.iconColor,
     this.iconData = Icons.keyboard_arrow_right,
+    this.enable = true,
   });
 
   @override
@@ -44,13 +46,15 @@ class DropdownWidget<T> extends StatelessWidget {
               child: itemBuilder(e),
             );
           }).toList(),
-          onChanged: (value) {
-            controller.setData(value);
-            onChanged?.call(value);
-          },
+          onChanged: (enable == true)
+              ? (value) {
+                  controller.setData(value);
+                  onChanged?.call(value);
+                }
+              : null,
           icon: Icon(
             iconData,
-            size: 16,
+            size: 26,
             color: iconColor ?? (Colors.black),
           ),
           iconSize: 16,
@@ -61,7 +65,7 @@ class DropdownWidget<T> extends StatelessWidget {
               borderRadius: BorderRadius.circular(6.0),
             ),
             contentPadding: const EdgeInsets.symmetric(
-              horizontal: 12,
+              horizontal: 6,
               vertical: 6,
             ),
             filled: true,

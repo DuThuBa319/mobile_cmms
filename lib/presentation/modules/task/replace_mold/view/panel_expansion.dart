@@ -50,8 +50,8 @@ class _PanelExpansionState extends State<PanelExpansion> {
             ),
             trailing: Icon(
               widget.expansionItem!.isExpand
-                  ? Icons.expand_more
-                  : Icons.expand_less,
+                  ? Icons.expand_less
+                  : Icons.expand_more,
               color: Colors.black,
             ),
             children: <Widget>[

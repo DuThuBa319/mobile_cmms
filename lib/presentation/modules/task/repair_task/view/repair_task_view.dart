@@ -130,6 +130,7 @@ class _RepairTaskViewState extends State<RepairTaskView> {
                             height: 32,
                             decoration: BoxDecoration(
                               border: Border.all(color: AppColor.gray767676),
+                              borderRadius: BorderRadius.circular(4),
                             ),
                             child: TextField(
                               controller: quantity,

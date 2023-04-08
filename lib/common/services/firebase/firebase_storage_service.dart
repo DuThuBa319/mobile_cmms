@@ -13,6 +13,7 @@ class FirebaseStorageService {
     String? fileName,
     String? token,
     String? folder = 'uploads',
+    String type = 'image/jpeg',
   }) async {
     // if (token != null && token.isNotEmpty == true) {
     //   await FirebaseAuth.instance.signInWithCustomToken(token);
@@ -26,7 +27,7 @@ class FirebaseStorageService {
     final ref = FirebaseStorage.instance.ref('mobile/$folder/$customFileName');
 
     final metadata = SettableMetadata(
-      contentType: 'image/jpeg',
+      contentType: type,
       customMetadata: {
         'picked-file-path': file.path,
       },

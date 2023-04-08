@@ -29,7 +29,7 @@ class _GeneralCheckViewState extends State<GeneralCheckView> {
               physics: const NeverScrollableScrollPhysics(),
               padding: EdgeInsets.zero,
               itemCount: listWork.length,
-              itemBuilder: (context, index) => RowCheckBox(index: index),
+              itemBuilder: (context, index) => CheckDropDown(index: index),
               separatorBuilder: (context, index) {
                 if (index == 6) {
                   return RowTile(isSeparate: true, title: 'KIỂM TRA CƠ');

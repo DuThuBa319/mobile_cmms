@@ -1,11 +1,16 @@
+import 'dart:async';
 import 'dart:io';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../../../common/services/firebase/firebase_storage_service.dart';
+import '../../../../common/services/permission_service.dart';
 import '../../../common_widget/dropdown/dropdown_widget.dart';
 import '../../../theme/theme_color.dart';
 import 'maintenance_request_screen.dart';
@@ -21,6 +26,7 @@ class MaintenanceRequestView extends StatefulWidget {
 
 class _MaintenanceRequestViewState extends State<MaintenanceRequestView> {
   bool moldSelected = false;
+  TextEditingController? descriptionTextController;
   //step 1
   File? file;
   String fileName = '';
@@ -29,6 +35,27 @@ class _MaintenanceRequestViewState extends State<MaintenanceRequestView> {
   List<File> imageFiles = [];
   List<CloudStorageResult> uploadResults = [];
   int imageCount = 0;
+
+  /// audio
+  FlutterSoundRecorder recorder = FlutterSoundRecorder();
+  bool isRecorderReady = false;
+  File? audioFile;
+  AudioPlayer player = AudioPlayer();
+  Duration? totalDuration;
+  @override
+  void initState() {
+    initRecorder();
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    recorder.closeRecorder();
+    // TODO: implement dispose
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final bodyTextStyle =
@@ -126,8 +153,9 @@ class _MaintenanceRequestViewState extends State<MaintenanceRequestView> {
                   border: Border.all(color: AppColor.gray767676, width: 0.5),
                   borderRadius: BorderRadius.circular(4),
                 ),
-                child: Text(
-                  'Sản phẩm ép ra bị giáp mí nặng, có dấu hiệu sản phẩm dơ do mỡ bò bị tràn ra ngoài',
+                child: TextField(
+                  controller: descriptionTextController,
+                  // Text('Sản phẩm ép ra bị giáp mí nặng, có dấu hiệu sản phẩm dơ do mỡ bò bị tràn ra ngoài')
                   style: Theme.of(context)
                       .textTheme
                       .subtitle1
@@ -160,7 +188,9 @@ class _MaintenanceRequestViewState extends State<MaintenanceRequestView> {
                       radius: const Radius.circular(4),
                       child: GestureDetector(
                         onTap: () {
-                          _showPicker(context);
+                          index == imageCount
+                              ? showPicker(context)
+                              : editPicker(context, index);
                         },
                         child: index == imageCount
                             ? Container(
@@ -186,6 +216,38 @@ class _MaintenanceRequestViewState extends State<MaintenanceRequestView> {
                 'Ghi âm mô tả: ',
               ),
               Container(
+                width: 378,
+                height: 50,
+                padding: const EdgeInsets.only(left: 10, right: 15),
+                decoration: BoxDecoration(
+                  border: Border.all(color: AppColor.blue0089D7),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.play_circle_filled,
+                          color: AppColor.blue0089D7,
+                          size: 27,
+                        ),
+                        const SizedBox(width: 20),
+                        Text(
+                          'Recording_001.mp3',
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                      ],
+                    ),
+                    Text(
+                      '00:01:43',
+                      style: Theme.of(context).textTheme.subtitle2,
+                    ),
+                  ],
+                ),
+              ),
+              Container(
                 margin: const EdgeInsets.only(top: 10, bottom: 20),
                 width: 50,
                 height: 50,
@@ -199,7 +261,10 @@ class _MaintenanceRequestViewState extends State<MaintenanceRequestView> {
                     color: AppColor.blue0089D7,
                     size: 25,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    recordDialog();
+                    setState(() {});
+                  },
                 ),
               ),
               const SizedBox(
@@ -239,8 +304,9 @@ class _MaintenanceRequestViewState extends State<MaintenanceRequestView> {
     return Container(
       margin: const EdgeInsets.only(top: 10, bottom: 18),
       width: 168,
-      height: 30,
+      height: 50,
       child: DropdownWidget<dynamic>(
+        enable: true,
         controller: controller!,
         itemBuilder: itemBuilder1,
         borderColor: AppColor.gray767676,
@@ -259,13 +325,14 @@ class _MaintenanceRequestViewState extends State<MaintenanceRequestView> {
     return Container(
       margin: const EdgeInsets.only(top: 10, bottom: 18),
       width: 168,
-      height: 30,
+      height: 50,
       child: DropdownWidget<dynamic>(
+        enable: false,
         controller: controller!,
         itemBuilder: itemBuilder2,
         borderColor: AppColor.gray767676,
         items: item!,
-        onChanged: onChanged,
+        onChanged: null,
         iconColor: AppColor.graybebebe,
       ),
     );
