@@ -1,8 +1,12 @@
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../base/base.dart';
+import '../../../../custom/audio_picker/audio_picker_widget.dart';
 import '../../../../custom/general_report_container.dart';
+import '../../../../custom/image_picker/image_picker_widget.dart';
 import '../../../../theme/theme_color.dart';
+import '../../../maintenance_request/bloc/audio_picker_bloc/audio_picker_bloc.dart';
+import '../../../maintenance_request/bloc/image_picker_bloc/image_picker_bloc.dart';
 import 'panel_expansion.dart';
 import 'replace_mold_screen.dart';
 
@@ -13,9 +17,13 @@ class ReplaceMoldView extends StatefulWidget {
   State<ReplaceMoldView> createState() => _ReplaceMoldViewState();
 }
 
-class _ReplaceMoldViewState extends State<ReplaceMoldView> {
+class _ReplaceMoldViewState extends StateBase<ReplaceMoldView> {
   @override
-  Widget build(BuildContext context) {
+  ImagePickerBloc get bloc => BlocProvider.of(context);
+
+  AudioPickerBloc get audioBloc => BlocProvider.of(context);
+  @override
+  Widget buildBase(BuildContext context) {
     final bodyTextStyle = Theme.of(context).textTheme.bodyText2;
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20),
@@ -53,66 +61,14 @@ class _ReplaceMoldViewState extends State<ReplaceMoldView> {
                 'Hình ảnh báo cáo: ',
                 style: bodyTextStyle,
               ),
-              Container(
-                padding: const EdgeInsets.only(right: 40, top: 10),
-                width: MediaQuery.of(context).size.width,
-                height: 210,
-                child: GridView.count(
-                  padding: EdgeInsets.zero,
-                  crossAxisSpacing: 15,
-                  mainAxisSpacing: 20,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  crossAxisCount: 4,
-                  children: List.generate(
-                    6,
-                    (index) => DottedBorder(
-                      color: AppColor.blue0089D7,
-                      strokeWidth: 1.5,
-                      dashPattern: const [
-                        2,
-                        2,
-                      ],
-                      radius: const Radius.circular(4),
-                      child: Container(
-                        width: 84,
-                        height: 84,
-                        child: IconButton(
-                          icon: const Icon(
-                            Icons.add,
-                            color: AppColor.blue0089D7,
-                            size: 40,
-                          ),
-                          onPressed: () {},
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              ImagePickerGridView(bloc: bloc),
             ],
           ),
           Text(
             'Ghi âm báo cáo: ',
             style: bodyTextStyle,
           ),
-          Container(
-            margin: const EdgeInsets.only(top: 10, bottom: 20),
-            width: 50,
-            height: 50,
-            decoration: BoxDecoration(
-              border: Border.all(color: AppColor.blue0089D7),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: IconButton(
-              icon: const Icon(
-                Icons.add,
-                color: AppColor.blue0089D7,
-                size: 25,
-              ),
-              onPressed: () {},
-            ),
-          ),
+          AudioListView(bloc: audioBloc),
           const SizedBox(
             height: 30,
           ),
@@ -143,7 +99,9 @@ class _ReplaceMoldViewState extends State<ReplaceMoldView> {
             width: 360,
             height: 70,
             child: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+              },
               child: Text(
                 'Kết thúc công việc',
                 style: Theme.of(context).textTheme.headline3?.copyWith(

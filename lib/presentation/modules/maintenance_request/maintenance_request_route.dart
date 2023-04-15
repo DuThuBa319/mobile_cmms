@@ -1,14 +1,31 @@
-import 'package:get_it/get_it.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+
 import '../../route/route_list.dart';
-import '../schedule/bloc/schedule_bloc.dart';
+import 'bloc/audio_picker_bloc/audio_picker_bloc.dart';
+import 'bloc/image_picker_bloc/image_picker_bloc.dart';
+import 'bloc/request_bloc/request_bloc.dart';
 import 'view/maintenance_request_screen.dart';
 
 class RequestRoute {
   static GetIt getIt = GetIt.instance;
   static Map<String, WidgetBuilder> getAll(RouteSettings settings) => {
         RouteList.request: (context) {
-          return const MaintenanceRequestScreen();
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider<ImagePickerBloc>(
+                create: (context) => ImagePickerBloc(),
+              ),
+              BlocProvider<RequestBloc>(
+                create: (context) => RequestBloc(),
+              ),
+              BlocProvider<AudioPickerBloc>(
+                create: (context) => AudioPickerBloc(),
+              )
+            ],
+            child: const MaintenanceRequestScreen(),
+          );
         },
       };
 }

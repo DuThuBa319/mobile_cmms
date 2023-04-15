@@ -71,7 +71,9 @@ class _GeneralCheckViewState extends State<GeneralCheckView> {
               width: 360,
               height: 70,
               child: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pop(context);
+                },
                 child: Text(
                   'Kết thúc công việc',
                   style: Theme.of(context).textTheme.headline3?.copyWith(
