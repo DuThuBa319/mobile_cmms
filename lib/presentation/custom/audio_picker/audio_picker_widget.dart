@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/flutter_sound.dart';
@@ -45,6 +47,11 @@ class _AudioListViewState extends State<AudioListView> {
             if (state is GetAudioState &&
                 state.status == BlocStatusState.success) {
               audioFiles = state.viewModel.audioFiles!;
+              // Navigator.of(context).pop();
+            }
+            if (state is GetAudioState &&
+                state.status == BlocStatusState.loading) {
+              return const Center(child: CircularProgressIndicator());
             }
             return ListView.builder(
               padding: EdgeInsets.zero,
@@ -52,39 +59,44 @@ class _AudioListViewState extends State<AudioListView> {
               physics: const NeverScrollableScrollPhysics(),
               itemCount: audioFiles.length,
               itemBuilder: (context, index) {
-                return Container(
-                  width: 378,
-                  height: 50,
-                  padding: const EdgeInsets.only(left: 10, right: 15),
-                  margin: const EdgeInsets.only(top: 10, bottom: 5),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: AppColor.blue0089D7),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.play_circle_filled,
-                            color: AppColor.blue0089D7,
-                            size: 27,
-                          ),
-                          const SizedBox(width: 20),
-                          Text(
-                            audioFiles[index].name ?? '',
-                            style: Theme.of(context).textTheme.bodyText1,
-                          ),
-                        ],
-                      ),
-                      Text(
-                        displayTime(
-                          audioFiles[index].duration!,
+                return GestureDetector(
+                  onTap: () {
+                    editPicker(context, index);
+                  },
+                  child: Container(
+                    width: 378,
+                    height: 50,
+                    padding: const EdgeInsets.only(left: 10, right: 15),
+                    margin: const EdgeInsets.only(top: 10, bottom: 5),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: AppColor.blue0089D7),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.play_circle_filled,
+                              color: AppColor.blue0089D7,
+                              size: 27,
+                            ),
+                            const SizedBox(width: 20),
+                            Text(
+                              audioFiles[index].name ?? '',
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                          ],
                         ),
-                        style: Theme.of(context).textTheme.subtitle2,
-                      ),
-                    ],
+                        Text(
+                          displayTime(
+                            audioFiles[index].duration!,
+                          ),
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
@@ -105,7 +117,9 @@ class _AudioListViewState extends State<AudioListView> {
               color: AppColor.blue0089D7,
               size: 25,
             ),
-            onPressed: recordDialog,
+            onPressed: () {
+              showPicker(context);
+            },
           ),
         ),
       ],

@@ -12,10 +12,111 @@ extension AudioPickerAction on _AudioListViewState {
     await recorder.setSubscriptionDuration(const Duration(milliseconds: 100));
   }
 
+//-------------------------
+  Future<String> selectSource() async {
+    final completer = Completer<String>();
+    await showModalBottomSheet<String>(
+      context: context,
+      builder: (BuildContext bc) {
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.15,
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(25),
+              topRight: Radius.circular(25),
+            ),
+          ),
+          child: Wrap(
+            children: <Widget>[
+              const SizedBox(
+                height: 10,
+              ),
+              ListTile(
+                leading: const Icon(
+                  Icons.photo_library,
+                ),
+                title: const Text(
+                  'Gallery',
+                  style: TextStyle(),
+                ),
+                onTap: () {
+                  Navigator.of(context).pop('Gallery');
+                },
+              ),
+              ListTile(
+                leading: const Icon(
+                  Icons.mic,
+                ),
+                title: const Text(
+                  'Camera',
+                  style: TextStyle(),
+                ),
+                onTap: () {
+                  Navigator.of(context).pop('New Record');
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    ).then(completer.complete);
+    return completer.future;
+  }
+
+  Future<void> showPicker(BuildContext context) async {
+    final source = await selectSource();
+    if (source == 'Gallery') {
+      widget.bloc!.add(GetAudioEvent());
+    }
+    if (source == 'New Record') {
+      recordDialog();
+    }
+  }
+
+  void editPicker(BuildContext context, int index) {
+    showModalBottomSheet(
+      //backgroundColor: Colors.transparent,
+      context: context,
+      builder: (BuildContext bc) {
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.07,
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(25),
+              topRight: Radius.circular(25),
+            ),
+          ),
+          child: Wrap(
+            children: <Widget>[
+              const SizedBox(
+                height: 10,
+              ),
+              ListTile(
+                leading: const Icon(
+                  Icons.delete,
+                ),
+                title: const Text(
+                  'Delete',
+                  style: TextStyle(),
+                ),
+                onTap: () {
+                  widget.bloc?.add(DeleteAudioEvent(index: index));
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+//---------------------
   void recordDialog() {
     showDialog(
       context: context,
-      builder: (context) => StatefulBuilder(
+      builder: (context) => BlocBuilder<AudioPickerBloc, AudioPickerState>(
+        bloc: widget.bloc,
         builder: (context, setState) {
           return AlertDialog(
             title: Text(
@@ -38,7 +139,11 @@ extension AudioPickerAction on _AudioListViewState {
                     ),
                     child: IconButton(
                       icon: Icon(
-                        recorder.isRecording ? Icons.stop : Icons.mic,
+                        widget.bloc!.state is StartRecordState &&
+                                widget.bloc!.state.status ==
+                                    BlocStatusState.success
+                            ? Icons.stop
+                            : Icons.mic,
                         color: AppColor.blue0089D7,
                         size: 50,
                       ),
@@ -50,14 +155,14 @@ extension AudioPickerAction on _AudioListViewState {
                               recorder: recorder,
                             ),
                           );
-                          setState(() {});
                         } else {
-                          await recorder.startRecorder(
-                            toFile: 'audio.aac',
-                            codec: Codec.aacADTS,
-                          );
-
-                          setState(() {});
+                          widget.bloc
+                              ?.add(StartRecordEvent(recorder: recorder));
+                          // await recorder.startRecorder(
+                          //   toFile: 'audio.aac',
+                          //   codec: Codec.aacADTS,
+                          // );
+                          // setState(() {});
                         }
                       },
                     ),

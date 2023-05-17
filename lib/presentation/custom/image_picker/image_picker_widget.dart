@@ -38,52 +38,52 @@ class _ImagePickerGridViewState extends State<ImagePickerGridView> {
           padding: const EdgeInsets.only(right: 40, top: 10),
           width: MediaQuery.of(context).size.width,
           height: height,
-          child: GridView.count(
-            padding: EdgeInsets.zero,
-            crossAxisSpacing: 15,
-            mainAxisSpacing: 20,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            crossAxisCount: 4,
-            children: List.generate(
-              imageCount + 1,
-              (index) => DottedBorder(
-                color: AppColor.blue0089D7,
-                strokeWidth: 1.5,
-                dashPattern: const [
-                  2,
-                  2,
-                ],
-                radius: const Radius.circular(4),
-                child: GestureDetector(
-                  onTap: () {
-                    index == imageCount
-                        ? showPicker(context)
-                        : editPicker(context, index);
-                  },
-                  child: index == imageCount
-                      ? state.status == BlocStatusState.loading
-                          ? const Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : Container(
-                              width: 84,
-                              height: 84,
-                              child: const Icon(
-                                Icons.add,
-                                color: AppColor.blue0089D7,
-                                size: 40,
+          child: state.status == BlocStatusState.loading
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : GridView.count(
+                  padding: EdgeInsets.zero,
+                  crossAxisSpacing: 15,
+                  mainAxisSpacing: 20,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  crossAxisCount: 4,
+                  children: List.generate(
+                    imageCount + 1,
+                    (index) => DottedBorder(
+                      color: AppColor.blue0089D7,
+                      strokeWidth: 1.5,
+                      dashPattern: const [
+                        2,
+                        2,
+                      ],
+                      radius: const Radius.circular(4),
+                      child: GestureDetector(
+                        onTap: () {
+                          index == imageCount
+                              ? showPicker(context)
+                              : editPicker(context, index);
+                        },
+                        child: index == imageCount
+                            ? Container(
+                                width: 84,
+                                height: 84,
+                                child: const Icon(
+                                  Icons.add,
+                                  color: AppColor.blue0089D7,
+                                  size: 40,
+                                ),
+                              )
+                            : Image.file(
+                                state.viewModel.imageFiles![index],
+                                width: 84,
+                                height: 84,
                               ),
-                            )
-                      : Image.file(
-                          state.viewModel.imageFiles![index],
-                          width: 84,
-                          height: 84,
-                        ),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ),
         );
       },
     );

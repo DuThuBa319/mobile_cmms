@@ -7,7 +7,7 @@ part of 'equipment.dart';
 // **************************************************************************
 
 Equipment _$EquipmentFromJson(Map<String, dynamic> json) => Equipment(
-      id: json['id'] as String?,
+      id: json['equipmentId'] as String?,
       name: json['name'] as String?,
       code: json['code'] as String?,
       mtbf: json['mtbf'] == null
@@ -21,10 +21,19 @@ Equipment _$EquipmentFromJson(Map<String, dynamic> json) => Equipment(
           : PerformanceIndex.fromJson(json['oee'] as Map<String, dynamic>),
       recentMaintenanceWorkOrder: json['recentMaintenanceWorkOrder'] == null
           ? null
-          : MaintenanceWorkOrder.fromJson(
+          : MaintenanceResponse.fromJson(
               json['recentMaintenanceWorkOrder'] as Map<String, dynamic>),
-      status: $enumDecodeNullable(_$MaintenanceStatusEnumMap, json['status']),
-    )..type = $enumDecodeNullable(_$EquipmentTypeEnumMap, json['type']);
+      errors: (json['errors'] as List<dynamic>?)
+          ?.map((e) => ChartObj.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      material: (json['material'] as List<dynamic>?)
+          ?.map((e) => EquipmentMaterial.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      scheduleWorkingTimes: (json['scheduleWorkingTimes'] as List<dynamic>?)
+          ?.map((e) => WorkingTime.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      type: $enumDecodeNullable(_$EquipmentTypeEnumMap, json['type']),
+    );
 
 Map<String, dynamic> _$EquipmentToJson(Equipment instance) {
   final val = <String, dynamic>{};
@@ -35,28 +44,23 @@ Map<String, dynamic> _$EquipmentToJson(Equipment instance) {
     }
   }
 
-  writeNotNull('id', instance.id);
+  writeNotNull('equipmentId', instance.id);
   writeNotNull('name', instance.name);
   writeNotNull('code', instance.code);
   writeNotNull('type', _$EquipmentTypeEnumMap[instance.type]);
   writeNotNull('mttf', instance.mttf?.toJson());
   writeNotNull('mtbf', instance.mtbf?.toJson());
   writeNotNull('oee', instance.oee?.toJson());
-  writeNotNull('status', _$MaintenanceStatusEnumMap[instance.status]);
   writeNotNull('recentMaintenanceWorkOrder',
       instance.recentMaintenanceWorkOrder?.toJson());
+  writeNotNull('errors', instance.errors?.map((e) => e.toJson()).toList());
+  writeNotNull('material', instance.material?.map((e) => e.toJson()).toList());
+  writeNotNull('scheduleWorkingTimes',
+      instance.scheduleWorkingTimes?.map((e) => e.toJson()).toList());
   return val;
 }
 
-const _$MaintenanceStatusEnumMap = {
-  MaintenanceStatus.assigned: 'assigned',
-  MaintenanceStatus.inProgress: 'inProgress',
-  MaintenanceStatus.review: 'review',
-  MaintenanceStatus.completed: 'completed',
-};
-
 const _$EquipmentTypeEnumMap = {
-  EquipmentType.bigInjector: 'bigInjector',
-  EquipmentType.smallInjector: 'smallInjector',
-  EquipmentType.mold: 'mold',
+  EquipmentType.bigInjection: 'bigInjection',
+  EquipmentType.smallInjection: 'smallInjection',
 };

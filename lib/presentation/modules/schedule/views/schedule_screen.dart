@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../../../common/utils/singletons.dart';
+import '../../../../data/models/mock_work_order/device_model.dart';
 import '../../../base/base.dart';
 import '../../../base/state_base/bloc_status_state.dart';
 import '../../../common_widget/date_picker/cupertino_date_picker_custom.dart';
@@ -27,6 +28,15 @@ class _ScheduleState extends StateBase<ScheduleScreen> {
   DateTime currentDate = DateTime.now();
   String strDate = DateFormat('dd/MM/yyyy').format(DateTime.now());
   bool isCorrectiveMaintenance = false;
+  DeviceObjectModel? deviceObjectModel = DeviceObjectModel(
+    id: 201,
+    deviceName: 'h',
+    level: '1',
+    maintenanceType: '23',
+    status: '12',
+    task: '21',
+    timeUpdate: '12',
+  );
   @override
   ScheduleBloc get bloc => BlocProvider.of(context);
 
@@ -42,6 +52,18 @@ class _ScheduleState extends StateBase<ScheduleScreen> {
           isShowBottomAppBar: true,
           child: Column(
             children: [
+              // IconButton(
+              //   onPressed: () {
+              //     bloc.add(
+              //       CreateWorkOrderEvent(
+              //         newWorkOrderModel:
+              //             WorkOrderModel(device: [deviceObjectModel!]),
+              //       ),
+              //     );
+              //   },
+              //   icon: const Icon(Icons.add),
+              //   iconSize: 25,
+              // ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -169,7 +191,7 @@ class _ScheduleState extends StateBase<ScheduleScreen> {
                   }
                   if (state is ScheduleGetWorkOrderState &&
                       state.status == BlocStatusState.success &&
-                      state.viewModel.workOrders?.isEmpty == true) {
+                      state.viewModel.responses?.isEmpty == true) {
                     return Center(
                       child: Text(
                         'Ngày này không có dữ liệu',
@@ -189,13 +211,14 @@ class _ScheduleState extends StateBase<ScheduleScreen> {
                         header: const WaterDropHeader(),
                         child: ListView.builder(
                           padding: EdgeInsets.zero,
-                          itemCount: state.viewModel.workOrders?.length ?? 0,
+                          itemCount: state.viewModel.responses?.length ?? 0,
                           itemBuilder: (context, index) {
                             return WorkOrderCell(
-                              workOrderEntity:
-                                  state.viewModel.workOrders?[index],
+                              maintenanceResponseEntity:
+                                  state.viewModel.responses?[index],
                               taskIcon: taskIcon(
-                                task: state.viewModel.workOrders?[index].task,
+                                task: state.viewModel.responses?[index]
+                                    .maintenanceTask,
                               ),
                             );
                           },

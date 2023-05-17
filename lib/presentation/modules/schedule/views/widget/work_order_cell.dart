@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
-import '../../../../../domain/entities/work_order_entity.dart';
+import '../../../../../domain/entities/cmms/maintenance_response_entity.dart';
 import '../../../../common_widget/item_devider.dart';
 import '../../../../common_widget/menu_item_view.dart';
 import '../../../../theme/theme_color.dart';
@@ -11,11 +11,11 @@ import '../../../task/repair_task/view/repair_task_screen.dart';
 import '../../../task/replace_mold/view/replace_mold_screen.dart';
 
 class WorkOrderCell extends StatefulWidget {
-  final WorkOrderEntity? workOrderEntity;
+  final MaintenanceResponseEntity? maintenanceResponseEntity;
   final Widget? taskIcon;
   const WorkOrderCell({
     Key? key,
-    this.workOrderEntity,
+    this.maintenanceResponseEntity,
     this.taskIcon,
   }) : super(key: key);
 
@@ -27,27 +27,28 @@ class _WorkOrderCellState extends State<WorkOrderCell> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final deviceName = widget.workOrderEntity?.deviceName;
-    final updateTime = widget.workOrderEntity?.timeUpdate;
-    final id = widget.workOrderEntity?.id;
+    final deviceName = widget.maintenanceResponseEntity?.equipment?.name;
+    final updateTime = widget.maintenanceResponseEntity?.searchDate;
+    final id = widget.maintenanceResponseEntity?.id;
     return GestureDetector(
       onTap: () {
-        if (widget.workOrderEntity?.task == 'Sửa chữa') {
+        if (widget.maintenanceResponseEntity?.maintenanceTask == 'Sửa chữa') {
           goToScreen(
             RepairTaskScreen(
-              title: widget.workOrderEntity?.deviceName,
+              title: deviceName,
             ),
           );
-        } else if (widget.workOrderEntity?.task == 'Thay khuôn') {
+        } else if (widget.maintenanceResponseEntity?.maintenanceTask ==
+            'Thay khuôn') {
           goToScreen(
             ReplaceMoldTaskScreen(
-              title: widget.workOrderEntity?.deviceName,
+              title: deviceName,
             ),
           );
         } else {
           goToScreen(
             GeneralCheckScreen(
-              title: widget.workOrderEntity?.deviceName,
+              title: deviceName,
             ),
           );
         }
@@ -85,9 +86,12 @@ class _WorkOrderCellState extends State<WorkOrderCell> {
                         statusContainer(
                           width: 61,
                           height: 22,
-                          statusText: widget.workOrderEntity?.level ?? '--',
+                          statusText:
+                              widget.maintenanceResponseEntity?.priorityTxt ??
+                                  '--',
                           color:
-                              widget.workOrderEntity?.LevelColor ?? Colors.grey,
+                              widget.maintenanceResponseEntity?.priorityColor ??
+                                  Colors.grey,
                         ),
                       ],
                     ),
@@ -98,8 +102,9 @@ class _WorkOrderCellState extends State<WorkOrderCell> {
                 width: 94,
                 height: 22,
                 margin: const EdgeInsets.only(bottom: 7, top: 8),
-                statusText: widget.workOrderEntity?.status ?? '--',
-                color: widget.workOrderEntity?.StatusColor ?? Colors.grey,
+                statusText: widget.maintenanceResponseEntity?.statusTxt ?? '--',
+                color: widget.maintenanceResponseEntity?.statusColor ??
+                    Colors.grey,
               ),
               DefaultTextStyle(
                 style: Theme.of(context)
@@ -117,12 +122,14 @@ class _WorkOrderCellState extends State<WorkOrderCell> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text('Thiết bị: Máy ép'),
-                          Text('Thời gian: 70 phút'),
+                        children: [
+                          const Text('Thiết bị: Máy ép'),
+                          Text(
+                            'Thời gian: ${widget.maintenanceResponseEntity?.estProcessTime} phút',
+                          ),
                           Expanded(
                             child: Text(
-                              'Nguyên nhân: Thay ty lói, vệ sinh',
+                              'Nguyên nhân: ${widget.maintenanceResponseEntity?.cause?[0].name}',
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -133,9 +140,11 @@ class _WorkOrderCellState extends State<WorkOrderCell> {
                     Wrap(
                       spacing: 0,
                       direction: Axis.vertical,
-                      children: const [
-                        Text('Mã số: M39'),
-                        Text('Kết quả: đạt'),
+                      children: [
+                        Text(
+                          'Mã số: ${widget.maintenanceResponseEntity?.equipment?.code}',
+                        ),
+                        const Text('Kết quả: đạt'),
                       ],
                     ),
                   ],

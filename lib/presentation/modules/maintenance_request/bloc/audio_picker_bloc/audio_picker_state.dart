@@ -53,6 +53,13 @@ class AudioPickerInitialState extends AudioPickerState {
   }) : super(viewModel);
 }
 
+class StartRecordState extends AudioPickerState {
+  StartRecordState({
+    _ViewModel viewModel = const _ViewModel(),
+    BlocStatusState status = BlocStatusState.initial,
+  }) : super(viewModel, status: status);
+}
+
 class GetAudioState extends AudioPickerState {
   GetAudioState({
     _ViewModel viewModel = const _ViewModel(),

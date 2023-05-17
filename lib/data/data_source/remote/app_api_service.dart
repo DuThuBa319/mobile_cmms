@@ -25,6 +25,7 @@ class AppApiService {
   late dio_p.Dio _dio;
   late RestApiRepository restClient;
   late MockApiRepository mockClient;
+  late RestCmmsApiRepository cmmsClient;
   late GraphQLClient graphQLClient;
 
   AppApiService() {
@@ -36,6 +37,7 @@ class AppApiService {
 
     _createRestClient();
     _createMockClient();
+    _createCmmsClient();
   }
 
   Map<String, String> _getDefaultHeader() {
@@ -167,6 +169,13 @@ class AppApiService {
     mockClient = MockApiRepository(
       _dio,
       baseUrl: Config.instance.appConfig.mockApiLayer,
+    );
+  }
+
+  void _createCmmsClient() {
+    cmmsClient = RestCmmsApiRepository(
+      _dio,
+      baseUrl: Config.instance.appConfig.cmmsApiLayer,
     );
   }
 

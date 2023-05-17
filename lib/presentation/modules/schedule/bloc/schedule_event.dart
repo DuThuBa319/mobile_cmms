@@ -8,3 +8,17 @@ class GetWorkOrderEvent extends ScheduleEvent {
   String? dateRequest;
   String? maintenanceTypeRequest;
 }
+
+class CreateWorkOrderEvent extends ScheduleEvent {
+  CreateWorkOrderEvent({this.newWorkOrderModel});
+  WorkOrderModel? newWorkOrderModel;
+}
+
+class GetListMaintenanceResponsesEvent extends ScheduleEvent {
+  GetListMaintenanceResponsesEvent({
+    this.dateRequest,
+    this.maintenanceTypeRequest,
+  });
+  String? dateRequest;
+  String? maintenanceTypeRequest;
+}

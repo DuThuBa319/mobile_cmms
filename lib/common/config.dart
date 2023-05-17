@@ -19,6 +19,7 @@ class AppConfig {
   String appName;
   String baseApiLayer;
   String mockApiLayer;
+  String cmmsApiLayer;
   String baseGraphQLUrl;
   String onesignalAppID;
 
@@ -28,6 +29,7 @@ class AppConfig {
     this.appName,
     this.baseApiLayer,
     this.mockApiLayer,
+    this.cmmsApiLayer,
     this.baseGraphQLUrl,
     this.onesignalAppID,
   );
@@ -38,6 +40,7 @@ class AppConfig {
         appName = env[Env.appName],
         baseApiLayer = env[Env.baseApiLayer],
         mockApiLayer = env[Env.mockApiLayer],
+        cmmsApiLayer = env[Env.cmmsApiLayer],
         baseGraphQLUrl = env[Env.baseGraphQLUrl],
         onesignalAppID = env[Env.onesignalAppID];
 

@@ -5,17 +5,30 @@ import '../../../data_repository.dart';
 import 'work_order_api_repository.dart';
 
 @Injectable(
-  as: WorkOrderApiRespository,
+  as: WorkOrderApiRepository,
 )
-class WorkOrderApiRespositoryImpl
+class WorkOrderApiRepositoryImpl
     with DataRepository
-    implements WorkOrderApiRespository {
+    implements WorkOrderApiRepository {
   @override
   Future<WorkOrderModel> getWorkOrder({
     String key = 'd1b5eef0',
   }) {
     return mockApi.getWorkOrder(
       key,
+    );
+  }
+
+  @override
+  Future<WorkOrderModel> createWorkOrder({
+    String key = 'd1b5eef0',
+    String method = 'POST',
+    WorkOrderModel? newWorkOrder,
+  }) {
+    return mockApi.createWorkOrder(
+      key,
+      method,
+      newWorkOrder!,
     );
   }
 }

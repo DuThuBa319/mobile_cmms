@@ -3,17 +3,21 @@ part of 'schedule_bloc.dart';
 // ViewModel is used for store all properties which want to be stored, processed and updated
 class _ViewModel {
   final List<WorkOrderEntity>? workOrders;
+  final List<MaintenanceResponseEntity>? responses;
 
   const _ViewModel({
     this.workOrders,
+    this.responses,
   });
 
   // Using copyWith function to retains the before data and just "update some specific props" instead of "update all props"
   _ViewModel copyWith({
     List<WorkOrderEntity>? workOrders,
+    List<MaintenanceResponseEntity>? responses,
   }) {
     return _ViewModel(
       workOrders: workOrders ?? this.workOrders,
+      responses: responses ?? this.responses,
     );
   }
 }
@@ -53,6 +57,13 @@ class ScheduleGetWorkOrderState extends ScheduleState {
   }) : super(viewModel, status: status);
 }
 
+class ScheduleCreateWorkOrderState extends ScheduleState {
+  ScheduleCreateWorkOrderState({
+    _ViewModel viewModel = const _ViewModel(),
+    BlocStatusState status = BlocStatusState.initial,
+  }) : super(viewModel, status: status);
+}
+
 final _factories = <
     Type,
     Function(
@@ -64,6 +75,11 @@ final _factories = <
         status: status,
       ),
   ScheduleGetWorkOrderState: (viewModel, status) => ScheduleGetWorkOrderState(
+        viewModel: viewModel,
+        status: status,
+      ),
+  ScheduleCreateWorkOrderState: (viewModel, status) =>
+      ScheduleCreateWorkOrderState(
         viewModel: viewModel,
         status: status,
       ),

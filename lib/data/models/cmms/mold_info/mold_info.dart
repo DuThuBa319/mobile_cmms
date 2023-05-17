@@ -7,16 +7,11 @@ part 'mold_info.g.dart';
 @JsonSerializable(explicitToJson: true)
 // ignore: must_be_immutable
 class MoldInfo {
-  int? cavity;
   List<Product>? products;
-  String? documentLink;
-  List<String>? images;
+
   Standard? standard;
 
   MoldInfo({
-    this.cavity,
-    this.documentLink,
-    this.images,
     this.products,
     this.standard,
   });

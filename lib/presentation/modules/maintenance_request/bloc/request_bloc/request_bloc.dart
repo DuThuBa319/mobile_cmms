@@ -1,20 +1,25 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
-
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
 
 import '../../../../../common/services/firebase/firebase_storage_service.dart';
+import '../../../../../data/models/cmms/cmms_enum.dart';
+import '../../../../../data/models/cmms/maintenance_response/maintenance_request.dart';
 import '../../../../base/base.dart';
 import '../../../../base/state_base/bloc_status_state.dart';
+import '../../repository/maintenance_request_repository.dart';
 
 part 'request_event.dart';
 part 'request_state.dart';
 
 @injectable
 class RequestBloc extends AppBlocBase<RequestEvent, RequestState> {
-  RequestBloc() : super(RequestInitialState()) {
+  final MaintenanceRequestRepository _repository;
+  RequestBloc(this._repository) : super(RequestInitialState()) {
     on<MakeRequestEvent>(_onMakeRequest);
   }
 
@@ -29,14 +34,28 @@ class RequestBloc extends AppBlocBase<RequestEvent, RequestState> {
       ),
     );
     try {
-      if (event.imageFiles != null) await upLoadFile(event.imageFiles!);
-      if (event.audioFiles != null)
-        await upLoadFile(event.audioFiles!, type: 'audio/mpeg');
+      // if (event.imageFiles != null) await upLoadFile(event.imageFiles!);
+      // if (event.audioFiles != null) {
+      //   await upLoadFile(event.audioFiles!, type: 'audio/mpeg');
+      // }
       // final newViewModel = state.viewModel.copyWith(allFiles: temp);
+      final request = MaintenanceRequest(
+        problem: event.problem,
+        requestedPriority: event.priority,
+        // requestedCompletionDate: event.requestedCompletionDate,
+        type: event.type,
+        equipment: event.equipmentCode,
+        maintenanceObject: MaintenanceObject.equipment,
+        requester: event.requestorCode,
+        status: RequestStatus.submitted,
+      );
+      final isSuccess = await _repository.createMaintenanceRequest(
+        maintenanceRequest: request,
+      );
       emit(
         state.copyWith(
           status: BlocStatusState.success,
-          //viewModel: newViewModel,
+          viewModel: state.viewModel,
         ),
       );
     } catch (exception) {
@@ -45,13 +64,26 @@ class RequestBloc extends AppBlocBase<RequestEvent, RequestState> {
   }
 
   Future<void> upLoadFile(
-    List<File> Files, {
+    List<File> files, {
     String type = 'image/jpeg',
   }) async {
+    CloudStorageResult? result;
     final uploadResults = <CloudStorageResult>[];
-    for (final file in Files) {
-      final result =
-          await FirebaseStorageService.uploadFile(file: file, type: type);
+    for (var i = 0; i < files.length; i++) {
+      if (type == 'image/jpeg') {
+        final dir = (await getApplicationDocumentsDirectory()).path;
+        //String dir = path.dirname(file.path);
+        final newPath = path.join(
+          dir,
+          'image $i.jpg',
+        );
+        final f = await File(files[i].path).copy(newPath);
+        result = await FirebaseStorageService.uploadFile(file: f, type: type);
+      } else {
+        result =
+            await FirebaseStorageService.uploadFile(file: files[i], type: type);
+      }
+
       uploadResults.add(result!);
     }
   }

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
@@ -32,7 +33,7 @@ class ImagePickerBloc extends AppBlocBase<ImagePickerEvent, ImagePickerState> {
     try {
       final temp = state.viewModel.imageFiles ?? <File>[];
       final imageFile = await selectFile(event.source ?? ImageSource.gallery);
-      temp.add(imageFile!);
+      temp.addAll(imageFile!);
       final newViewModel = state.viewModel.copyWith(imageFiles: temp);
       emit(
         state.copyWith(
@@ -101,12 +102,26 @@ class ImagePickerBloc extends AppBlocBase<ImagePickerEvent, ImagePickerState> {
   }
 }
 
-Future<File?> selectFile(ImageSource source) async {
-  final pickedFile = await ImagePicker().pickImage(
-    source: source,
-  );
-  if (pickedFile != null) {
-    return File(pickedFile.path);
+Future<List<File>?> selectFile(ImageSource source) async {
+  final files = <File>[];
+  if (source == ImageSource.camera) {
+    final pickedFile = await ImagePicker().pickImage(
+      source: source,
+    );
+    if (pickedFile != null) {
+      files.add(File(pickedFile.path));
+      return files;
+    }
+  }
+  if (source == ImageSource.gallery) {
+    final pickedFiles =
+        await FilePicker.platform.pickFiles(allowMultiple: true);
+    for (final file in pickedFiles!.files) {
+      if (file.extension == 'jpg' || file.extension == 'png') {
+        files.add(File(file.path!));
+      }
+    }
+    return files;
   }
   return null;
 }

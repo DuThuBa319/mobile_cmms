@@ -6,6 +6,7 @@ class Env {
   static const appName = 'appname';
   static const baseApiLayer = 'baseApiLayer';
   static const mockApiLayer = 'mockApiLayer';
+  static const cmmsApiLayer = 'cmmsApiLayer';
   static const baseGraphQLUrl = 'baseGraphQLUrl';
   static const onesignalAppID = 'onesignalAppID';
 
@@ -19,6 +20,7 @@ class Env {
     appName: 'Daikin Keeper Dev',
     baseApiLayer: 'https://api.open-meteo.com/v1/',
     mockApiLayer: 'https://my.api.mockaroo.com/',
+    cmmsApiLayer: 'https://chacmmswebapp.azurewebsites.net/api/',
     baseGraphQLUrl: 'https://dev-data-app.daikin.com.vn:8082/v1/graphql',
     onesignalAppID: '',
   };

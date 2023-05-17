@@ -7,6 +7,7 @@ part of 'product.dart';
 // **************************************************************************
 
 Product _$ProductFromJson(Map<String, dynamic> json) => Product(
+      id: json['id'] as String?,
       code: json['code'] as String?,
       name: json['name'] as String?,
       quantity: (json['quantity'] as num?)?.toDouble(),
@@ -21,6 +22,7 @@ Map<String, dynamic> _$ProductToJson(Product instance) {
     }
   }
 
+  writeNotNull('id', instance.id);
   writeNotNull('code', instance.code);
   writeNotNull('name', instance.name);
   writeNotNull('quantity', instance.quantity);

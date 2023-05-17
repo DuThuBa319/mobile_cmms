@@ -37,21 +37,23 @@ class CheckboxWithTitle extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: 24,
-                width: 24,
+                height: 40,
+                width: 40,
                 child: Checkbox(
                   value: value,
                   onChanged: onChanged,
                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 ),
               ),
-              const SizedBox(width: 5),
+              const SizedBox(width: 30),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 1),
+                  padding: const EdgeInsets.only(top: 5),
                   child: Text(
+                    textAlign: TextAlign.start,
                     title,
-                    style: textTheme.bodyText1?.copyWith(height: 1.4),
+                    style: textTheme.bodyText1
+                        ?.copyWith(height: 1.4, fontSize: 20),
                   ),
                 ),
               ),

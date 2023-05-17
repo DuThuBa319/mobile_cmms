@@ -31,16 +31,15 @@ extension ScheduleAction on _ScheduleState {
   }
 
   void setDate(DateTime? setDate) {
-    setState(() {
-      currentDate = setDate ?? DateTime.now();
-      strDate = DateFormat('dd/MM/yyyy').format(currentDate);
-    });
+    currentDate = setDate ?? DateTime.now();
+    strDate = DateFormat('dd/MM/yyyy').format(currentDate);
+
     onGetWorkOrder();
   }
 
   Future<void> onGetWorkOrder() async {
     bloc.add(
-      GetWorkOrderEvent(
+      GetListMaintenanceResponsesEvent(
         dateRequest: strDate,
         maintenanceTypeRequest:
             isCorrectiveMaintenance ? 'Khắc phục' : 'Đã lên lịch',

@@ -20,4 +20,17 @@ class ScheduleUsecaseImpl extends ScheduleUsecase {
     );
     return scheduleEntity;
   }
+
+  @override
+  Future<List<MaintenanceResponseEntity>?> getListMaintenanceResponse() async {
+    final responses = await _repository.getListMaintenanceResponses();
+
+    var responseEntities = <MaintenanceResponseEntity>[];
+    for (final response in responses) {
+      responseEntities =
+          response.getListMaintenanceResponseEntity(list: responseEntities);
+    }
+
+    return responseEntities;
+  }
 }
