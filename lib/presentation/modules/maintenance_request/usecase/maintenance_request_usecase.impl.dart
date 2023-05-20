@@ -39,7 +39,7 @@ class MaintenanceRequestUsecaseImpl extends MaintenanceRequestUsecase {
 
     var responseEntities = <CauseEntity>[];
     for (final response in responses) {
-      responseEntities = response.getListCauseEntity(list: responseEntities);
+      responseEntities.add(response.getCauseEntity());
     }
 
     return responseEntities;

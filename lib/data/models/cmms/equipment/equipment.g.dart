@@ -29,9 +29,6 @@ Equipment _$EquipmentFromJson(Map<String, dynamic> json) => Equipment(
       material: (json['material'] as List<dynamic>?)
           ?.map((e) => EquipmentMaterial.fromJson(e as Map<String, dynamic>))
           .toList(),
-      scheduleWorkingTimes: (json['scheduleWorkingTimes'] as List<dynamic>?)
-          ?.map((e) => WorkingTime.fromJson(e as Map<String, dynamic>))
-          .toList(),
       type: $enumDecodeNullable(_$EquipmentTypeEnumMap, json['type']),
     );
 
@@ -55,8 +52,6 @@ Map<String, dynamic> _$EquipmentToJson(Equipment instance) {
       instance.recentMaintenanceWorkOrder?.toJson());
   writeNotNull('errors', instance.errors?.map((e) => e.toJson()).toList());
   writeNotNull('material', instance.material?.map((e) => e.toJson()).toList());
-  writeNotNull('scheduleWorkingTimes',
-      instance.scheduleWorkingTimes?.map((e) => e.toJson()).toList());
   return val;
 }
 

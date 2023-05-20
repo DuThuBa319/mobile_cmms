@@ -138,6 +138,74 @@ class MaintenanceResponseEntity {
     }
   }
 
+  Widget get taskIcon {
+    if (type == MaintenanceType.preventiveInspection) {
+      return const Icon(
+        Icons.description,
+        size: 18,
+        color: Colors.black,
+      );
+    }
+    if (maintenanceObject == MaintenanceObject.equipment) {
+      return const Icon(
+        Icons.build,
+        size: 18,
+        color: Colors.black,
+      );
+    } else {
+      return const Icon(
+        Icons.invert_colors,
+        size: 18,
+        color: Colors.black,
+      );
+    }
+  }
+
+  String get updatedDate {
+    updatedAt = DateTime.utc(
+      updatedAt!.year,
+      updatedAt!.month,
+      updatedAt!.day,
+      updatedAt!.hour,
+      updatedAt!.minute,
+      updatedAt!.second,
+    );
+
+    return DateFormat('HH:mm dd/MM/yyyy').format(updatedAt!.toLocal());
+  }
+
+  String get actualStartDate {
+    if (actualStartTime != null) {
+      actualStartTime = DateTime.utc(
+        actualStartTime!.year,
+        actualStartTime!.month,
+        actualStartTime!.day,
+        actualStartTime!.hour,
+        actualStartTime!.minute,
+        actualStartTime!.second,
+      );
+      return DateFormat('HH:mm dd/MM/yyyy').format(actualStartTime!.toLocal());
+    } else {
+      return '--';
+    }
+  }
+
+  String get actualFinishDate {
+    if (actualFinishTime != null) {
+      actualFinishTime = DateTime.utc(
+        actualFinishTime!.year,
+        actualFinishTime!.month,
+        actualFinishTime!.day,
+        actualFinishTime!.hour,
+        actualFinishTime!.minute,
+        actualFinishTime!.second,
+      );
+      return DateFormat('HH:mm dd/MM/yyyy').format(actualFinishTime!.toLocal());
+    } else {
+      return '--';
+    }
+  }
+
   String get searchDate {
     return DateFormat('dd/MM/yyyy').format(updatedAt!);
   }

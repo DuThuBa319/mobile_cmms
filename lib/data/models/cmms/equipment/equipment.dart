@@ -6,7 +6,6 @@ import '../cmms_enum.dart';
 import '../equipment_material.dart';
 import '../maintenance_response/maintenance_response.dart';
 
-import '../working_time.dart';
 import 'performance_index.dart';
 
 part 'equipment.g.dart';
@@ -26,7 +25,7 @@ class Equipment {
   MaintenanceResponse? recentMaintenanceWorkOrder;
   List<ChartObj>? errors;
   List<EquipmentMaterial>? material;
-  List<WorkingTime>? scheduleWorkingTimes;
+  //List<WorkingTime>? scheduleWorkingTimes;
   Equipment({
     this.id,
     this.name,
@@ -38,7 +37,7 @@ class Equipment {
     // this.status,
     this.errors,
     this.material,
-    this.scheduleWorkingTimes,
+    //  this.scheduleWorkingTimes,
     this.type,
   });
 

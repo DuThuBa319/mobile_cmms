@@ -70,9 +70,7 @@ class MaintenanceResponse {
     this.type,
   });
 
-  List<MaintenanceResponseEntity> getListMaintenanceResponseEntity({
-    required List<MaintenanceResponseEntity> list,
-  }) {
+  MaintenanceResponseEntity getMaintenanceResponseEntity() {
     final result = MaintenanceResponseEntity(
       actualFinishTime: actualFinishTime,
       actualStartTime: actualStartTime,
@@ -100,9 +98,8 @@ class MaintenanceResponse {
       sounds: sounds,
       type: type,
     );
-    list.add(result);
 
-    return list;
+    return result;
   }
 
   factory MaintenanceResponse.fromJson(Map<String, dynamic> json) =>

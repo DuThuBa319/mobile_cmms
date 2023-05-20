@@ -1,24 +1,26 @@
 import 'dart:io';
 
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+
 import '../../../../data/models/cmms/cmms_enum.dart';
 import '../../../../domain/entities/cmms/cause_entity.dart';
 import '../../../base/base.dart';
 import '../../../base/state_base/bloc_status_state.dart';
 import '../../../common_widget/date_picker/cupertino_date_picker_custom.dart';
 import '../../../common_widget/dropdown/dropdown_widget.dart';
+import '../../../custom/audio_picker/audio_picker_bloc/audio_picker_bloc.dart';
 import '../../../custom/audio_picker/audio_picker_widget.dart';
+import '../../../custom/image_picker/image_picker_bloc/image_picker_bloc.dart';
 import '../../../custom/image_picker/image_picker_widget.dart';
+import '../../../custom/select_info_screen/bloc/select_info_bloc.dart';
+import '../../../custom/select_info_screen/view/select_info_screen.dart';
 import '../../../theme/theme_color.dart';
-import '../bloc/audio_picker_bloc/audio_picker_bloc.dart';
 import '../bloc/get_detail_bloc/get_request_info_bloc.dart';
-import '../bloc/image_picker_bloc/image_picker_bloc.dart';
 import '../bloc/request_bloc/request_bloc.dart';
-import '../maintenance_request_route.dart';
 import 'maintenance_request_screen.dart';
-import 'select_info_screen.dart';
 
 part 'maintenance_request_screen.action.dart';
 
@@ -39,31 +41,26 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
   String? requestorId;
   String? equipmentCode;
   List<String> equipmentCodeSelection = const ['<Chọn mã thiết bị>'];
-
   List<String> nullItems = const ['--'];
-
   List<String> equipment = const ['Máy ép nhỏ', 'Máy ép lớn'];
-
   List<int> prioritySelection = const [1, 2, 3, 4];
-
   List<String> maintenanceTypeSelection = const [
     'Khắc phục',
     'Phòng ngừa',
     'Dự đoán'
   ];
-
   List<String> employee = const [
     '<Chọn KTV>',
   ];
+  @override
+  ImagePickerBloc get imageBloc => BlocProvider.of(context);
 
   @override
-  ImagePickerBloc get bloc => BlocProvider.of(context);
-
-  RequestBloc get requestBloc => BlocProvider.of(context);
+  RequestBloc get bloc => BlocProvider.of(context);
 
   AudioPickerBloc get audioBloc => BlocProvider.of(context);
   GetRequestInfoBloc get requestInfoBloc => BlocProvider.of(context);
-
+  SelectInfoBloc get selectInfoBloc => BlocProvider.of(context);
   @override
   Widget buildBase(BuildContext context) {
     final bodyTextStyle =
@@ -191,7 +188,10 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(4),
-                              border: Border.all(),
+                              border: Border.all(
+                                color: AppColor.gray767676,
+                                width: 1,
+                              ),
                             ),
                             child: Row(
                               children: [
@@ -203,34 +203,43 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                                           currentDate,
                                     ),
                                     textAlign: TextAlign.center,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w500,
+                                      color: check
+                                          ? Colors.black
+                                          : AppColor.gray767676,
                                     ),
                                   ),
                                 ),
                                 IconButton(
                                   padding: const EdgeInsets.only(bottom: 3),
                                   onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          content: const Text('Chọn thời gian'),
-                                          actions: [
-                                            CupertinoDatePickerCustom(
-                                              initialDateTime: currentDate,
-                                              onCancelled: null,
-                                              onComfirmed: setDate,
-                                            )
-                                          ],
-                                        );
-                                      },
-                                    );
+                                    if (check) {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            content:
+                                                const Text('Chọn thời gian'),
+                                            actions: [
+                                              CupertinoDatePickerCustom(
+                                                initialDateTime: currentDate,
+                                                onCancelled: null,
+                                                onComfirmed: setDate,
+                                              )
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    }
                                   },
-                                  icon: const Icon(
+                                  icon: Icon(
                                     Icons.calendar_month,
                                     size: 30,
+                                    color: check
+                                        ? Colors.black
+                                        : AppColor.gray767676,
                                   ),
                                 )
                               ],
@@ -290,50 +299,9 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                   const Text(
                     'Nguyên nhân',
                   ),
-                  Container(
-                    width: 387,
-                    height: 50,
-                    margin: const EdgeInsets.only(bottom: 17, top: 10),
-                    padding: const EdgeInsets.fromLTRB(12, 9, 16, 10),
-                    decoration: BoxDecoration(
-                      border:
-                          Border.all(color: AppColor.gray767676, width: 0.5),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: GestureDetector(
-                      onTap: () async {
-                        requestInfoBloc.add(
-                          ReceiveCauseEvent(
-                            listCauseEntity: await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    BlocProvider<GetRequestInfoBloc>(
-                                  create: (context) =>
-                                      RequestRoute.getIt<GetRequestInfoBloc>(),
-                                  child: const SelectInfoScreen(
-                                    title: 'Chọn nguyên nhân',
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          itemBuilder1(
-                            textCause(list: state.viewModel.listCausesSelected),
-                          ),
-                          const Icon(
-                            Icons.keyboard_arrow_right,
-                            color: AppColor.gray767676,
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
+                  check
+                      ? selectionDropdown(context, state)
+                      : disableSelectionDropdown(context, state),
                   const Text(
                     'Ghi chú mô tả',
                   ),
@@ -348,6 +316,7 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: TextField(
+                      enabled: check,
                       controller: descriptionTextController,
                       // Text('Sản phẩm ép ra bị giáp mí nặng, có dấu hiệu sản phẩm dơ do mỡ bò bị tràn ra ngoài')
                       style: Theme.of(context)
@@ -359,13 +328,15 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                   const Text(
                     'Hình ảnh mô tả: ',
                   ),
-                  ImagePickerGridView(
-                    bloc: bloc,
-                  ),
+                  check
+                      ? ImagePickerGridView(
+                          bloc: imageBloc,
+                        )
+                      : disableImagePicker(),
                   const Text(
                     'Ghi âm mô tả: ',
                   ),
-                  AudioListView(bloc: audioBloc),
+                  check ? AudioListView(bloc: audioBloc) : disableAudioPicker(),
                   const SizedBox(
                     height: 30,
                   ),
@@ -374,32 +345,34 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                     listener: _requestBlocListener,
                     child: Container(
                       decoration: BoxDecoration(
-                        color: AppColor.greyD9,
+                        color: check ? AppColor.blue0089D7 : AppColor.greyD9,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       width: 360,
                       height: 70,
                       child: TextButton(
                         onPressed: () {
-                          final temp = <File>[];
-                          if (audioBloc.state.viewModel.audioFiles != null) {
-                            for (final fileInfo
-                                in audioBloc.state.viewModel.audioFiles!) {
-                              temp.add(fileInfo.file!);
+                          if (check) {
+                            final temp = <File>[];
+                            if (audioBloc.state.viewModel.audioFiles != null) {
+                              for (final fileInfo
+                                  in audioBloc.state.viewModel.audioFiles!) {
+                                temp.add(fileInfo.file!);
+                              }
                             }
+                            bloc.add(
+                              MakeRequestEvent(
+                                // imageFiles: bloc.state.viewModel.imageFiles,
+                                // audioFiles: temp,
+                                priority: priority,
+                                problem: descriptionTextController.text,
+                                requestedCompletionDate: currentDate,
+                                type: maintenanceType,
+                                equipmentCode: equipmentCode,
+                                requestorCode: requestorId,
+                              ),
+                            );
                           }
-                          requestBloc.add(
-                            MakeRequestEvent(
-                              // imageFiles: bloc.state.viewModel.imageFiles,
-                              // audioFiles: temp,
-                              priority: priority,
-                              problem: descriptionTextController.text,
-                              // requestedCompletionDate: currentDate,
-                              type: maintenanceType,
-                              equipmentCode: equipmentCode,
-                              requestorCode: requestorId,
-                            ),
-                          );
                         },
                         child: Text(
                           'Tạo yêu cầu',
@@ -418,6 +391,49 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
           ),
         );
       },
+    );
+  }
+
+  Widget selectionDropdown(BuildContext context, GetRequestInfoState state) {
+    return Container(
+      width: 387,
+      height: 50,
+      margin: const EdgeInsets.only(bottom: 17, top: 10),
+      padding: const EdgeInsets.fromLTRB(12, 9, 16, 10),
+      decoration: BoxDecoration(
+        border: Border.all(color: AppColor.gray767676, width: 0.5),
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: GestureDetector(
+        onTap: () async {
+          requestInfoBloc.add(
+            ReceiveCauseEvent(
+              listCauseEntity: await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SelectInfoScreen(
+                    title: 'Chọn nguyên nhân',
+                    bloc: selectInfoBloc,
+                    selectedInfos: state.viewModel.listCausesSelected,
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            itemBuilder1(
+              textCause(list: state.viewModel.listCausesSelected),
+            ),
+            const Icon(
+              Icons.keyboard_arrow_right,
+              color: AppColor.gray767676,
+            )
+          ],
+        ),
+      ),
     );
   }
 
@@ -483,6 +499,82 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
             .textTheme
             .headline4
             ?.copyWith(color: AppColor.graybebebe, fontSize: 12),
+      ),
+    );
+  }
+
+  Widget disableSelectionDropdown(
+    BuildContext context,
+    GetRequestInfoState state,
+  ) {
+    return Container(
+      width: 378,
+      height: 50,
+      margin: const EdgeInsets.only(bottom: 17, top: 10),
+      padding: const EdgeInsets.fromLTRB(12, 9, 16, 10),
+      decoration: BoxDecoration(
+        border: Border.all(color: AppColor.gray767676, width: 0.5),
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 0.0),
+            child: Text(
+              textCause(list: state.viewModel.listCausesSelected)!,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText2
+                  ?.copyWith(color: AppColor.gray767676),
+            ),
+          ),
+          const Icon(
+            Icons.keyboard_arrow_right,
+            color: AppColor.gray767676,
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget disableImagePicker() {
+    return Container(
+      padding: const EdgeInsets.only(top: 10, bottom: 10),
+      child: DottedBorder(
+        color: AppColor.gray767676,
+        strokeWidth: 1.5,
+        dashPattern: const [
+          2,
+          2,
+        ],
+        radius: const Radius.circular(4),
+        child: Container(
+          width: 67,
+          height: 67,
+          child: const Icon(
+            Icons.add,
+            color: AppColor.gray767676,
+            size: 40,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget disableAudioPicker() {
+    return Container(
+      margin: const EdgeInsets.only(top: 10, bottom: 20),
+      width: 50,
+      height: 50,
+      decoration: BoxDecoration(
+        border: Border.all(color: AppColor.gray767676),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: const Icon(
+        Icons.add,
+        color: AppColor.gray767676,
+        size: 25,
       ),
     );
   }

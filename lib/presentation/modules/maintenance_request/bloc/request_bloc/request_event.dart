@@ -7,7 +7,7 @@ class MakeRequestEvent extends RequestEvent {
   MakeRequestEvent({
     this.priority,
     this.problem,
-    //this.requestedCompletionDate,
+    this.requestedCompletionDate,
     this.type,
     this.equipmentCode,
     this.maintenanceObject = MaintenanceObject.equipment,
@@ -16,7 +16,7 @@ class MakeRequestEvent extends RequestEvent {
   });
   // List<File>? imageFiles;
   // List<File>? audioFiles;
-  //DateTime? requestedCompletionDate;
+  DateTime? requestedCompletionDate;
   String? problem;
   MaintenanceType? type;
   int? priority;

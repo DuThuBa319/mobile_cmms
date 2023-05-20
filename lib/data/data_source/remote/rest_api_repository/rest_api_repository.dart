@@ -1,11 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
+import '../../../models/cmms/correction.dart';
 import '../../../models/cmms/equipment/equipment.dart';
 import '../../../models/cmms/maintenance_response/cause.dart';
 import '../../../models/cmms/maintenance_response/employee.dart';
-import '../../../models/cmms/maintenance_response/maintenance_request.dart';
 import '../../../models/cmms/maintenance_response/maintenance_response.dart';
+import '../../../models/cmms/maintenance_response/maintenance_response_item.dart';
+import '../../../models/cmms/post/create_request.dart';
+import '../../../models/cmms/put/update_response.dart';
 import '../../../models/example/weather_model.dart';
 import '../../../models/example_temp_humid/temperature_model.dart';
 import '../../../models/mock_work_order/work_order_model.dart';
@@ -58,7 +61,7 @@ abstract class RestCmmsApiRepository {
   @GET('MaintenanceResponses')
   Future<List<MaintenanceResponse>> getListMaintenanceResponses();
   @GET('MaintenanceResponses/{maintenanceResponseId}')
-  Future<MaintenanceResponse> getMaintenanceResponse(
+  Future<MaintenanceResponseItem> getMaintenanceResponse(
     @Path('maintenanceResponseId') String maintenanceResponseId,
   );
   @GET('Equipments')
@@ -67,8 +70,20 @@ abstract class RestCmmsApiRepository {
   Future<List<Employee>> getListEmployees();
   @GET('Causes')
   Future<List<Cause>> getListCauses();
+  @GET('Corrections')
+  Future<List<Correction>> getListCorrections();
   @POST('MaintenanceRequests')
   Future<bool> createMaintenanceRequest(
-    @Body() MaintenanceRequest maintenanceRequest,
+    @Body() CreateRequest createRequest,
+  );
+  // @PUT('MaintenanceResponses/{maintenanceResponseId}')
+  // Future<void> updateMaintenanceResponse(
+  //   @Path('maintenanceResponseId') String maintenanceResponseId,
+  //   @Body() MaintenanceResponseItem maintenanceResponseItem,
+  // );
+  @PUT('MaintenanceResponses/{maintenanceResponseId}')
+  Future<void> updateMaintenanceResponse(
+    @Path('maintenanceResponseId') String maintenanceResponseId,
+    @Body() UpdateResponse updateResponse,
   );
 }

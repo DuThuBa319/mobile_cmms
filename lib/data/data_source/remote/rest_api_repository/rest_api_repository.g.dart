@@ -225,14 +225,14 @@ class _RestCmmsApiRepository implements RestCmmsApiRepository {
   }
 
   @override
-  Future<MaintenanceResponse> getMaintenanceResponse(
+  Future<MaintenanceResponseItem> getMaintenanceResponse(
       maintenanceResponseId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<MaintenanceResponse>(Options(
+        _setStreamType<MaintenanceResponseItem>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -244,7 +244,7 @@ class _RestCmmsApiRepository implements RestCmmsApiRepository {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = MaintenanceResponse.fromJson(_result.data!);
+    final value = MaintenanceResponseItem.fromJson(_result.data!);
     return value;
   }
 
@@ -324,12 +324,37 @@ class _RestCmmsApiRepository implements RestCmmsApiRepository {
   }
 
   @override
-  Future<bool> createMaintenanceRequest(maintenanceRequest) async {
+  Future<List<Correction>> getListCorrections() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(maintenanceRequest.toJson());
+    final _result = await _dio
+        .fetch<List<dynamic>>(_setStreamType<List<Correction>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'Corrections',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    var value = _result.data!
+        .map((dynamic i) => Correction.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return value;
+  }
+
+  @override
+  Future<bool> createMaintenanceRequest(createRequest) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(createRequest.toJson());
     final _result = await _dio.fetch<bool>(_setStreamType<bool>(Options(
       method: 'POST',
       headers: _headers,
@@ -344,6 +369,31 @@ class _RestCmmsApiRepository implements RestCmmsApiRepository {
         .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = _result.data!;
     return value;
+  }
+
+  @override
+  Future<void> updateMaintenanceResponse(
+    maintenanceResponseId,
+    updateResponse,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(updateResponse.toJson());
+    await _dio.fetch<void>(_setStreamType<void>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'MaintenanceResponses/${maintenanceResponseId}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    return null;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

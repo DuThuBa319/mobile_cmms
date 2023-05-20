@@ -25,15 +25,13 @@ class Cause {
     //   this.maintenanceObject,
   });
 
-  List<CauseEntity> getListCauseEntity({
-    required List<CauseEntity> list,
-  }) {
+  CauseEntity getCauseEntity() {
     final result = CauseEntity(
       causeName: name,
+      causeId: id,
     );
-    list.add(result);
 
-    return list;
+    return result;
   }
 
   factory Cause.fromJson(Map<String, dynamic> json) => _$CauseFromJson(json);

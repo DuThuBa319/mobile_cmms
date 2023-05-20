@@ -17,15 +17,6 @@ class GetEquipmentNameEvent extends GetRequestInfoEvent {
 
 class GetEmployeesEvent extends GetRequestInfoEvent {}
 
-class GetCausesEvent extends GetRequestInfoEvent {}
-
-class SelectCauseEvent extends GetRequestInfoEvent {
-  SelectCauseEvent({this.index});
-  final int? index;
-}
-
-class ResponseCausesEvent extends GetRequestInfoEvent {}
-
 class ChangeDateEvent extends GetRequestInfoEvent {
   ChangeDateEvent({this.selectedDate});
   final DateTime? selectedDate;

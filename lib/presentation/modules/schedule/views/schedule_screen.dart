@@ -181,24 +181,45 @@ class _ScheduleState extends StateBase<ScheduleScreen> {
                   }
                   if (state is ScheduleGetWorkOrderState &&
                       state.status == BlocStatusState.failure) {
-                    return Text(
-                      'Xảy ra lỗi khi tải dữ liệu',
-                      style: Theme.of(context)
-                          .textTheme
-                          .caption
-                          ?.copyWith(color: Colors.red),
+                    return Center(
+                      child: Column(
+                        children: [
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          Text(
+                            'Xảy ra lỗi khi tải dữ liệu',
+                            style: Theme.of(context)
+                                .textTheme
+                                .caption
+                                ?.copyWith(color: Colors.red),
+                          ),
+                          IconButton(
+                            onPressed: _onRefresh,
+                            icon: const Icon(Icons.refresh),
+                          )
+                        ],
+                      ),
                     );
                   }
                   if (state is ScheduleGetWorkOrderState &&
                       state.status == BlocStatusState.success &&
                       state.viewModel.responses?.isEmpty == true) {
                     return Center(
-                      child: Text(
-                        'Ngày này không có dữ liệu',
-                        style: Theme.of(context)
-                            .textTheme
-                            .caption
-                            ?.copyWith(color: Colors.red),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Ngày này không có dữ liệu',
+                            style: Theme.of(context)
+                                .textTheme
+                                .caption
+                                ?.copyWith(color: Colors.red),
+                          ),
+                          IconButton(
+                            onPressed: _onRefresh,
+                            icon: const Icon(Icons.refresh),
+                          )
+                        ],
                       ),
                     );
                   }

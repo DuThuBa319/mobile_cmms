@@ -9,8 +9,7 @@ class _ViewModel {
   final List<EquipmentEntity>? equipmentEntities;
   final List<EmployeeEntity>? employeeEntities;
   final bool? isSelected;
-  final List<CauseEntity>? causeEntities;
-  final List<bool>? isCauseSelected;
+
   final List<CauseEntity>? listCausesSelected;
   final DateTime? selectedDate;
   const _ViewModel({
@@ -20,8 +19,6 @@ class _ViewModel {
     this.isSelected,
     this.equipmentEntities,
     this.employeeEntities,
-    this.causeEntities,
-    this.isCauseSelected,
     this.listCausesSelected,
     this.selectedDate,
   });
@@ -34,8 +31,6 @@ class _ViewModel {
     List<EquipmentEntity>? equipmentEntities,
     bool? isSelected,
     List<EmployeeEntity>? employeeEntities,
-    List<CauseEntity>? causeEntities,
-    List<bool>? isCauseSelected,
     List<CauseEntity>? listCausesSelected,
     DateTime? selectedDate,
   }) {
@@ -46,8 +41,6 @@ class _ViewModel {
       isSelected: isSelected ?? this.isSelected,
       equipmentEntities: equipmentEntities ?? this.equipmentEntities,
       employeeEntities: employeeEntities ?? this.employeeEntities,
-      causeEntities: causeEntities ?? this.causeEntities,
-      isCauseSelected: isCauseSelected ?? this.isCauseSelected,
       listCausesSelected: listCausesSelected ?? this.listCausesSelected,
       selectedDate: selectedDate ?? this.selectedDate,
     );
@@ -96,13 +89,6 @@ class GetEquipmentNameState extends GetRequestInfoState {
   }) : super(viewModel, status: status);
 }
 
-class GetCausesState extends GetRequestInfoState {
-  GetCausesState({
-    _ViewModel viewModel = const _ViewModel(),
-    BlocStatusState status = BlocStatusState.initial,
-  }) : super(viewModel, status: status);
-}
-
 class GetEmployeesState extends GetRequestInfoState {
   GetEmployeesState({
     _ViewModel viewModel = const _ViewModel(),
@@ -119,13 +105,6 @@ class GetEquipmentCodeState extends GetRequestInfoState {
 
 class ChangeDateState extends GetRequestInfoState {
   ChangeDateState({
-    _ViewModel viewModel = const _ViewModel(),
-    BlocStatusState status = BlocStatusState.initial,
-  }) : super(viewModel, status: status);
-}
-
-class ResponseCausesState extends GetRequestInfoState {
-  ResponseCausesState({
     _ViewModel viewModel = const _ViewModel(),
     BlocStatusState status = BlocStatusState.initial,
   }) : super(viewModel, status: status);
@@ -152,15 +131,7 @@ final _factories = <
         viewModel: viewModel,
         status: status,
       ),
-  GetCausesState: (viewModel, status) => GetCausesState(
-        viewModel: viewModel,
-        status: status,
-      ),
   GetEquipmentCodeState: (viewModel, status) => GetEquipmentCodeState(
-        viewModel: viewModel,
-        status: status,
-      ),
-  ResponseCausesState: (viewModel, status) => ResponseCausesState(
         viewModel: viewModel,
         status: status,
       ),

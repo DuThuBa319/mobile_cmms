@@ -19,10 +19,9 @@ class GetRequestInfoBloc
   GetRequestInfoBloc(this._usecase) : super(GetRequestInfoInitialState()) {
     on<GetEquipmentCodeEvent>(_onGetEquipmentCode);
     on<GetEquipmentNameEvent>(_onGetEquipmentName);
-    on<GetCausesEvent>(_onGetCauses);
+
     on<GetEmployeesEvent>(_onGetEmployees);
-    on<SelectCauseEvent>(_onSelectCauses);
-    on<ResponseCausesEvent>(_onResponseCauses);
+
     on<ChangeDateEvent>(_onChangeDate);
     on<ReceiveCauseEvent>(_onReceiveCauses);
   }
@@ -53,6 +52,7 @@ class GetRequestInfoBloc
         equipmentName: name,
         equipmentCode: listEquipmentCode,
         equipmentEntities: listEquipmentEntities,
+        listCausesSelected: [],
       );
       emit(
         state.copyWith(
@@ -148,76 +148,6 @@ class GetRequestInfoBloc
     }
   }
 
-  Future<void> _onGetCauses(
-    GetCausesEvent event,
-    Emitter<GetRequestInfoState> emit,
-  ) async {
-    emit(
-      GetCausesState(
-        status: BlocStatusState.loading,
-        viewModel: state.viewModel,
-      ),
-    );
-    try {
-      final responses = await _usecase.getListCauses();
-
-      final newViewModel = state.viewModel.copyWith(
-        causeEntities: responses,
-        isCauseSelected: List<bool>.generate(
-          responses?.length ?? 0,
-          (index) => false,
-        ),
-        listCausesSelected: [],
-      );
-      emit(
-        state.copyWith(
-          status: BlocStatusState.success,
-          viewModel: newViewModel,
-        ),
-      );
-    } catch (exception) {
-      emit(
-        state.copyWith(
-          viewModel: state.viewModel,
-          status: BlocStatusState.failure,
-        ),
-      );
-    }
-  }
-
-  Future<void> _onSelectCauses(
-    SelectCauseEvent event,
-    Emitter<GetRequestInfoState> emit,
-  ) async {
-    emit(
-      GetCausesState(
-        status: BlocStatusState.loading,
-        viewModel: state.viewModel,
-      ),
-    );
-    try {
-      final listTemp = state.viewModel.isCauseSelected!;
-      listTemp[event.index!] = !listTemp[event.index!];
-
-      final newViewModel = state.viewModel.copyWith(
-        isCauseSelected: listTemp,
-      );
-      emit(
-        state.copyWith(
-          status: BlocStatusState.success,
-          viewModel: newViewModel,
-        ),
-      );
-    } catch (exception) {
-      emit(
-        state.copyWith(
-          viewModel: state.viewModel,
-          status: BlocStatusState.failure,
-        ),
-      );
-    }
-  }
-
   Future<void> _onChangeDate(
     ChangeDateEvent event,
     Emitter<GetRequestInfoState> emit,
@@ -231,44 +161,6 @@ class GetRequestInfoBloc
     try {
       final newViewModel = state.viewModel.copyWith(
         selectedDate: event.selectedDate,
-      );
-      emit(
-        state.copyWith(
-          status: BlocStatusState.success,
-          viewModel: newViewModel,
-        ),
-      );
-    } catch (exception) {
-      emit(
-        state.copyWith(
-          viewModel: state.viewModel,
-          status: BlocStatusState.failure,
-        ),
-      );
-    }
-  }
-
-  Future<void> _onResponseCauses(
-    ResponseCausesEvent event,
-    Emitter<GetRequestInfoState> emit,
-  ) async {
-    emit(
-      ResponseCausesState(
-        status: BlocStatusState.loading,
-        viewModel: state.viewModel,
-      ),
-    );
-    try {
-      final listTemp = state.viewModel.isCauseSelected!;
-      final responseCauses = <CauseEntity>[];
-      for (var i = 0; i < listTemp.length; i++) {
-        if (listTemp[i] == true) {
-          responseCauses.add(state.viewModel.causeEntities![i]);
-        }
-      }
-      final newViewModel = state.viewModel.copyWith(
-        isCauseSelected: listTemp,
-        listCausesSelected: responseCauses,
       );
       emit(
         state.copyWith(

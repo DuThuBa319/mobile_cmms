@@ -68,11 +68,12 @@ extension MainScreenViewAction on _MainScreenViewState {
     }
   }
 
-  void onTapWorkOrder({String? task, String? title}) {
+  void onTapWorkOrder({String? task, String? title, required String id}) {
     if (task == 'Sửa chữa') {
       goToScreen(
         RepairTaskScreen(
           title: title,
+          responseId: id,
         ),
       );
     } else if (task == 'Thay khuôn') {

@@ -33,10 +33,10 @@ class MaintenanceRequestRepositoryImpl extends MaintenanceRequestRepository {
 
   @override
   Future<bool> createMaintenanceRequest({
-    MaintenanceRequest? maintenanceRequest,
+    CreateRequest? createRequest,
   }) {
     return _requestApi.createMaintenanceRequest(
-      maintenanceRequest: maintenanceRequest,
+      createRequest: createRequest,
     );
   }
 }

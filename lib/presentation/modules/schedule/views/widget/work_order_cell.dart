@@ -28,7 +28,7 @@ class _WorkOrderCellState extends State<WorkOrderCell> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final deviceName = widget.maintenanceResponseEntity?.equipment?.name;
-    final updateTime = widget.maintenanceResponseEntity?.searchDate;
+    final updateTime = widget.maintenanceResponseEntity?.updatedDate;
     final id = widget.maintenanceResponseEntity?.id;
     return GestureDetector(
       onTap: () {
@@ -36,6 +36,7 @@ class _WorkOrderCellState extends State<WorkOrderCell> {
           goToScreen(
             RepairTaskScreen(
               title: deviceName,
+              responseId: id!,
             ),
           );
         } else if (widget.maintenanceResponseEntity?.maintenanceTask ==
@@ -60,28 +61,27 @@ class _WorkOrderCellState extends State<WorkOrderCell> {
         child: Padding(
           padding: const EdgeInsets.fromLTRB(16, 8, 12, 0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Stack(
                 children: [
-                  MenuItemView(
-                    title: deviceName ?? '--',
-                    titleSize: 20,
-                    icon: widget.taskIcon ?? const Icon(Icons.abc),
-                    divider: ItemDivider.line,
-                    padding: const EdgeInsets.only(bottom: 9),
-                    tailIcon: null,
-                    onTap: null,
+                  Padding(
+                    padding: const EdgeInsets.only(top: 3),
+                    child: MenuItemView(
+                      title: deviceName ?? '--',
+                      titleSize: 13,
+                      icon: widget.taskIcon ?? const Icon(Icons.abc),
+                      divider: ItemDivider.line,
+                      padding: const EdgeInsets.only(bottom: 9),
+                      tailIcon: null,
+                      onTap: null,
+                    ),
                   ),
                   Positioned(
                     right: 0,
-                    top: 2,
+                    top: 0,
                     child: Row(
                       children: [
-                        Text(
-                          updateTime ?? '--',
-                          style: Theme.of(context).textTheme.subtitle1,
-                        ),
                         const SizedBox(width: 15),
                         statusContainer(
                           width: 61,
@@ -98,13 +98,23 @@ class _WorkOrderCellState extends State<WorkOrderCell> {
                   )
                 ],
               ),
-              statusContainer(
-                width: 94,
-                height: 22,
-                margin: const EdgeInsets.only(bottom: 7, top: 8),
-                statusText: widget.maintenanceResponseEntity?.statusTxt ?? '--',
-                color: widget.maintenanceResponseEntity?.statusColor ??
-                    Colors.grey,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    updateTime ?? '--',
+                    style: Theme.of(context).textTheme.subtitle1,
+                  ),
+                  statusContainer(
+                    width: 94,
+                    height: 22,
+                    margin: const EdgeInsets.only(bottom: 7, top: 8),
+                    statusText:
+                        widget.maintenanceResponseEntity?.statusTxt ?? '--',
+                    color: widget.maintenanceResponseEntity?.statusColor ??
+                        Colors.grey,
+                  ),
+                ],
               ),
               DefaultTextStyle(
                 style: Theme.of(context)
@@ -127,9 +137,9 @@ class _WorkOrderCellState extends State<WorkOrderCell> {
                           Text(
                             'Thời gian: ${widget.maintenanceResponseEntity?.estProcessTime} phút',
                           ),
-                          Expanded(
+                          const Expanded(
                             child: Text(
-                              'Nguyên nhân: ${widget.maintenanceResponseEntity?.cause?[0].name}',
+                              'Nguyên nhân:',
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -144,7 +154,6 @@ class _WorkOrderCellState extends State<WorkOrderCell> {
                         Text(
                           'Mã số: ${widget.maintenanceResponseEntity?.equipment?.code}',
                         ),
-                        const Text('Kết quả: đạt'),
                       ],
                     ),
                   ],

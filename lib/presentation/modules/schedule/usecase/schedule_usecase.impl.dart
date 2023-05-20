@@ -25,10 +25,9 @@ class ScheduleUsecaseImpl extends ScheduleUsecase {
   Future<List<MaintenanceResponseEntity>?> getListMaintenanceResponse() async {
     final responses = await _repository.getListMaintenanceResponses();
 
-    var responseEntities = <MaintenanceResponseEntity>[];
-    for (final response in responses) {
-      responseEntities =
-          response.getListMaintenanceResponseEntity(list: responseEntities);
+    final responseEntities = <MaintenanceResponseEntity>[];
+    for (var response in responses) {
+      responseEntities.add(response.getMaintenanceResponseEntity());
     }
 
     return responseEntities;

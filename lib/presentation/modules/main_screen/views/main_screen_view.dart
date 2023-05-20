@@ -85,12 +85,25 @@ class _MainScreenViewState extends StateBase<MainScreenView> {
               }
               if (state is MainScreenGetResponseState &&
                   state.status == BlocStatusState.failure) {
-                return Text(
-                  'Xảy ra lỗi khi tải dữ liệu',
-                  style: Theme.of(context)
-                      .textTheme
-                      .caption
-                      ?.copyWith(color: Colors.red),
+                return Center(
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        'Xảy ra lỗi khi tải dữ liệu',
+                        style: Theme.of(context)
+                            .textTheme
+                            .caption
+                            ?.copyWith(color: Colors.red),
+                      ),
+                      IconButton(
+                        onPressed: onRefresh,
+                        icon: const Icon(Icons.refresh),
+                      )
+                    ],
+                  ),
                 );
               }
               return Expanded(
@@ -104,16 +117,17 @@ class _MainScreenViewState extends StateBase<MainScreenView> {
                       padding: EdgeInsets.zero,
                       itemCount: state.viewModel.responses?.length,
                       itemBuilder: (context, index) => InfoCard(
-                        taskIcon: taskIcon(
-                          task:
-                              state.viewModel.responses?[index].maintenanceTask,
-                        ),
+                        id: state.viewModel.responses?[index].id,
+                        taskIcon: state.viewModel.responses?[index].taskIcon,
                         equipmentName:
                             state.viewModel.responses?[index].equipment?.name ??
                                 '--',
-                        updatedTime: state.viewModel.responses?[index].updatedAt
-                                ?.toIso8601String() ??
-                            '--',
+                        // updatedTime: state.viewModel.responses?[index].updatedAt
+                        //         ?.toIso8601String() ??
+                        //     '--',
+                        updatedTime:
+                            state.viewModel.responses?[index].updatedDate ??
+                                '--',
                         task:
                             state.viewModel.responses?[index].maintenanceTask ??
                                 '--',
@@ -144,6 +158,7 @@ class _MainScreenViewState extends StateBase<MainScreenView> {
     String? task,
     String? equipmentCode,
     String? equipmentType,
+    required String? id,
   }) {
     final textStyle =
         Theme.of(context).textTheme.headline4?.copyWith(fontSize: 12);
@@ -153,7 +168,7 @@ class _MainScreenViewState extends StateBase<MainScreenView> {
       margin: const EdgeInsets.fromLTRB(24, 5, 24, 5),
       child: ListTile(
         onTap: () {
-          onTapWorkOrder(task: task, title: equipmentName);
+          onTapWorkOrder(task: task, title: equipmentName, id: id!);
         },
         horizontalTitleGap: 0, // khoang cach gia icon va tiltle
         dense: true,
@@ -173,7 +188,7 @@ class _MainScreenViewState extends StateBase<MainScreenView> {
             Row(
               children: [
                 Text(
-                  equipmentCode ?? '--',
+                  equipmentType ?? '--',
                   style: Theme.of(context)
                       .textTheme
                       .headline4

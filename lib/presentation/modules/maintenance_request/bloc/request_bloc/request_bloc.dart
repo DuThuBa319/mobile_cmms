@@ -8,7 +8,7 @@ import 'package:path_provider/path_provider.dart';
 
 import '../../../../../common/services/firebase/firebase_storage_service.dart';
 import '../../../../../data/models/cmms/cmms_enum.dart';
-import '../../../../../data/models/cmms/maintenance_response/maintenance_request.dart';
+import '../../../../../data/models/cmms/post/create_request.dart';
 import '../../../../base/base.dart';
 import '../../../../base/state_base/bloc_status_state.dart';
 import '../../repository/maintenance_request_repository.dart';
@@ -39,18 +39,20 @@ class RequestBloc extends AppBlocBase<RequestEvent, RequestState> {
       //   await upLoadFile(event.audioFiles!, type: 'audio/mpeg');
       // }
       // final newViewModel = state.viewModel.copyWith(allFiles: temp);
-      final request = MaintenanceRequest(
+      final request = CreateRequest(
         problem: event.problem,
         requestedPriority: event.priority,
-        // requestedCompletionDate: event.requestedCompletionDate,
+        requestedCompletionDate: event.requestedCompletionDate!.toUtc(),
         type: event.type,
-        equipment: event.equipmentCode,
+        equipmentCode: event.equipmentCode,
         maintenanceObject: MaintenanceObject.equipment,
         requester: event.requestorCode,
         status: RequestStatus.submitted,
+        responsiblePerson: event.requestorCode,
+        submissionDate: DateTime.now().toUtc(),
       );
       final isSuccess = await _repository.createMaintenanceRequest(
-        maintenanceRequest: request,
+        createRequest: request,
       );
       emit(
         state.copyWith(

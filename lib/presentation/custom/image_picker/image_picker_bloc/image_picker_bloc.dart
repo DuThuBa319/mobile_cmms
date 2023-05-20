@@ -6,8 +6,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
-import '../../../../base/base.dart';
-import '../../../../base/state_base/bloc_status_state.dart';
+import '../../../base/base.dart';
+import '../../../base/state_base/bloc_status_state.dart';
 
 part 'image_picker_event.dart';
 part 'image_picker_state.dart';

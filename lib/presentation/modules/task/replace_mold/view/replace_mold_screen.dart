@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../custom/audio_picker/audio_picker_bloc/audio_picker_bloc.dart';
 import '../../../../custom/custom_screen_form.dart';
-import '../../../maintenance_request/bloc/audio_picker_bloc/audio_picker_bloc.dart';
-import '../../../maintenance_request/bloc/image_picker_bloc/image_picker_bloc.dart';
+import '../../../../custom/image_picker/image_picker_bloc/image_picker_bloc.dart';
+
 import 'replace_mold_view.dart';
 
 class ReplaceMoldTaskScreen extends StatefulWidget {

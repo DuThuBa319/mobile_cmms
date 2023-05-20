@@ -2,7 +2,14 @@ import 'package:flutter/material.dart';
 
 import '../theme/theme_color.dart';
 
-Widget GeneralReportContainer({String? task}) => Container(
+Widget GeneralReportContainer({
+  String? task,
+  String? actualStartTime,
+  String? actualFinishTime,
+  String? equipmentCode,
+  int? estProcessTime,
+}) =>
+    Container(
       margin: const EdgeInsets.only(bottom: 28),
       padding: const EdgeInsets.fromLTRB(17, 10, 16, 0),
       width: 389,
@@ -39,10 +46,10 @@ Widget GeneralReportContainer({String? task}) => Container(
               children: [
                 Text(task!),
                 const Text('Máy ép'),
-                const Text('M39'),
-                const Text('16:22 16/12/2022'),
-                const Text('17:32 16/12/2022'),
-                const Text('70 phút')
+                Text(equipmentCode ?? '--'),
+                Text(actualStartTime ?? '--'),
+                Text(actualFinishTime ?? '--'),
+                Text('$estProcessTime')
               ],
             ),
           ],

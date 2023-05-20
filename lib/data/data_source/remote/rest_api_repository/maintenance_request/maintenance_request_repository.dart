@@ -1,7 +1,7 @@
-import '../../../../models/cmms/maintenance_response/maintenance_request.dart';
+import '../../../../models/cmms/post/create_request.dart';
 
 abstract class RequestRepository {
   Future<bool> createMaintenanceRequest({
-    MaintenanceRequest? maintenanceRequest,
+    CreateRequest? createRequest,
   });
 }

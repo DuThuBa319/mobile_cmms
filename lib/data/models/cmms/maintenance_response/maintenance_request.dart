@@ -1,6 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import '../cmms_enum.dart';
+import '../equipment/equipment.dart';
+import 'employee.dart';
 
 part 'maintenance_request.g.dart';
 
@@ -13,10 +15,10 @@ class MaintenanceRequest {
   // String? code;
   MaintenanceType? type;
   int? requestedPriority;
-  String? equipment;
+  Equipment? equipment;
   String? problem;
   RequestStatus? status;
-  String? requester;
+  Employee? requester;
 //  Employee? reviewer;
 //  List<String>? images;
   // List<String>? sounds;

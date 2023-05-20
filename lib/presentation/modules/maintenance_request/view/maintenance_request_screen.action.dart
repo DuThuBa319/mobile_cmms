@@ -20,14 +20,14 @@ extension MaintenanceRequestViewAction on _MaintenanceRequestViewState {
         context: context,
         builder: (BuildContext context) => Center(
           child: AlertDialog(
-            title: Text("Phản hồi"),
+            title: const Text('Phản hồi'),
             content: Text(
-              "Đã gửi dữ liệu thành công",
+              'Đã gửi dữ liệu thành công',
               style: Theme.of(context).textTheme.caption,
             ),
             actions: [
               TextButton(
-                child: Text("Thoát"),
+                child: const Text('Thoát'),
                 onPressed: () {
                   Navigator.pop(context);
                   Navigator.pop(context);
@@ -48,11 +48,11 @@ extension MaintenanceRequestViewAction on _MaintenanceRequestViewState {
         context: context,
         builder: (BuildContext context) => Center(
           child: AlertDialog(
-            title: Text("Phản hồi"),
-            content: Text("Gửi dữ liệu không thành công"),
+            title: const Text('Phản hồi'),
+            content: const Text('Gửi dữ liệu không thành công'),
             actions: [
               TextButton(
-                child: Text("Thực hiện lại"),
+                child: const Text('Thực hiện lại'),
                 onPressed: () {
                   Navigator.pop(context);
                 },
@@ -145,6 +145,9 @@ extension MaintenanceRequestViewAction on _MaintenanceRequestViewState {
 
   String? textCause({List<CauseEntity>? list}) {
     if (list == null) {
+      return '<Chọn nguyên nhân>';
+    }
+    if (list.isEmpty) {
       return '<Chọn nguyên nhân>';
     }
     if (list.length > 1) {

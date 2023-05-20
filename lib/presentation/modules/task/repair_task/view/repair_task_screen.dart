@@ -1,33 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+
 import '../../../../common_widget/export.dart';
+import '../../../../custom/audio_picker/audio_picker_bloc/audio_picker_bloc.dart';
 import '../../../../custom/custom_screen_form.dart';
-import '../../../maintenance_request/bloc/audio_picker_bloc/audio_picker_bloc.dart';
-import '../../../maintenance_request/bloc/image_picker_bloc/image_picker_bloc.dart';
+import '../../../../custom/image_picker/image_picker_bloc/image_picker_bloc.dart';
+
+import '../../../../custom/select_info_screen/bloc/select_info_bloc.dart';
+import '../bloc/repair_task_bloc.dart';
 import 'repair_task_view.dart';
 
 class RepairTaskScreen extends StatefulWidget {
-  const RepairTaskScreen({super.key, this.title});
+  const RepairTaskScreen({super.key, this.title, required this.responseId});
   final String? title;
+  final String responseId;
   @override
   State<RepairTaskScreen> createState() => _RepairTaskScreenState();
 }
 
 class _RepairTaskScreenState extends State<RepairTaskScreen> {
+  static GetIt getIt = GetIt.instance;
   @override
   Widget build(BuildContext context) {
     return CustomScreenForm(
       title: widget.title,
       child: MultiBlocProvider(
         providers: [
+          BlocProvider<RepairTaskBloc>(
+            create: (context) => getIt<RepairTaskBloc>(),
+          ),
           BlocProvider<ImagePickerBloc>(
             create: (context) => ImagePickerBloc(),
           ),
           BlocProvider<AudioPickerBloc>(
             create: (context) => AudioPickerBloc(),
+          ),
+          BlocProvider<SelectInfoBloc>(
+            create: (context) => getIt<SelectInfoBloc>(),
           )
         ],
-        child: const RepairTaskView(),
+        child: RepairTaskView(
+          responseId: widget.responseId,
+        ),
       ),
     );
   }

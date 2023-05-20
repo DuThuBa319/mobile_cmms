@@ -8,11 +8,15 @@ part of 'maintenance_request.dart';
 
 MaintenanceRequest _$MaintenanceRequestFromJson(Map<String, dynamic> json) =>
     MaintenanceRequest(
-      equipment: json['equipment'] as String?,
+      equipment: json['equipment'] == null
+          ? null
+          : Equipment.fromJson(json['equipment'] as Map<String, dynamic>),
       problem: json['problem'] as String?,
       requestedPriority: json['requestedPriority'] as int?,
       type: $enumDecodeNullable(_$MaintenanceTypeEnumMap, json['type']),
-      requester: json['requester'] as String?,
+      requester: json['requester'] == null
+          ? null
+          : Employee.fromJson(json['requester'] as Map<String, dynamic>),
       maintenanceObject: $enumDecodeNullable(
           _$MaintenanceObjectEnumMap, json['maintenanceObject']),
       status: $enumDecodeNullable(_$RequestStatusEnumMap, json['status']),
@@ -29,10 +33,10 @@ Map<String, dynamic> _$MaintenanceRequestToJson(MaintenanceRequest instance) {
 
   writeNotNull('type', _$MaintenanceTypeEnumMap[instance.type]);
   writeNotNull('requestedPriority', instance.requestedPriority);
-  writeNotNull('equipment', instance.equipment);
+  writeNotNull('equipment', instance.equipment?.toJson());
   writeNotNull('problem', instance.problem);
   writeNotNull('status', _$RequestStatusEnumMap[instance.status]);
-  writeNotNull('requester', instance.requester);
+  writeNotNull('requester', instance.requester?.toJson());
   writeNotNull('maintenanceObject',
       _$MaintenanceObjectEnumMap[instance.maintenanceObject]);
   return val;
