@@ -40,18 +40,29 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
   MaintenanceType maintenanceType = MaintenanceType.reactive;
   String? requestorId;
   String? equipmentCode;
-  List<String> equipmentCodeSelection = const ['<Chọn mã thiết bị>'];
-  List<String> nullItems = const ['--'];
-  List<String> equipment = const ['Máy ép nhỏ', 'Máy ép lớn'];
-  List<int> prioritySelection = const [1, 2, 3, 4];
-  List<String> maintenanceTypeSelection = const [
-    'Khắc phục',
-    'Phòng ngừa',
-    'Dự đoán'
-  ];
-  List<String> employee = const [
-    '<Chọn KTV>',
-  ];
+  DropdownController<String, DropdownData<String>> equipmentCodeController =
+      DropdownController<String, DropdownData<String>>(
+    value: DropdownData(value: equipmentCodeSelection[0], validation: null),
+  );
+  DropdownController<int, DropdownData<int>> priorityController =
+      DropdownController<int, DropdownData<int>>(
+    value: DropdownData(value: prioritySelection[0], validation: null),
+  );
+  DropdownController<String, DropdownData<String>> equipmentController =
+      DropdownController<String, DropdownData<String>>(
+    value: DropdownData(value: equipment[0], validation: null),
+  );
+  DropdownController<String, DropdownData<String>> maintenanceTypeController =
+      DropdownController<String, DropdownData<String>>(
+    value: DropdownData(
+      value: maintenanceTypeSelection[0],
+      validation: null,
+    ),
+  );
+  DropdownController<String, DropdownData<String>> employeeController =
+      DropdownController<String, DropdownData<String>>(
+    value: DropdownData(value: employee[0], validation: null),
+  );
   @override
   ImagePickerBloc get imageBloc => BlocProvider.of(context);
 
@@ -71,30 +82,6 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
     return BlocConsumer<GetRequestInfoBloc, GetRequestInfoState>(
       listener: _requestInfoBlocListener,
       builder: (context, state) {
-        final equipmentCodeController =
-            DropdownController<String, DropdownData<String>>(
-          value:
-              DropdownData(value: equipmentCodeSelection[0], validation: null),
-        );
-
-        final priorityController = DropdownController<int, DropdownData<int>>(
-          value: DropdownData(value: prioritySelection[0], validation: null),
-        );
-        final equipmentController =
-            DropdownController<String, DropdownData<String>>(
-          value: DropdownData(value: equipment[0], validation: null),
-        );
-        final maintenanceTypeController =
-            DropdownController<String, DropdownData<String>>(
-          value: DropdownData(
-            value: maintenanceTypeSelection[0],
-            validation: null,
-          ),
-        );
-        final employeeController =
-            DropdownController<String, DropdownData<String>>(
-          value: DropdownData(value: employee[0], validation: null),
-        );
         if (state is GetRequestInfoInitialState) {
           requestInfoBloc.add(GetEquipmentCodeEvent(type: 'Máy ép nhỏ'));
         }
@@ -395,32 +382,32 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
   }
 
   Widget selectionDropdown(BuildContext context, GetRequestInfoState state) {
-    return Container(
-      width: 387,
-      height: 50,
-      margin: const EdgeInsets.only(bottom: 17, top: 10),
-      padding: const EdgeInsets.fromLTRB(12, 9, 16, 10),
-      decoration: BoxDecoration(
-        border: Border.all(color: AppColor.gray767676, width: 0.5),
-        borderRadius: BorderRadius.circular(4),
-      ),
-      child: GestureDetector(
-        onTap: () async {
-          requestInfoBloc.add(
-            ReceiveCauseEvent(
-              listCauseEntity: await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SelectInfoScreen(
-                    title: 'Chọn nguyên nhân',
-                    bloc: selectInfoBloc,
-                    selectedInfos: state.viewModel.listCausesSelected,
-                  ),
+    return GestureDetector(
+      onTap: () async {
+        requestInfoBloc.add(
+          ReceiveCauseEvent(
+            listCauseEntity: await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SelectInfoScreen(
+                  title: 'Chọn nguyên nhân',
+                  bloc: selectInfoBloc,
+                  selectedCause: state.viewModel.listCausesSelected,
                 ),
               ),
             ),
-          );
-        },
+          ),
+        );
+      },
+      child: Container(
+        width: 387,
+        height: 50,
+        margin: const EdgeInsets.only(bottom: 17, top: 10),
+        padding: const EdgeInsets.fromLTRB(12, 9, 16, 10),
+        decoration: BoxDecoration(
+          border: Border.all(color: AppColor.gray767676, width: 0.5),
+          borderRadius: BorderRadius.circular(4),
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

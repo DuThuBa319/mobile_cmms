@@ -1,10 +1,10 @@
 class CauseEntity {
-  String? causeId;
-  String? causeName;
+  String? id;
+  String? name;
   // EquipmentType? equipmentType;
   CauseEntity({
-    this.causeName,
+    this.name,
     //  this.equipmentType,
-    this.causeId,
+    this.id,
   });
 }

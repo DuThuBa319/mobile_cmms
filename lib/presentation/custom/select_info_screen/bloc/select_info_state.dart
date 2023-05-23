@@ -3,26 +3,38 @@ part of 'select_info_bloc.dart';
 // ViewModel is used for store all properties which want to be stored, processed and updated
 
 class _ViewModel {
-  final List<dynamic>? response;
-  final List<bool>? isCauseSelected;
-  final List<dynamic>? listInfoSelected;
-
+  final List? infoResponse;
+  final List<bool>? isInfoSelected;
+  final List<CauseEntity>? listCauseSelected;
+  final List<CauseEntity>? causeResponse;
+  final List<CorrectionEntity>? listCorrectionSelected;
+  final List<CorrectionEntity>? correctionResponse;
   const _ViewModel({
-    this.response,
-    this.isCauseSelected,
-    this.listInfoSelected,
+    this.infoResponse,
+    this.isInfoSelected,
+    this.causeResponse,
+    this.listCauseSelected,
+    this.correctionResponse,
+    this.listCorrectionSelected,
   });
 
   // Using copyWith function to retains the before data and just "update some specific props" instead of "update all props"
   _ViewModel copyWith({
-    List<dynamic>? response,
-    List<bool>? isCauseSelected,
-    List<dynamic>? listInfoSelected,
+    List? infoResponse,
+    List<bool>? isInfoSelected,
+    List<CauseEntity>? listCauseSelected,
+    List<CauseEntity>? causeResponse,
+    List<CorrectionEntity>? listCorrectionSelected,
+    List<CorrectionEntity>? correctionResponse,
   }) {
     return _ViewModel(
-      response: response ?? this.response,
-      isCauseSelected: isCauseSelected ?? this.isCauseSelected,
-      listInfoSelected: listInfoSelected ?? this.listInfoSelected,
+      infoResponse: infoResponse ?? this.infoResponse,
+      isInfoSelected: isInfoSelected ?? this.isInfoSelected,
+      listCauseSelected: listCauseSelected ?? this.listCauseSelected,
+      causeResponse: causeResponse ?? this.causeResponse,
+      listCorrectionSelected:
+          listCorrectionSelected ?? this.listCorrectionSelected,
+      correctionResponse: correctionResponse ?? this.correctionResponse,
     );
   }
 }
@@ -62,8 +74,8 @@ class GetInfoState extends SelectInfoState {
   }) : super(viewModel, status: status);
 }
 
-class ResponseCausesState extends SelectInfoState {
-  ResponseCausesState({
+class ResponseInfosState extends SelectInfoState {
+  ResponseInfosState({
     _ViewModel viewModel = const _ViewModel(),
     BlocStatusState status = BlocStatusState.initial,
   }) : super(viewModel, status: status);
@@ -79,7 +91,7 @@ final _factories = <
         viewModel: viewModel,
         status: status,
       ),
-  ResponseCausesState: (viewModel, status) => ResponseCausesState(
+  ResponseInfosState: (viewModel, status) => ResponseInfosState(
         viewModel: viewModel,
         status: status,
       ),

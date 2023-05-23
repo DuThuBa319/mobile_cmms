@@ -157,8 +157,10 @@ _i1.GetIt $initGetIt(
   gh.factory<_i28.ResponseUsecase>(
       () => _i28.ResponseUsecaseImpl(gh<_i27.ResponseRepository>()));
   gh.singleton<_i29.SQLiteDatabase>(_i29.SQLiteDatabaseImpl());
-  gh.factory<_i30.SelectInfoRepository>(
-      () => _i30.SelectInfoRepositoryImpl(gh<_i9.CauseRepository>()));
+  gh.factory<_i30.SelectInfoRepository>(() => _i30.SelectInfoRepositoryImpl(
+        gh<_i9.CauseRepository>(),
+        gh<_i11.CorrectionRepository>(),
+      ));
   gh.factory<_i31.SelectInfoUsecase>(
       () => _i31.SelectInfoUsecaseImpl(gh<_i30.SelectInfoRepository>()));
   gh.factory<_i32.SplashInteractor>(() => _i32.SplashInteractorImpl());

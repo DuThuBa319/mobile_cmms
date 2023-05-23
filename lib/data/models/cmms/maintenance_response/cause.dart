@@ -27,8 +27,8 @@ class Cause {
 
   CauseEntity getCauseEntity() {
     final result = CauseEntity(
-      causeName: name,
-      causeId: id,
+      name: name,
+      id: id,
     );
 
     return result;

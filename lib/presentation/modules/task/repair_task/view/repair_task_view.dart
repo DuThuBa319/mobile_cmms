@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../data/models/cmms/cmms_enum.dart';
 import '../../../../../domain/entities/cmms/cause_entity.dart';
+import '../../../../../domain/entities/cmms/correction_entity.dart';
 import '../../../../base/base.dart';
 import '../../../../base/state_base/bloc_status_state.dart';
 import '../../../../common_widget/export.dart';
@@ -106,22 +107,24 @@ class _RepairTaskViewState extends StateBase<RepairTaskView> {
                   ),
                   state.viewModel.responseEntity?.status ==
                           MaintenanceStatus.inProgress
-                      ? selectionDropdown(context, state)
+                      ? selectionDropdown(
+                          context,
+                          state,
+                          infoType: InfoType.Cause,
+                        )
                       : disableSelectionDropdown(context, state),
                   Text(
                     'Phương án sữa chữa: ',
                     style: bodyTextStyle,
                   ),
-                  Container(
-                    width: 378,
-                    height: 36,
-                    child: DropdownWidget<String>(
-                      controller: correctionController,
-                      itemBuilder: itemBuilder,
-                      borderColor: AppColor.gray767676,
-                      items: correction,
-                    ),
-                  ),
+                  state.viewModel.responseEntity?.status ==
+                          MaintenanceStatus.inProgress
+                      ? selectionDropdown(
+                          context,
+                          state,
+                          infoType: InfoType.Correction,
+                        )
+                      : disableSelectionDropdown(context, state),
                   //-------------------------------------------------//
                   const SizedBox(height: 18),
                   Text(
@@ -220,7 +223,11 @@ class _RepairTaskViewState extends StateBase<RepairTaskView> {
                     )
                   : disableAudioPicker(),
               const SizedBox(height: 30),
-              buildButton(status: state.viewModel.responseEntity?.status),
+              buildButton(
+                context,
+                state,
+                status: state.viewModel.responseEntity?.status,
+              ),
             ],
           ),
         );
@@ -228,24 +235,44 @@ class _RepairTaskViewState extends StateBase<RepairTaskView> {
     );
   }
 
-  Widget selectionDropdown(BuildContext context, RepairTaskState state) {
+  Widget selectionDropdown(
+    BuildContext context,
+    RepairTaskState state, {
+    required InfoType infoType,
+  }) {
     return GestureDetector(
       onTap: () async {
         if (state.viewModel.responseEntity?.status ==
             MaintenanceStatus.inProgress) {
           bloc.add(
-            ReceiveCauseEvent(
-              listCauseEntity: await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SelectInfoScreen(
-                    title: 'Chọn nguyên nhân',
-                    bloc: selectInfoBloc,
-                    selectedInfos: state.viewModel.listCausesSelected,
+            infoType == InfoType.Cause
+                ? ReceiveCauseEvent(
+                    listCauseEntity: await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SelectInfoScreen(
+                          title: 'Chọn nguyên nhân',
+                          bloc: selectInfoBloc,
+                          selectedCause: state.viewModel.listCausesSelected,
+                          infoType: InfoType.Cause,
+                        ),
+                      ),
+                    ),
+                  )
+                : ReceiveCorrectionEvent(
+                    listCorrectionEntity: await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SelectInfoScreen(
+                          title: 'Chọn phương án',
+                          bloc: selectInfoBloc,
+                          selectedCorrection:
+                              state.viewModel.listCorrectionsSelected,
+                          infoType: InfoType.Correction,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
           );
         }
       },
@@ -264,7 +291,11 @@ class _RepairTaskViewState extends StateBase<RepairTaskView> {
             Padding(
               padding: const EdgeInsets.only(left: 0.0),
               child: Text(
-                textCause(list: state.viewModel.listCausesSelected)!,
+                infoType == InfoType.Cause
+                    ? textCause(list: state.viewModel.listCausesSelected)!
+                    : textCorrection(
+                        list: state.viewModel.listCorrectionsSelected,
+                      )!,
                 style: Theme.of(context)
                     .textTheme
                     .bodyText2
@@ -361,7 +392,11 @@ class _RepairTaskViewState extends StateBase<RepairTaskView> {
     );
   }
 
-  Widget buildButton({required MaintenanceStatus? status}) {
+  Widget buildButton(
+    BuildContext context,
+    RepairTaskState state, {
+    required MaintenanceStatus? status,
+  }) {
     if (status == MaintenanceStatus.assigned) {
       return Container(
         decoration: BoxDecoration(
@@ -410,42 +445,56 @@ class _RepairTaskViewState extends StateBase<RepairTaskView> {
       children: [
         Container(
           decoration: BoxDecoration(
-            color: AppColor.greyD9,
+            color: state.viewModel.isChanged
+                ? AppColor.blue0089D7
+                : AppColor.greyD9,
             borderRadius: BorderRadius.circular(8),
           ),
           width: 360,
           height: 70,
           child: TextButton(
             onPressed: () {
-              bloc.add(SaveChangeEvent());
+              state.viewModel.isChanged ? bloc.add(SaveChangeEvent()) : null;
             },
             child: Text(
               'Lưu',
-              style: Theme.of(context).textTheme.headline3?.copyWith(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500,
-                  ),
+              style: state.viewModel.isChanged
+                  ? Theme.of(context).textTheme.headline3?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      )
+                  : Theme.of(context).textTheme.headline3?.copyWith(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                      ),
             ),
           ),
         ),
         Container(
           margin: const EdgeInsets.only(top: 10, bottom: 40),
           decoration: BoxDecoration(
-            color: AppColor.blue0089D7,
+            color: state.viewModel.isChanged
+                ? AppColor.greyD9
+                : AppColor.blue0089D7,
             borderRadius: BorderRadius.circular(8),
           ),
           width: 360,
           height: 70,
           child: TextButton(
             onPressed: () {
-              bloc.add(FinishTaskEvent());
+              state.viewModel.isChanged ? null : bloc.add(FinishTaskEvent());
             },
             child: Text(
               'Kết thúc công việc',
-              style: Theme.of(context).textTheme.headline3?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
-                  ),
+              style: state.viewModel.isChanged
+                  ? Theme.of(context).textTheme.headline3?.copyWith(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                      )
+                  : Theme.of(context).textTheme.headline3?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
             ),
           ),
         )

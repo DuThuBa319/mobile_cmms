@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../domain/entities/cmms/cause_entity.dart';
+import '../../../../domain/entities/cmms/correction_entity.dart';
 import '../../../base/state_base/bloc_status_state.dart';
 import '../../../common_widget/check_box/check_box.dart';
 import '../../../common_widget/export.dart';
@@ -10,22 +11,43 @@ import '../../../theme/theme_color.dart';
 import '../../custom_screen_form.dart';
 import '../bloc/select_info_bloc.dart';
 
+enum InfoType { Cause, Correction }
+
 class SelectInfoScreen extends StatefulWidget {
   SelectInfoScreen({
     super.key,
     required this.title,
     required this.bloc,
-    this.selectedInfos,
+    this.selectedCause,
+    this.infoType,
+    this.selectedCorrection,
   });
   final String? title;
   final SelectInfoBloc? bloc;
-  final List<CauseEntity>? selectedInfos;
+  final List<CauseEntity>? selectedCause;
+  final List<CorrectionEntity>? selectedCorrection;
+  final InfoType? infoType;
   @override
   State<SelectInfoScreen> createState() => _SelectInfoScreenState();
 }
 
 class _SelectInfoScreenState extends State<SelectInfoScreen> {
-  List<String> tempCauses = [];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    widget.bloc?.add(
+      widget.infoType == InfoType.Cause
+          ? GetInfosEvent(
+              infoType: InfoType.Cause,
+              selectedCause: widget.selectedCause,
+            )
+          : GetInfosEvent(
+              infoType: InfoType.Correction,
+              selectedCorrection: widget.selectedCorrection,
+            ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,16 +56,17 @@ class _SelectInfoScreenState extends State<SelectInfoScreen> {
       child: BlocConsumer<SelectInfoBloc, SelectInfoState>(
         bloc: widget.bloc,
         listener: (context, state) {
-          if (state is ResponseCausesState &&
+          if (state is ResponseInfosState &&
               state.status == BlocStatusState.success) {
-            Navigator.pop(context, state.viewModel.listInfoSelected);
+            Navigator.pop(
+              context,
+              widget.infoType == InfoType.Cause
+                  ? state.viewModel.listCauseSelected
+                  : state.viewModel.listCorrectionSelected,
+            );
           }
         },
         builder: (context, state) {
-          if (state is SelectInfoInitialState) {
-            widget.bloc
-                ?.add(GetCausesEvent(selectedCause: widget.selectedInfos));
-          }
           if (state is GetInfoState &&
               state.status == BlocStatusState.loading) {
             return const Center(
@@ -61,18 +84,18 @@ class _SelectInfoScreenState extends State<SelectInfoScreen> {
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     padding: EdgeInsets.zero,
-                    itemCount: state.viewModel.response?.length ?? 0,
+                    itemCount: state.viewModel.infoResponse?.length ?? 0,
                     itemBuilder: (context, index) {
                       return Container(
                         decoration:
                             BoxDecoration(border: Border.all(width: 0.5)),
                         margin: const EdgeInsets.all(10),
                         child: CheckboxWithTitle(
-                          title: state.viewModel.response?[index].causeName ??
-                              '--',
-                          value: state.viewModel.isCauseSelected?[index],
+                          title:
+                              state.viewModel.infoResponse?[index].name ?? '--',
+                          value: state.viewModel.isInfoSelected?[index],
                           onChanged: (p0) {
-                            widget.bloc?.add(SelectCauseEvent(index: index));
+                            widget.bloc?.add(InfoSelectedEvent(index: index));
                           },
                         ),
                       );
@@ -89,7 +112,8 @@ class _SelectInfoScreenState extends State<SelectInfoScreen> {
                   margin: const EdgeInsets.only(top: 10, bottom: 20),
                   child: TextButton(
                     onPressed: () {
-                      widget.bloc?.add(ResponseCausesEvent());
+                      widget.bloc
+                          ?.add(ResponseInfosEvent(infoType: widget.infoType));
                     },
                     child: Text(
                       'Lưu',

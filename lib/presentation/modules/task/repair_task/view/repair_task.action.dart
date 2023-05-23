@@ -91,6 +91,19 @@ extension RepairTaskViewAction on _RepairTaskViewState {
     if (list.length > 1) {
       return 'Nhiều nguyên nhân';
     }
-    return list[0].causeName;
+    return list[0].name;
+  }
+
+  String? textCorrection({List<CorrectionEntity>? list}) {
+    if (list == null) {
+      return '<Chọn phương án>';
+    }
+    if (list.isEmpty) {
+      return '<Chọn phương án>';
+    }
+    if (list.length > 1) {
+      return 'Nhiều phương án';
+    }
+    return list[0].name;
   }
 }

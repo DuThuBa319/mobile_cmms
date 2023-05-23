@@ -33,3 +33,15 @@ DropdownController<String, DropdownData<String>> nullController =
     DropdownController<String, DropdownData<String>>(
   value: DropdownData(value: '--', validation: null),
 );
+List<String> equipmentCodeSelection = const ['<Chọn mã thiết bị>'];
+List<String> nullItems = const ['--'];
+List<String> equipment = const ['Máy ép nhỏ', 'Máy ép lớn'];
+List<int> prioritySelection = const [1, 2, 3, 4];
+List<String> maintenanceTypeSelection = const [
+  'Khắc phục',
+  'Phòng ngừa',
+  'Dự đoán'
+];
+List<String> employee = const [
+  '<Chọn KTV>',
+];

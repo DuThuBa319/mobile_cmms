@@ -6,6 +6,7 @@ import '../../../../../data/models/cmms/cmms_enum.dart';
 import '../../../../../data/models/cmms/maintenance_response/maintenance_response_item.dart';
 import '../../../../../data/models/cmms/put/update_response.dart';
 import '../../../../../domain/entities/cmms/cause_entity.dart';
+import '../../../../../domain/entities/cmms/correction_entity.dart';
 import '../../../../../domain/entities/cmms/maintenance_response_entity.dart';
 import '../../../../base/base.dart';
 import '../../../../base/state_base/bloc_status_state.dart';
@@ -27,6 +28,7 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
     on<FinishTaskEvent>(_onFinishTask);
     on<ReceiveCauseEvent>(_onReceiveCauses);
     on<SaveChangeEvent>(_onSaveChange);
+    on<ReceiveCorrectionEvent>(_onReceiveCorrections);
   }
 
   Future<void> _onGetMaintenanceResponses(
@@ -41,6 +43,7 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
     );
     try {
       final listCauseEntity = <CauseEntity>[];
+      final listCorrectionEntity = <CorrectionEntity>[];
       final response = await _repository.getMaintenanceResponse(
         responseId: event.responseId,
       );
@@ -48,6 +51,9 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
       final responseEntity = response.getMaintenanceResponseItemEntity();
       for (final item in responseEntity!.cause!) {
         listCauseEntity.add(item.getCauseEntity());
+      }
+      for (final item in responseEntity.correction!) {
+        listCorrectionEntity.add(item.getCorrectionEntity());
       }
       final update = UpdateResponse().copyWith(
         actualFinishTime: response.items?[0].actualFinishTime,
@@ -60,6 +66,8 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
         response: response,
         updateResponse: update,
         listCausesSelected: listCauseEntity,
+        listCorrectionsSelected: listCorrectionEntity,
+        isChanged: false,
       );
       emit(
         state.copyWith(
@@ -90,6 +98,7 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
       );
       final newViewModel = state.viewModel.copyWith(
         updateResponse: update,
+        isChanged: false,
       );
       await _repository.updateMaintenanceResponse(
         maintenanceResponseId: state.viewModel.responseEntity!.id!,
@@ -155,13 +164,20 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
       final listCauseId = <String>[];
       if (state.viewModel.listCausesSelected!.isNotEmpty) {
         for (final item in state.viewModel.listCausesSelected!) {
-          listCauseId.add(item.causeId!);
+          listCauseId.add(item.id!);
+        }
+      }
+      final listCorrectionId = <String>[];
+      if (state.viewModel.listCorrectionsSelected!.isNotEmpty) {
+        for (final item in state.viewModel.listCorrectionsSelected!) {
+          listCorrectionId.add(item.id!);
         }
       }
 
       final update = state.viewModel.updateResponse!.copyWith(
         updatedAt: DateTime.now().toUtc(),
         cause: listCauseId,
+        correction: listCorrectionId,
       );
       final newViewModel = state.viewModel.copyWith(
         updateResponse: update,
@@ -186,7 +202,7 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
     Emitter<RepairTaskState> emit,
   ) async {
     emit(
-      ReceiveCausesState(
+      ReceiveInfosState(
         status: BlocStatusState.loading,
         viewModel: state.viewModel,
       ),
@@ -194,6 +210,38 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
     try {
       final newViewModel = state.viewModel.copyWith(
         listCausesSelected: event.listCauseEntity,
+        isChanged: true,
+      );
+      emit(
+        state.copyWith(
+          status: BlocStatusState.success,
+          viewModel: newViewModel,
+        ),
+      );
+    } catch (exception) {
+      emit(
+        state.copyWith(
+          viewModel: state.viewModel,
+          status: BlocStatusState.failure,
+        ),
+      );
+    }
+  }
+
+  Future<void> _onReceiveCorrections(
+    ReceiveCorrectionEvent event,
+    Emitter<RepairTaskState> emit,
+  ) async {
+    emit(
+      ReceiveInfosState(
+        status: BlocStatusState.loading,
+        viewModel: state.viewModel,
+      ),
+    );
+    try {
+      final newViewModel = state.viewModel.copyWith(
+        listCorrectionsSelected: event.listCorrectionEntity,
+        isChanged: true,
       );
       emit(
         state.copyWith(

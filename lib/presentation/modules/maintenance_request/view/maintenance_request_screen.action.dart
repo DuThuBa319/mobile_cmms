@@ -115,6 +115,9 @@ extension MaintenanceRequestViewAction on _MaintenanceRequestViewState {
   }
 
   void equipmentTypeChanged(dynamic value) {
+    equipmentCodeController = DropdownController<String, DropdownData<String>>(
+      value: DropdownData(value: equipmentCodeSelection[0], validation: null),
+    );
     requestInfoBloc.add(GetEquipmentCodeEvent(type: value));
   }
 
@@ -153,6 +156,6 @@ extension MaintenanceRequestViewAction on _MaintenanceRequestViewState {
     if (list.length > 1) {
       return 'Nhiều nguyên nhân';
     }
-    return list[0].causeName;
+    return list[0].name;
   }
 }

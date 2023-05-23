@@ -3,14 +3,26 @@ part of 'select_info_bloc.dart';
 @immutable
 abstract class SelectInfoEvent {}
 
-class GetCausesEvent extends SelectInfoEvent {
-  GetCausesEvent({this.selectedCause});
+class GetInfosEvent extends SelectInfoEvent {
+  GetInfosEvent({
+    this.selectedCause,
+    this.infoType = InfoType.Cause,
+    this.selectedCorrection,
+  });
   final List<CauseEntity>? selectedCause;
+  final InfoType? infoType;
+  final List<CorrectionEntity>? selectedCorrection;
 }
 
-class SelectCauseEvent extends SelectInfoEvent {
-  SelectCauseEvent({this.index});
+class InfoSelectedEvent extends SelectInfoEvent {
+  InfoSelectedEvent({this.index});
   final int? index;
 }
 
-class ResponseCausesEvent extends SelectInfoEvent {}
+class ResponseInfosEvent extends SelectInfoEvent {
+  ResponseInfosEvent({
+    this.infoType = InfoType.Cause,
+  });
+
+  final InfoType? infoType;
+}

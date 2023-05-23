@@ -10,7 +10,7 @@ part 'update_response.g.dart';
 // ignore: must_be_immutable
 class UpdateResponse {
   List<String>? cause;
-  List<Correction>? correction;
+  List<String>? correction;
   DateTime? actualStartTime;
   DateTime? actualFinishTime;
   MaintenanceStatus? status;
@@ -33,7 +33,7 @@ class UpdateResponse {
 
   UpdateResponse copyWith({
     List<String>? cause,
-    List<Correction>? correction,
+    List<String>? correction,
     DateTime? actualStartTime,
     DateTime? actualFinishTime,
     MaintenanceStatus? status,

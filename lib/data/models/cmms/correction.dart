@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import 'cmms_enum.dart';
+import '../../../domain/entities/cmms/correction_entity.dart';
 
 part 'correction.g.dart';
 
@@ -24,6 +24,19 @@ class Correction {
     this.name,
     this.note,
   });
+
+  CorrectionEntity getCorrectionEntity() {
+    final result = CorrectionEntity(
+      code: code,
+      estProcessTime: estProcessTime,
+      id: id,
+      name: name,
+      note: note,
+    );
+
+    return result;
+  }
+
   factory Correction.fromJson(Map<String, dynamic> json) =>
       _$CorrectionFromJson(json);
 

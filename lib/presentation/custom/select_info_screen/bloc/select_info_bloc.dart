@@ -4,9 +4,11 @@ import 'package:meta/meta.dart';
 
 import '../../../../../domain/entities/cmms/cause_entity.dart';
 
+import '../../../../domain/entities/cmms/correction_entity.dart';
 import '../../../base/base.dart';
 import '../../../base/state_base/bloc_status_state.dart';
 import '../usecase/select_info_usecase.dart';
+import '../view/select_info_screen.dart';
 
 part 'select_info_event.dart';
 part 'select_info_state.dart';
@@ -15,14 +17,14 @@ part 'select_info_state.dart';
 class SelectInfoBloc extends AppBlocBase<SelectInfoEvent, SelectInfoState> {
   final SelectInfoUsecase _usecase;
   SelectInfoBloc(this._usecase) : super(SelectInfoInitialState()) {
-    on<GetCausesEvent>(_onGetCauses);
+    on<GetInfosEvent>(_onGetCauses);
 
-    on<SelectCauseEvent>(_onSelectCauses);
-    on<ResponseCausesEvent>(_onResponseCauses);
+    on<InfoSelectedEvent>(_onSelectCauses);
+    on<ResponseInfosEvent>(_onResponseCauses);
   }
 
   Future<void> _onGetCauses(
-    GetCausesEvent event,
+    GetInfosEvent event,
     Emitter<SelectInfoState> emit,
   ) async {
     emit(
@@ -32,21 +34,45 @@ class SelectInfoBloc extends AppBlocBase<SelectInfoEvent, SelectInfoState> {
       ),
     );
     try {
-      final responses = await _usecase.getListCauses();
+      List<CauseEntity>? causeResponses = [];
+      List<CorrectionEntity>? correctionResponses = [];
+      List<dynamic>? responses;
+      var newViewModel = state.viewModel;
       final temps = <int>[];
-      if (event.selectedCause!.isNotEmpty) {
-        for (var i = 0; i < responses!.length; i++) {
-          for (final item in event.selectedCause!) {
-            if (item.causeId == responses[i].causeId) {
-              temps.add(i);
+      if (event.infoType == InfoType.Cause) {
+        causeResponses = await _usecase.getListCauses();
+        responses = causeResponses;
+        if (event.selectedCause!.isNotEmpty) {
+          for (var i = 0; i < causeResponses!.length; i++) {
+            for (final item in event.selectedCause!) {
+              if (item.id == causeResponses[i].id) {
+                temps.add(i);
+              }
+            }
+          }
+        }
+      } else {
+        correctionResponses = await _usecase.getListCorrections();
+        responses = correctionResponses;
+        final temps = <int>[];
+        if (event.selectedCorrection!.isNotEmpty) {
+          for (var i = 0; i < correctionResponses!.length; i++) {
+            for (final item in event.selectedCorrection!) {
+              if (item.id == correctionResponses[i].id) {
+                temps.add(i);
+              }
             }
           }
         }
       }
 
-      final newViewModel = state.viewModel.copyWith(
-        response: responses,
-        isCauseSelected: temps.isEmpty
+      newViewModel = state.viewModel.copyWith(
+        causeResponse: causeResponses,
+        correctionResponse: correctionResponses,
+        listCauseSelected: [],
+        listCorrectionSelected: [],
+        infoResponse: responses,
+        isInfoSelected: temps.isEmpty
             ? List<bool>.generate(responses?.length ?? 0, (index) => false)
             : List<bool>.generate(responses?.length ?? 0, (index) {
                 for (final temp in temps) {
@@ -56,8 +82,8 @@ class SelectInfoBloc extends AppBlocBase<SelectInfoEvent, SelectInfoState> {
                 }
                 return false;
               }),
-        listInfoSelected: [],
       );
+
       emit(
         state.copyWith(
           status: BlocStatusState.success,
@@ -75,7 +101,7 @@ class SelectInfoBloc extends AppBlocBase<SelectInfoEvent, SelectInfoState> {
   }
 
   Future<void> _onSelectCauses(
-    SelectCauseEvent event,
+    InfoSelectedEvent event,
     Emitter<SelectInfoState> emit,
   ) async {
     emit(
@@ -85,11 +111,11 @@ class SelectInfoBloc extends AppBlocBase<SelectInfoEvent, SelectInfoState> {
       ),
     );
     try {
-      final listTemp = state.viewModel.isCauseSelected!;
+      final listTemp = state.viewModel.isInfoSelected!;
       listTemp[event.index!] = !listTemp[event.index!];
 
       final newViewModel = state.viewModel.copyWith(
-        isCauseSelected: listTemp,
+        isInfoSelected: listTemp,
       );
       emit(
         state.copyWith(
@@ -108,26 +134,38 @@ class SelectInfoBloc extends AppBlocBase<SelectInfoEvent, SelectInfoState> {
   }
 
   Future<void> _onResponseCauses(
-    ResponseCausesEvent event,
+    ResponseInfosEvent event,
     Emitter<SelectInfoState> emit,
   ) async {
     emit(
-      ResponseCausesState(
+      ResponseInfosState(
         status: BlocStatusState.loading,
         viewModel: state.viewModel,
       ),
     );
     try {
-      final listTemp = state.viewModel.isCauseSelected!;
+      final listTemp = state.viewModel.isInfoSelected!;
       final responseCauses = <CauseEntity>[];
-      for (var i = 0; i < listTemp.length; i++) {
-        if (listTemp[i] == true) {
-          responseCauses.add(state.viewModel.response![i]);
+      final responseCorrections = <CorrectionEntity>[];
+      if (event.infoType == InfoType.Correction) {
+        for (var i = 0; i < listTemp.length; i++) {
+          if (listTemp[i] == true) {
+            responseCorrections.add(state.viewModel.correctionResponse![i]);
+          }
         }
       }
+      if (event.infoType == InfoType.Cause) {
+        for (var i = 0; i < listTemp.length; i++) {
+          if (listTemp[i] == true) {
+            responseCauses.add(state.viewModel.causeResponse![i]);
+          }
+        }
+      }
+
       final newViewModel = state.viewModel.copyWith(
-        isCauseSelected: listTemp,
-        listInfoSelected: responseCauses,
+        isInfoSelected: listTemp,
+        listCauseSelected: responseCauses,
+        listCorrectionSelected: responseCorrections,
       );
       emit(
         state.copyWith(

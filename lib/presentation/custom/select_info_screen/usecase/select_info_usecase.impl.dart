@@ -12,9 +12,21 @@ class SelectInfoUsecaseImpl extends SelectInfoUsecase {
   Future<List<CauseEntity>?> getListCauses() async {
     final responses = await _repository.getListCauses();
 
-    var responseEntities = <CauseEntity>[];
+    final responseEntities = <CauseEntity>[];
     for (final response in responses) {
       responseEntities.add(response.getCauseEntity());
+    }
+
+    return responseEntities;
+  }
+
+  @override
+  Future<List<CorrectionEntity>?> getListCorrections() async {
+    final responses = await _repository.getListCorrections();
+
+    final responseEntities = <CorrectionEntity>[];
+    for (final response in responses) {
+      responseEntities.add(response.getCorrectionEntity());
     }
 
     return responseEntities;

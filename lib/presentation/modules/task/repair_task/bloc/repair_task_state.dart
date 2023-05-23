@@ -6,12 +6,16 @@ class _ViewModel {
   final MaintenanceResponseItem? response;
   final MaintenanceResponseEntity? responseEntity;
   final List<CauseEntity>? listCausesSelected;
+  final List<CorrectionEntity>? listCorrectionsSelected;
   final UpdateResponse? updateResponse;
+  final bool isChanged;
   const _ViewModel({
     this.response,
     this.responseEntity,
     this.listCausesSelected,
     this.updateResponse,
+    this.listCorrectionsSelected,
+    this.isChanged = false,
   });
 
   // Using copyWith function to retains the before data and just "update some specific props" instead of "update all props"
@@ -19,13 +23,18 @@ class _ViewModel {
     MaintenanceResponseItem? response,
     MaintenanceResponseEntity? responseEntity,
     List<CauseEntity>? listCausesSelected,
+    List<CorrectionEntity>? listCorrectionsSelected,
     UpdateResponse? updateResponse,
+    bool? isChanged,
   }) {
     return _ViewModel(
       response: response ?? this.response,
       responseEntity: responseEntity ?? this.responseEntity,
       listCausesSelected: listCausesSelected ?? this.listCausesSelected,
+      listCorrectionsSelected:
+          listCorrectionsSelected ?? this.listCorrectionsSelected,
       updateResponse: updateResponse ?? this.updateResponse,
+      isChanged: isChanged ?? this.isChanged,
     );
   }
 }
@@ -72,8 +81,8 @@ class UpdateMaintenanceResponseState extends RepairTaskState {
   }) : super(viewModel, status: status);
 }
 
-class ReceiveCausesState extends RepairTaskState {
-  ReceiveCausesState({
+class ReceiveInfosState extends RepairTaskState {
+  ReceiveInfosState({
     _ViewModel viewModel = const _ViewModel(),
     BlocStatusState status = BlocStatusState.initial,
   }) : super(viewModel, status: status);
@@ -99,7 +108,7 @@ final _factories = <
         viewModel: viewModel,
         status: status,
       ),
-  ReceiveCausesState: (viewModel, status) => ReceiveCausesState(
+  ReceiveInfosState: (viewModel, status) => ReceiveInfosState(
         viewModel: viewModel,
         status: status,
       ),

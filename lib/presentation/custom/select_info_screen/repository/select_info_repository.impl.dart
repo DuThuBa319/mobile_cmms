@@ -6,13 +6,16 @@ part of 'select_info_repository.dart';
 )
 class SelectInfoRepositoryImpl extends SelectInfoRepository {
   final CauseRepository _causeApi;
-
-  SelectInfoRepositoryImpl(
-    this._causeApi,
-  );
+  final CorrectionRepository _correctionApi;
+  SelectInfoRepositoryImpl(this._causeApi, this._correctionApi);
 
   @override
   Future<List<Cause>> getListCauses() {
     return _causeApi.getListCauses();
+  }
+
+  @override
+  Future<List<Correction>> getListCorrections() {
+    return _correctionApi.getListCorrections();
   }
 }

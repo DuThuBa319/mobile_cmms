@@ -17,7 +17,7 @@ UpdateResponse _$UpdateResponseFromJson(Map<String, dynamic> json) =>
       cause:
           (json['cause'] as List<dynamic>?)?.map((e) => e as String).toList(),
       correction: (json['correction'] as List<dynamic>?)
-          ?.map((e) => Correction.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => e as String)
           .toList(),
       images:
           (json['images'] as List<dynamic>?)?.map((e) => e as String).toList(),
@@ -42,8 +42,7 @@ Map<String, dynamic> _$UpdateResponseToJson(UpdateResponse instance) {
   }
 
   writeNotNull('cause', instance.cause);
-  writeNotNull(
-      'correction', instance.correction?.map((e) => e.toJson()).toList());
+  writeNotNull('correction', instance.correction);
   writeNotNull('actualStartTime', instance.actualStartTime?.toIso8601String());
   writeNotNull(
       'actualFinishTime', instance.actualFinishTime?.toIso8601String());

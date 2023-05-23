@@ -24,3 +24,8 @@ class ReceiveCauseEvent extends RepairTaskEvent {
   ReceiveCauseEvent({this.listCauseEntity});
   final List<CauseEntity>? listCauseEntity;
 }
+
+class ReceiveCorrectionEvent extends RepairTaskEvent {
+  ReceiveCorrectionEvent({this.listCorrectionEntity});
+  final List<CorrectionEntity>? listCorrectionEntity;
+}
