@@ -18,6 +18,30 @@ class ImagePickerBloc extends AppBlocBase<ImagePickerEvent, ImagePickerState> {
     on<GetImageEvent>(_onGetImage);
     on<DeleteImageEvent>(_onDeleteImage);
     on<ReplaceImageEvent>(_onReplaceImage);
+    on<LoadImageEvent>(_onLoadImage);
+  }
+  Future<void> _onLoadImage(
+    LoadImageEvent event,
+    Emitter<ImagePickerState> emit,
+  ) async {
+    emit(
+      GetImageState(
+        status: BlocStatusState.loading,
+        viewModel: state.viewModel,
+      ),
+    );
+    try {
+      final newViewModel =
+          state.viewModel.copyWith(imageFiles: event.imageFiles);
+      emit(
+        state.copyWith(
+          status: BlocStatusState.success,
+          viewModel: newViewModel,
+        ),
+      );
+    } catch (exception) {
+      emit(state.copyWith(status: BlocStatusState.failure));
+    }
   }
 
   Future<void> _onGetImage(

@@ -24,7 +24,7 @@ class FirebaseStorageService {
         : basename(file.path);
 
     // Create a Reference to the file
-    final ref = FirebaseStorage.instance.ref('mobile/$folder/$customFileName');
+    final ref = FirebaseStorage.instance.ref('$folder/$customFileName');
 
     final metadata = SettableMetadata(
       contentType: type,

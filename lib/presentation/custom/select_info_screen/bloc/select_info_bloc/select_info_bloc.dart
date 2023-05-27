@@ -3,12 +3,11 @@ import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
 import '../../../../../domain/entities/cmms/cause_entity.dart';
-
-import '../../../../domain/entities/cmms/correction_entity.dart';
-import '../../../base/base.dart';
-import '../../../base/state_base/bloc_status_state.dart';
-import '../usecase/select_info_usecase.dart';
-import '../view/select_info_screen.dart';
+import '../../../../../domain/entities/cmms/correction_entity.dart';
+import '../../../../base/base.dart';
+import '../../../../base/state_base/bloc_status_state.dart';
+import '../../usecase/select_info_usecase.dart';
+import '../../view/select_info_screen.dart';
 
 part 'select_info_event.dart';
 part 'select_info_state.dart';

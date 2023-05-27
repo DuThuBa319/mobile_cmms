@@ -15,7 +15,10 @@ import '../../../../custom/audio_picker/audio_picker_widget.dart';
 import '../../../../custom/general_report_container.dart';
 import '../../../../custom/image_picker/image_picker_bloc/image_picker_bloc.dart';
 import '../../../../custom/image_picker/image_picker_widget.dart';
-import '../../../../custom/select_info_screen/bloc/select_info_bloc.dart';
+
+import '../../../../custom/select_info_screen/bloc/receive_info_selection_bloc/receive_info_selection_bloc.dart';
+import '../../../../custom/select_info_screen/bloc/select_info_bloc/select_info_bloc.dart';
+import '../../../../custom/select_info_screen/view/select_info_dropdown.dart';
 import '../../../../custom/select_info_screen/view/select_info_screen.dart';
 import '../../../../theme/theme_color.dart';
 import '../bloc/repair_task_bloc.dart';
@@ -33,6 +36,9 @@ class RepairTaskView extends StatefulWidget {
 
 class _RepairTaskViewState extends StateBase<RepairTaskView> {
   File? _image;
+  bool isInProgress = false;
+  List<CauseEntity> listCauseSelected = [];
+  List<CorrectionEntity> listCorrectionSelected = [];
   @override
   void initState() {
     // TODO: implement initState
@@ -44,6 +50,7 @@ class _RepairTaskViewState extends StateBase<RepairTaskView> {
   ImagePickerBloc get imageBloc => BlocProvider.of(context);
   SelectInfoBloc get selectInfoBloc => BlocProvider.of(context);
   AudioPickerBloc get audioBloc => BlocProvider.of(context);
+  ReceiveInfoSelectionBloc get receiveBloc => BlocProvider.of(context);
   @override
   Widget buildBase(BuildContext context) {
     final quantity = TextEditingController();
@@ -101,32 +108,57 @@ class _RepairTaskViewState extends StateBase<RepairTaskView> {
                       items: problem,
                     ),
                   ),
-                  Text(
-                    'Nguyên nhân: ',
-                    style: bodyTextStyle,
+
+                  BlocConsumer<ReceiveInfoSelectionBloc,
+                      ReceiveInfoSelectionState>(
+                    bloc: receiveBloc,
+                    listener: _receiveBlocListener,
+                    builder: (context, receiveState) {
+                      if (receiveState is LoadFileState &&
+                          receiveState.status == BlocStatusState.success) {
+                        imageBloc.add(
+                          LoadImageEvent(
+                            imageFiles: receiveState.viewModel.imageFiles,
+                          ),
+                        );
+                        audioBloc.add(
+                          LoadAudioEvent(
+                            audioFiles: receiveState.viewModel.audioFiles,
+                          ),
+                        );
+                      }
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Nguyên nhân: ',
+                            style: bodyTextStyle,
+                          ),
+                          InfoSelectionDropdown(
+                            bloc: receiveBloc,
+                            state: receiveState,
+                            selectInfoBloc: selectInfoBloc,
+                            enable: isInProgress,
+                            infoType: InfoType.Cause,
+                          ),
+                          Text(
+                            'Phương án sữa chữa: ',
+                            style: bodyTextStyle,
+                          ),
+                          InfoSelectionDropdown(
+                            bloc: receiveBloc,
+                            state: receiveState,
+                            selectInfoBloc: selectInfoBloc,
+                            enable: isInProgress,
+                            infoType: InfoType.Correction,
+                          ),
+                        ],
+                      );
+                    },
                   ),
-                  state.viewModel.responseEntity?.status ==
-                          MaintenanceStatus.inProgress
-                      ? selectionDropdown(
-                          context,
-                          state,
-                          infoType: InfoType.Cause,
-                        )
-                      : disableSelectionDropdown(context, state),
-                  Text(
-                    'Phương án sữa chữa: ',
-                    style: bodyTextStyle,
-                  ),
-                  state.viewModel.responseEntity?.status ==
-                          MaintenanceStatus.inProgress
-                      ? selectionDropdown(
-                          context,
-                          state,
-                          infoType: InfoType.Correction,
-                        )
-                      : disableSelectionDropdown(context, state),
+
                   //-------------------------------------------------//
-                  const SizedBox(height: 18),
+
                   Text(
                     'LINH KIỆN: ',
                     style: Theme.of(context)
@@ -210,8 +242,10 @@ class _RepairTaskViewState extends StateBase<RepairTaskView> {
                       MaintenanceStatus.inProgress
                   ? ImagePickerGridView(
                       bloc: imageBloc,
+                      receiveBloc: receiveBloc,
                     )
                   : disableImagePicker(),
+
               Text(
                 'Ghi âm báo cáo: ',
                 style: bodyTextStyle,
@@ -220,8 +254,10 @@ class _RepairTaskViewState extends StateBase<RepairTaskView> {
                       MaintenanceStatus.inProgress
                   ? AudioListView(
                       bloc: audioBloc,
+                      receiveBloc: receiveBloc,
                     )
                   : disableAudioPicker(),
+
               const SizedBox(height: 30),
               buildButton(
                 context,
@@ -232,115 +268,6 @@ class _RepairTaskViewState extends StateBase<RepairTaskView> {
           ),
         );
       },
-    );
-  }
-
-  Widget selectionDropdown(
-    BuildContext context,
-    RepairTaskState state, {
-    required InfoType infoType,
-  }) {
-    return GestureDetector(
-      onTap: () async {
-        if (state.viewModel.responseEntity?.status ==
-            MaintenanceStatus.inProgress) {
-          bloc.add(
-            infoType == InfoType.Cause
-                ? ReceiveCauseEvent(
-                    listCauseEntity: await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SelectInfoScreen(
-                          title: 'Chọn nguyên nhân',
-                          bloc: selectInfoBloc,
-                          selectedCause: state.viewModel.listCausesSelected,
-                          infoType: InfoType.Cause,
-                        ),
-                      ),
-                    ),
-                  )
-                : ReceiveCorrectionEvent(
-                    listCorrectionEntity: await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SelectInfoScreen(
-                          title: 'Chọn phương án',
-                          bloc: selectInfoBloc,
-                          selectedCorrection:
-                              state.viewModel.listCorrectionsSelected,
-                          infoType: InfoType.Correction,
-                        ),
-                      ),
-                    ),
-                  ),
-          );
-        }
-      },
-      child: Container(
-        width: 378,
-        height: 50,
-        margin: const EdgeInsets.only(bottom: 17, top: 10),
-        padding: const EdgeInsets.fromLTRB(12, 9, 16, 10),
-        decoration: BoxDecoration(
-          border: Border.all(color: AppColor.gray767676, width: 1),
-          borderRadius: BorderRadius.circular(4),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 0.0),
-              child: Text(
-                infoType == InfoType.Cause
-                    ? textCause(list: state.viewModel.listCausesSelected)!
-                    : textCorrection(
-                        list: state.viewModel.listCorrectionsSelected,
-                      )!,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText2
-                    ?.copyWith(color: Colors.black),
-              ),
-            ),
-            const Icon(
-              Icons.keyboard_arrow_right,
-              color: Colors.black,
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget disableSelectionDropdown(BuildContext context, RepairTaskState state) {
-    return Container(
-      width: 378,
-      height: 50,
-      margin: const EdgeInsets.only(bottom: 17, top: 10),
-      padding: const EdgeInsets.fromLTRB(12, 9, 16, 10),
-      decoration: BoxDecoration(
-        border: Border.all(color: AppColor.gray767676, width: 0.5),
-        borderRadius: BorderRadius.circular(4),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 0.0),
-            child: Text(
-              textCause(list: state.viewModel.listCausesSelected)!,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyText2
-                  ?.copyWith(color: AppColor.gray767676),
-            ),
-          ),
-          const Icon(
-            Icons.keyboard_arrow_right,
-            color: AppColor.gray767676,
-          )
-        ],
-      ),
     );
   }
 
@@ -422,7 +349,7 @@ class _RepairTaskViewState extends StateBase<RepairTaskView> {
     if (status == MaintenanceStatus.completed) {
       return Container(
         decoration: BoxDecoration(
-          color: AppColor.greyD9,
+          color: AppColor.blue0089D7,
           borderRadius: BorderRadius.circular(8),
         ),
         width: 360,

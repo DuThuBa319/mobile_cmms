@@ -7,7 +7,8 @@ import '../../../../custom/audio_picker/audio_picker_bloc/audio_picker_bloc.dart
 import '../../../../custom/custom_screen_form.dart';
 import '../../../../custom/image_picker/image_picker_bloc/image_picker_bloc.dart';
 
-import '../../../../custom/select_info_screen/bloc/select_info_bloc.dart';
+import '../../../../custom/select_info_screen/bloc/receive_info_selection_bloc/receive_info_selection_bloc.dart';
+import '../../../../custom/select_info_screen/bloc/select_info_bloc/select_info_bloc.dart';
 import '../bloc/repair_task_bloc.dart';
 import 'repair_task_view.dart';
 
@@ -38,7 +39,10 @@ class _RepairTaskScreenState extends State<RepairTaskScreen> {
           ),
           BlocProvider<SelectInfoBloc>(
             create: (context) => getIt<SelectInfoBloc>(),
-          )
+          ),
+          BlocProvider<ReceiveInfoSelectionBloc>(
+            create: (context) => ReceiveInfoSelectionBloc(),
+          ),
         ],
         child: RepairTaskView(
           responseId: widget.responseId,

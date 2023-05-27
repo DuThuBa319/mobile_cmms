@@ -3,17 +3,20 @@ part of 'image_picker_bloc.dart';
 // ViewModel is used for store all properties which want to be stored, processed and updated
 class _ViewModel {
   final List<File>? imageFiles;
-
+  final List<String>? imageUrls;
   const _ViewModel({
     this.imageFiles,
+    this.imageUrls,
   });
 
   // Using copyWith function to retains the before data and just "update some specific props" instead of "update all props"
   _ViewModel copyWith({
     List<File>? imageFiles,
+    List<String>? imageUrls,
   }) {
     return _ViewModel(
       imageFiles: imageFiles ?? this.imageFiles,
+      imageUrls: imageUrls ?? this.imageUrls,
     );
   }
 }

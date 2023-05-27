@@ -20,12 +20,22 @@ class FinishTaskEvent extends RepairTaskEvent {
   FinishTaskEvent();
 }
 
-class ReceiveCauseEvent extends RepairTaskEvent {
-  ReceiveCauseEvent({this.listCauseEntity});
-  final List<CauseEntity>? listCauseEntity;
+class ReceiveCauseIdEvent extends RepairTaskEvent {
+  ReceiveCauseIdEvent({this.listCauseId});
+  final List<String>? listCauseId;
 }
 
-class ReceiveCorrectionEvent extends RepairTaskEvent {
-  ReceiveCorrectionEvent({this.listCorrectionEntity});
-  final List<CorrectionEntity>? listCorrectionEntity;
+class ReceiveCorrectionIdEvent extends RepairTaskEvent {
+  ReceiveCorrectionIdEvent({this.listCorrectionId});
+  final List<String>? listCorrectionId;
+}
+
+class ReceiveListImageFileEvent extends RepairTaskEvent {
+  ReceiveListImageFileEvent({this.imageFiles});
+  final List<File>? imageFiles;
+}
+
+class ReceiveListAudioFileEvent extends RepairTaskEvent {
+  ReceiveListAudioFileEvent({this.audioFiles});
+  final List<File>? audioFiles;
 }

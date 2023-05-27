@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,7 +13,9 @@ import '../../../custom/audio_picker/audio_picker_bloc/audio_picker_bloc.dart';
 import '../../../custom/audio_picker/audio_picker_widget.dart';
 import '../../../custom/image_picker/image_picker_bloc/image_picker_bloc.dart';
 import '../../../custom/image_picker/image_picker_widget.dart';
-import '../../../custom/select_info_screen/bloc/select_info_bloc.dart';
+
+import '../../../custom/select_info_screen/bloc/receive_info_selection_bloc/receive_info_selection_bloc.dart';
+import '../../../custom/select_info_screen/bloc/select_info_bloc/select_info_bloc.dart';
 import '../../../custom/select_info_screen/view/select_info_screen.dart';
 import '../../../theme/theme_color.dart';
 import '../bloc/get_detail_bloc/get_request_info_bloc.dart';
@@ -64,14 +64,12 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
     value: DropdownData(value: employee[0], validation: null),
   );
   @override
-  ImagePickerBloc get imageBloc => BlocProvider.of(context);
-
-  @override
   RequestBloc get bloc => BlocProvider.of(context);
-
+  ImagePickerBloc get imageBloc => BlocProvider.of(context);
   AudioPickerBloc get audioBloc => BlocProvider.of(context);
   GetRequestInfoBloc get requestInfoBloc => BlocProvider.of(context);
   SelectInfoBloc get selectInfoBloc => BlocProvider.of(context);
+  ReceiveInfoSelectionBloc get receiveBloc => BlocProvider.of(context);
   @override
   Widget buildBase(BuildContext context) {
     final bodyTextStyle =
@@ -340,13 +338,13 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                       child: TextButton(
                         onPressed: () {
                           if (check) {
-                            final temp = <File>[];
-                            if (audioBloc.state.viewModel.audioFiles != null) {
-                              for (final fileInfo
-                                  in audioBloc.state.viewModel.audioFiles!) {
-                                temp.add(fileInfo.file!);
-                              }
-                            }
+                            // final temp = <File>[];
+                            // if (audioBloc.state.viewModel.audioFiles != null) {
+                            //   for (final fileInfo
+                            //       in audioBloc.state.viewModel.audioFiles!) {
+                            //     temp.add(fileInfo.file!);
+                            //   }
+                            // }
                             bloc.add(
                               MakeRequestEvent(
                                 // imageFiles: bloc.state.viewModel.imageFiles,
@@ -385,7 +383,7 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
     return GestureDetector(
       onTap: () async {
         requestInfoBloc.add(
-          ReceiveCauseEvent(
+          ReceiveListCauseEvent(
             listCauseEntity: await Navigator.push(
               context,
               MaterialPageRoute(
@@ -393,6 +391,7 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                   title: 'Chọn nguyên nhân',
                   bloc: selectInfoBloc,
                   selectedCause: state.viewModel.listCausesSelected,
+                  infoType: InfoType.Cause,
                 ),
               ),
             ),

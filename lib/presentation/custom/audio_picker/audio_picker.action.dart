@@ -1,6 +1,23 @@
 part of 'audio_picker_widget.dart';
 
 extension AudioPickerAction on _AudioListViewState {
+  void _blocListener(BuildContext context, AudioPickerState state) {
+    if (state is GetAudioState && state.status == BlocStatusState.loading) {
+      showToast('Đang lấy hình ảnh');
+    }
+    if (state is GetAudioState && state.status == BlocStatusState.success) {
+      audioInfos = state.viewModel.audioInfos!;
+      showToast('Lấy hình ảnh thành công');
+      final audioFiles = state.viewModel.audioInfos;
+      final temp = <File>[];
+      for (final file in audioFiles!) {
+        temp.add(file.file!);
+      }
+      widget.receiveBloc!.add(ReceiveAudioFileEvent(audioFiles: temp));
+    }
+  }
+
+  //----------------------------------//
   Future initRecorder() async {
     final status = await Permission.microphone.request();
     if (status != PermissionStatus.granted) {

@@ -9,6 +9,12 @@ class _ViewModel {
   final List<CorrectionEntity>? listCorrectionsSelected;
   final UpdateResponse? updateResponse;
   final bool isChanged;
+  final List<String>? listCauseId;
+  final List<String>? listCorrectionId;
+  final List<File>? imageFiles;
+  final List<File>? audioFiles;
+  final List<String>? imageUrls;
+  final List<String>? audioUrls;
   const _ViewModel({
     this.response,
     this.responseEntity,
@@ -16,6 +22,12 @@ class _ViewModel {
     this.updateResponse,
     this.listCorrectionsSelected,
     this.isChanged = false,
+    this.listCorrectionId,
+    this.listCauseId,
+    this.imageFiles,
+    this.imageUrls,
+    this.audioFiles,
+    this.audioUrls,
   });
 
   // Using copyWith function to retains the before data and just "update some specific props" instead of "update all props"
@@ -26,6 +38,12 @@ class _ViewModel {
     List<CorrectionEntity>? listCorrectionsSelected,
     UpdateResponse? updateResponse,
     bool? isChanged,
+    List<String>? listCauseId,
+    List<String>? listCorrectionId,
+    List<File>? imageFiles,
+    List<String>? imageUrls,
+    List<File>? audioFiles,
+    List<String>? audioUrls,
   }) {
     return _ViewModel(
       response: response ?? this.response,
@@ -35,6 +53,12 @@ class _ViewModel {
           listCorrectionsSelected ?? this.listCorrectionsSelected,
       updateResponse: updateResponse ?? this.updateResponse,
       isChanged: isChanged ?? this.isChanged,
+      listCauseId: listCauseId ?? this.listCauseId,
+      listCorrectionId: listCorrectionId ?? this.listCorrectionId,
+      imageFiles: imageFiles ?? this.imageFiles,
+      imageUrls: imageUrls ?? this.imageUrls,
+      audioFiles: audioFiles ?? this.audioFiles,
+      audioUrls: audioUrls ?? this.audioUrls,
     );
   }
 }

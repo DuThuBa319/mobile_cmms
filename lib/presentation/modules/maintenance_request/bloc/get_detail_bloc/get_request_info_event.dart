@@ -22,7 +22,7 @@ class ChangeDateEvent extends GetRequestInfoEvent {
   final DateTime? selectedDate;
 }
 
-class ReceiveCauseEvent extends GetRequestInfoEvent {
-  ReceiveCauseEvent({this.listCauseEntity});
+class ReceiveListCauseEvent extends GetRequestInfoEvent {
+  ReceiveListCauseEvent({this.listCauseEntity});
   final List<CauseEntity>? listCauseEntity;
 }

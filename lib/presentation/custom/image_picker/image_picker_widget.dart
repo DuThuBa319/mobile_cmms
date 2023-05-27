@@ -6,17 +6,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../base/base.dart';
 import '../../base/state_base/bloc_status_state.dart';
 
 import '../../theme/theme_color.dart';
+import '../select_info_screen/bloc/receive_info_selection_bloc/receive_info_selection_bloc.dart';
 import 'image_picker_bloc/image_picker_bloc.dart';
 
 part 'image_picker.action.dart';
 
 class ImagePickerGridView extends StatefulWidget {
-  ImagePickerGridView({super.key, this.bloc});
-  ImagePickerBloc? bloc;
-
+  ImagePickerGridView({super.key, this.bloc, this.receiveBloc});
+  final ImagePickerBloc? bloc;
+  final ReceiveInfoSelectionBloc? receiveBloc;
   @override
   State<ImagePickerGridView> createState() => _ImagePickerGridViewState();
 }
@@ -27,11 +29,12 @@ class _ImagePickerGridViewState extends State<ImagePickerGridView> {
   double height = 105;
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ImagePickerBloc, ImagePickerState>(
+    return BlocConsumer<ImagePickerBloc, ImagePickerState>(
+      listener: _blocListener,
       builder: (context, state) {
         if (state is GetImageState && state.status == BlocStatusState.success) {
           imageCount = state.viewModel.imageFiles?.length ?? 0;
-          imageFiles = state.viewModel.imageFiles!;
+          imageFiles = state.viewModel.imageFiles ?? [];
           height = (imageCount ~/ 4 + 1) * 105;
         }
 

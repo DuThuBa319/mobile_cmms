@@ -23,7 +23,42 @@ class AudioPickerBloc extends AppBlocBase<AudioPickerEvent, AudioPickerState> {
     on<StopRecordEvent>(_onStopRecord);
     on<GetAudioEvent>(_onGetAudio);
     on<DeleteAudioEvent>(_onDeleteAudio);
+    on<LoadAudioEvent>(_onLoadAudio);
   }
+
+  Future<void> _onLoadAudio(
+    LoadAudioEvent event,
+    Emitter<AudioPickerState> emit,
+  ) async {
+    emit(
+      GetAudioState(
+        status: BlocStatusState.loading,
+        viewModel: state.viewModel,
+      ),
+    );
+    try {
+      final audioInfos = <AudioInfo>[];
+      for (final file in event.audioFiles!) {
+        audioInfos.add(
+          AudioInfo(
+            duration: await getFileDuration(file.path),
+            file: file,
+            name: file.path.split('/').last,
+          ),
+        );
+      }
+      final newViewModel = state.viewModel.copyWith(audioInfos: audioInfos);
+      emit(
+        state.copyWith(
+          status: BlocStatusState.success,
+          viewModel: newViewModel,
+        ),
+      );
+    } catch (exception) {
+      emit(state.copyWith(status: BlocStatusState.failure));
+    }
+  }
+
   Future<void> _onStartRecord(
     StartRecordEvent event,
     Emitter<AudioPickerState> emit,
@@ -62,10 +97,10 @@ class AudioPickerBloc extends AppBlocBase<AudioPickerEvent, AudioPickerState> {
     try {
       final temp = await stopRecord(
         duration: event.audioDuration!,
-        audioFiles: state.viewModel.audioFiles ?? [],
+        audioInfos: state.viewModel.audioInfos ?? [],
         recorder: event.recorder,
       );
-      final newViewModel = state.viewModel.copyWith(audioFiles: temp);
+      final newViewModel = state.viewModel.copyWith(audioInfos: temp);
       emit(
         state.copyWith(
           status: BlocStatusState.success,
@@ -89,10 +124,10 @@ class AudioPickerBloc extends AppBlocBase<AudioPickerEvent, AudioPickerState> {
     );
     try {
       final temp =
-          await selectFile(audioFiles: state.viewModel.audioFiles ?? []);
-      final newViewModel = state.viewModel.copyWith(audioFiles: temp);
+          await selectFile(audioInfos: state.viewModel.audioInfos ?? []);
+      final newViewModel = state.viewModel.copyWith(audioInfos: temp);
       emit(
-        state.copyWith(
+        GetAudioState(
           status: BlocStatusState.success,
           viewModel: newViewModel,
         ),
@@ -113,10 +148,10 @@ class AudioPickerBloc extends AppBlocBase<AudioPickerEvent, AudioPickerState> {
       ),
     );
     try {
-      final temp = state.viewModel.audioFiles ?? [];
+      final temp = state.viewModel.audioInfos ?? [];
       temp.removeAt(event.index!);
 
-      final newViewModel = state.viewModel.copyWith(audioFiles: temp);
+      final newViewModel = state.viewModel.copyWith(audioInfos: temp);
       emit(
         state.copyWith(
           status: BlocStatusState.success,
@@ -129,7 +164,7 @@ class AudioPickerBloc extends AppBlocBase<AudioPickerEvent, AudioPickerState> {
   }
 
   Future<List<AudioInfo>> stopRecord({
-    required List<AudioInfo> audioFiles,
+    required List<AudioInfo> audioInfos,
     Duration? duration,
     FlutterSoundRecorder? recorder,
   }) async {
@@ -138,20 +173,20 @@ class AudioPickerBloc extends AppBlocBase<AudioPickerEvent, AudioPickerState> {
     final audioPath = await recorder!.stopRecorder();
     final audioFile = File(audioPath!);
     final fileName =
-        'Recording_${numberFormat.format(audioFiles.length + 1)}.mp3';
+        'Recording_${numberFormat.format(audioInfos.length + 1)}.mp3';
     final dir = (await getApplicationDocumentsDirectory()).path;
-    //String dir = path.dirname(file.path);
-    final newPath = path.join(dir, 'audio ${audioFiles.length + 1}.mp3');
+
+    final newPath = path.join(dir, 'audio ${audioInfos.length + 1}.mp3');
     final f = await File(audioFile.path).copy(newPath);
     final audioInfo = AudioInfo(duration: duration, name: fileName, file: f);
 
-    audioFiles.add(audioInfo);
+    audioInfos.add(audioInfo);
 
-    return audioFiles;
+    return audioInfos;
   }
 
   Future<List<AudioInfo>?> selectFile({
-    required List<AudioInfo> audioFiles,
+    required List<AudioInfo> audioInfos,
   }) async {
     final _numberFormat = NumberFormat('00', 'en_US');
     final pickedFiles =
@@ -160,20 +195,20 @@ class AudioPickerBloc extends AppBlocBase<AudioPickerEvent, AudioPickerState> {
       for (final file in pickedFiles.files) {
         if (file.extension == 'mp3' || file.extension == 'm4a') {
           final audioFile = File(file.path!);
-          final fileName = 'Recording_00${audioFiles.length + 1}.mp3';
+          final fileName = 'Recording_00${audioInfos.length + 1}.mp3';
           final dir = (await getApplicationDocumentsDirectory()).path;
           //String dir = path.dirname(file.path);
-          final newPath = path.join(dir, 'audio ${audioFiles.length + 1}.mp3');
+          final newPath = path.join(dir, fileName);
           final f = await File(audioFile.path).copy(newPath);
           final duration = await getFileDuration(newPath);
           final audioInfo =
               AudioInfo(duration: duration, name: fileName, file: f);
 
-          audioFiles.add(audioInfo);
+          audioInfos.add(audioInfo);
         }
       }
 
-      return audioFiles;
+      return audioInfos;
     }
     return null;
   }

@@ -24,3 +24,8 @@ class DeleteAudioEvent extends AudioPickerEvent {
 
   int? index;
 }
+
+class LoadAudioEvent extends AudioPickerEvent {
+  LoadAudioEvent({this.audioFiles});
+  final List<File>? audioFiles;
+}

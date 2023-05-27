@@ -10,6 +10,22 @@ extension RepairTaskViewAction on _RepairTaskViewState {
     if (state is GetMaintenanceResponseState &&
         state.status == BlocStatusState.success) {
       showToast('Đã tải dữ liệu thành công');
+      if (state.viewModel.responseEntity!.status ==
+          MaintenanceStatus.inProgress) {
+        isInProgress = true;
+      } else {
+        isInProgress = false;
+      }
+      listCauseSelected = state.viewModel.listCausesSelected!;
+      listCorrectionSelected = state.viewModel.listCorrectionsSelected!;
+      receiveBloc.add(
+        ReceiveInfoInitialEvent(
+          listCauseSelected: listCauseSelected,
+          listCorrectionSelected: listCorrectionSelected,
+          imageFiles: state.viewModel.imageFiles,
+          audioFiles: state.viewModel.audioFiles,
+        ),
+      );
     }
     if (state is GetMaintenanceResponseState &&
         state.status == BlocStatusState.failure) {
@@ -81,29 +97,46 @@ extension RepairTaskViewAction on _RepairTaskViewState {
     }
   }
 
-  String? textCause({List<CauseEntity>? list}) {
-    if (list == null) {
-      return '<Chọn nguyên nhân>';
+  void _receiveBlocListener(
+    BuildContext context,
+    ReceiveInfoSelectionState receiveState,
+  ) {
+    if (receiveState is ReceiveCauseState &&
+        receiveState.status == BlocStatusState.success) {
+      bloc.add(
+        ReceiveCauseIdEvent(
+          listCauseId: receiveState.viewModel.listCauseId,
+        ),
+      );
     }
-    if (list.isEmpty) {
-      return '<Chọn nguyên nhân>';
+    // if (receiveState is LoadFileState &&
+    //     receiveState.status == BlocStatusState.success) {
+    //   imageBloc.add(
+    //       ReceiveImageEvent(imageFiles: receiveState.viewModel.imageFiles));
+    // }
+    if (receiveState is ReceiveCorrectionState &&
+        receiveState.status == BlocStatusState.success) {
+      bloc.add(
+        ReceiveCorrectionIdEvent(
+          listCorrectionId: receiveState.viewModel.listCorrectionId,
+        ),
+      );
     }
-    if (list.length > 1) {
-      return 'Nhiều nguyên nhân';
+    if (receiveState is ReceiveImageFileState &&
+        receiveState.status == BlocStatusState.success) {
+      bloc.add(
+        ReceiveListImageFileEvent(
+          imageFiles: receiveState.viewModel.imageFiles,
+        ),
+      );
     }
-    return list[0].name;
-  }
-
-  String? textCorrection({List<CorrectionEntity>? list}) {
-    if (list == null) {
-      return '<Chọn phương án>';
+    if (receiveState is ReceiveAudioFileState &&
+        receiveState.status == BlocStatusState.success) {
+      bloc.add(
+        ReceiveListAudioFileEvent(
+          audioFiles: receiveState.viewModel.audioFiles,
+        ),
+      );
     }
-    if (list.isEmpty) {
-      return '<Chọn phương án>';
-    }
-    if (list.length > 1) {
-      return 'Nhiều phương án';
-    }
-    return list[0].name;
   }
 }

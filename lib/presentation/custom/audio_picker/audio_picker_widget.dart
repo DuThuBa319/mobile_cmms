@@ -1,21 +1,24 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
 import '../../../common/services/permission_service.dart';
+import '../../base/base.dart';
 import '../../base/state_base/bloc_status_state.dart';
 
 import '../../theme/theme_color.dart';
+import '../select_info_screen/bloc/receive_info_selection_bloc/receive_info_selection_bloc.dart';
 import 'audio_picker_bloc/audio_picker_bloc.dart';
 
 part 'audio_picker.action.dart';
 
 class AudioListView extends StatefulWidget {
-  AudioListView({super.key, this.bloc});
-  AudioPickerBloc? bloc;
-
+  AudioListView({super.key, this.bloc, this.receiveBloc});
+  final AudioPickerBloc? bloc;
+  final ReceiveInfoSelectionBloc? receiveBloc;
   @override
   State<AudioListView> createState() => _AudioListViewState();
 }
@@ -23,7 +26,7 @@ class AudioListView extends StatefulWidget {
 class _AudioListViewState extends State<AudioListView> {
   FlutterSoundRecorder recorder = FlutterSoundRecorder();
   Duration? audioDuration;
-  List<AudioInfo> audioFiles = [];
+  List<AudioInfo> audioInfos = [];
   @override
   void initState() {
     initRecorder();
@@ -43,13 +46,9 @@ class _AudioListViewState extends State<AudioListView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        BlocBuilder<AudioPickerBloc, AudioPickerState>(
+        BlocConsumer<AudioPickerBloc, AudioPickerState>(
+          listener: _blocListener,
           builder: (context, state) {
-            if (state is GetAudioState &&
-                state.status == BlocStatusState.success) {
-              audioFiles = state.viewModel.audioFiles!;
-              // Navigator.of(context).pop();
-            }
             if (state is GetAudioState &&
                 state.status == BlocStatusState.loading) {
               return const Center(child: CircularProgressIndicator());
@@ -58,7 +57,7 @@ class _AudioListViewState extends State<AudioListView> {
               padding: EdgeInsets.zero,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: audioFiles.length,
+              itemCount: audioInfos.length,
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
@@ -85,14 +84,14 @@ class _AudioListViewState extends State<AudioListView> {
                             ),
                             const SizedBox(width: 20),
                             Text(
-                              audioFiles[index].name ?? '',
+                              audioInfos[index].name ?? '',
                               style: Theme.of(context).textTheme.bodyText1,
                             ),
                           ],
                         ),
                         Text(
                           displayTime(
-                            audioFiles[index].duration!,
+                            audioInfos[index].duration!,
                           ),
                           style: Theme.of(context).textTheme.subtitle2,
                         ),

@@ -9,7 +9,7 @@ import '../../../common_widget/export.dart';
 
 import '../../../theme/theme_color.dart';
 import '../../custom_screen_form.dart';
-import '../bloc/select_info_bloc.dart';
+import '../bloc/select_info_bloc/select_info_bloc.dart';
 
 enum InfoType { Cause, Correction }
 

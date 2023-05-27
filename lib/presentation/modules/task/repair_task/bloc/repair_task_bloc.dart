@@ -1,7 +1,14 @@
-import 'package:bloc/bloc.dart';
-import 'package:injectable/injectable.dart';
-import 'package:meta/meta.dart';
+import 'dart:io';
 
+import 'package:bloc/bloc.dart';
+import 'package:http/http.dart' as http;
+import 'package:injectable/injectable.dart';
+import 'package:intl/intl.dart';
+import 'package:meta/meta.dart';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
+
+import '../../../../../common/services/firebase/firebase_storage_service.dart';
 import '../../../../../data/models/cmms/cmms_enum.dart';
 import '../../../../../data/models/cmms/maintenance_response/maintenance_response_item.dart';
 import '../../../../../data/models/cmms/put/update_response.dart';
@@ -26,9 +33,11 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
     on<GetMaintenanceResponseEvent>(_onGetMaintenanceResponses);
     on<StartTaskEvent>(_onStartTask);
     on<FinishTaskEvent>(_onFinishTask);
-    on<ReceiveCauseEvent>(_onReceiveCauses);
+    on<ReceiveCauseIdEvent>(_onReceiveCauseIds);
     on<SaveChangeEvent>(_onSaveChange);
-    on<ReceiveCorrectionEvent>(_onReceiveCorrections);
+    on<ReceiveCorrectionIdEvent>(_onReceiveCorrectionIds);
+    on<ReceiveListImageFileEvent>(_onReceiveImageFiles);
+    on<ReceiveListAudioFileEvent>(_onReceiveAudioFiles);
   }
 
   Future<void> _onGetMaintenanceResponses(
@@ -42,32 +51,59 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
       ),
     );
     try {
-      final listCauseEntity = <CauseEntity>[];
-      final listCorrectionEntity = <CorrectionEntity>[];
+      final listCausesSelected = <CauseEntity>[];
+      final listCorrectionsSelected = <CorrectionEntity>[];
+      final listCauseId = <String>[];
+      final listCorrectionId = <String>[];
+      final listImageFiles = <File>[];
+      final listAudioFiles = <File>[];
       final response = await _repository.getMaintenanceResponse(
         responseId: event.responseId,
       );
 
       final responseEntity = response.getMaintenanceResponseItemEntity();
-      for (final item in responseEntity!.cause!) {
-        listCauseEntity.add(item.getCauseEntity());
+      for (final cause in responseEntity!.cause!) {
+        final causeEntity = cause.getCauseEntity();
+        listCausesSelected.add(causeEntity);
+        listCauseId.add(cause.id!);
       }
-      for (final item in responseEntity.correction!) {
-        listCorrectionEntity.add(item.getCorrectionEntity());
+      for (final correction in responseEntity.correction!) {
+        final correctionEntity = correction.getCorrectionEntity();
+        listCorrectionsSelected.add(correction.getCorrectionEntity());
+        listCorrectionId.add(correction.id!);
       }
+
       final update = UpdateResponse().copyWith(
         actualFinishTime: response.items?[0].actualFinishTime,
         actualStartTime: response.items?[0].actualStartTime,
         status: response.items?[0].status,
         updatedAt: response.items?[0].updatedAt,
+        cause: listCauseId,
+        correction: listCorrectionId,
+        images: responseEntity.images,
+        sounds: responseEntity.sounds,
       );
+
+      for (final url in responseEntity.images!) {
+        listImageFiles.add(await _saveImage(url: url, list: listImageFiles));
+      }
+      for (final url in responseEntity.sounds!) {
+        listAudioFiles.add(await _saveAudio(url: url, list: listAudioFiles));
+      }
+
       final newViewModel = state.viewModel.copyWith(
         responseEntity: responseEntity,
         response: response,
         updateResponse: update,
-        listCausesSelected: listCauseEntity,
-        listCorrectionsSelected: listCorrectionEntity,
+        listCausesSelected: listCausesSelected,
+        listCorrectionsSelected: listCorrectionsSelected,
         isChanged: false,
+        listCauseId: listCauseId,
+        listCorrectionId: listCorrectionId,
+        imageUrls: responseEntity.images,
+        audioUrls: responseEntity.sounds,
+        imageFiles: listImageFiles,
+        audioFiles: listAudioFiles,
       );
       emit(
         state.copyWith(
@@ -161,29 +197,27 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
       ),
     );
     try {
-      final listCauseId = <String>[];
-      if (state.viewModel.listCausesSelected!.isNotEmpty) {
-        for (final item in state.viewModel.listCausesSelected!) {
-          listCauseId.add(item.id!);
-        }
-      }
-      final listCorrectionId = <String>[];
-      if (state.viewModel.listCorrectionsSelected!.isNotEmpty) {
-        for (final item in state.viewModel.listCorrectionsSelected!) {
-          listCorrectionId.add(item.id!);
-        }
-      }
-
+      final id = state.viewModel.responseEntity!.id!;
+      final imageUrls = await upLoadImageFile(
+        imageFiles: state.viewModel.imageFiles!,
+        folder: 'Maintenance Response/$id/images',
+      );
+      final audioUrls = await upLoadAudioFile(
+        audioFiles: state.viewModel.audioFiles!,
+        folder: 'Maintenance Response/$id/audios',
+      );
       final update = state.viewModel.updateResponse!.copyWith(
         updatedAt: DateTime.now().toUtc(),
-        cause: listCauseId,
-        correction: listCorrectionId,
+        cause: state.viewModel.listCauseId,
+        correction: state.viewModel.listCorrectionId,
+        images: imageUrls,
+        sounds: audioUrls,
       );
       final newViewModel = state.viewModel.copyWith(
         updateResponse: update,
       );
       await _repository.updateMaintenanceResponse(
-        maintenanceResponseId: state.viewModel.responseEntity!.id!,
+        maintenanceResponseId: id,
         updateResponse: update,
       );
       emit(
@@ -197,8 +231,8 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
     }
   }
 
-  Future<void> _onReceiveCauses(
-    ReceiveCauseEvent event,
+  Future<void> _onReceiveCauseIds(
+    ReceiveCauseIdEvent event,
     Emitter<RepairTaskState> emit,
   ) async {
     emit(
@@ -209,7 +243,7 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
     );
     try {
       final newViewModel = state.viewModel.copyWith(
-        listCausesSelected: event.listCauseEntity,
+        listCauseId: event.listCauseId,
         isChanged: true,
       );
       emit(
@@ -228,8 +262,8 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
     }
   }
 
-  Future<void> _onReceiveCorrections(
-    ReceiveCorrectionEvent event,
+  Future<void> _onReceiveCorrectionIds(
+    ReceiveCorrectionIdEvent event,
     Emitter<RepairTaskState> emit,
   ) async {
     emit(
@@ -240,7 +274,7 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
     );
     try {
       final newViewModel = state.viewModel.copyWith(
-        listCorrectionsSelected: event.listCorrectionEntity,
+        listCorrectionId: event.listCorrectionId,
         isChanged: true,
       );
       emit(
@@ -258,4 +292,141 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
       );
     }
   }
+
+  Future<void> _onReceiveImageFiles(
+    ReceiveListImageFileEvent event,
+    Emitter<RepairTaskState> emit,
+  ) async {
+    emit(
+      ReceiveInfosState(
+        status: BlocStatusState.loading,
+        viewModel: state.viewModel,
+      ),
+    );
+    try {
+      final newViewModel = state.viewModel.copyWith(
+        imageFiles: event.imageFiles,
+        isChanged: true,
+      );
+      emit(
+        state.copyWith(
+          status: BlocStatusState.success,
+          viewModel: newViewModel,
+        ),
+      );
+    } catch (exception) {
+      emit(
+        state.copyWith(
+          viewModel: state.viewModel,
+          status: BlocStatusState.failure,
+        ),
+      );
+    }
+  }
+
+  Future<void> _onReceiveAudioFiles(
+    ReceiveListAudioFileEvent event,
+    Emitter<RepairTaskState> emit,
+  ) async {
+    emit(
+      ReceiveInfosState(
+        status: BlocStatusState.loading,
+        viewModel: state.viewModel,
+      ),
+    );
+    try {
+      final newViewModel = state.viewModel.copyWith(
+        audioFiles: event.audioFiles,
+        isChanged: true,
+      );
+      emit(
+        state.copyWith(
+          status: BlocStatusState.success,
+          viewModel: newViewModel,
+        ),
+      );
+    } catch (exception) {
+      emit(
+        state.copyWith(
+          viewModel: state.viewModel,
+          status: BlocStatusState.failure,
+        ),
+      );
+    }
+  }
+}
+
+Future<List<String>> upLoadAudioFile({
+  required List<File> audioFiles,
+  required String folder,
+}) async {
+  CloudStorageResult? result;
+  final uploadResults = <CloudStorageResult>[];
+  final audioUrls = <String>[];
+  for (var i = 0; i < audioFiles.length; i++) {
+    result = await FirebaseStorageService.uploadFile(
+      file: audioFiles[i],
+      type: 'audio/mpeg',
+      folder: '$folder',
+    );
+    if (result != null) {
+      uploadResults.add(result);
+      audioUrls.add(result.url!);
+    }
+  }
+  return audioUrls;
+}
+
+Future<List<String>> upLoadImageFile({
+  required List<File> imageFiles,
+  required String folder,
+}) async {
+  CloudStorageResult? result;
+  final uploadResults = <CloudStorageResult>[];
+  final imageUrl = <String>[];
+  for (var i = 0; i < imageFiles.length; i++) {
+    final dir = (await getApplicationDocumentsDirectory()).path;
+    //String dir = path.dirname(file.path);
+    final newPath = path.join(
+      dir,
+      'image $i.jpg',
+    );
+    final f = await File(imageFiles[i].path).copy(newPath);
+    result = await FirebaseStorageService.uploadFile(
+      file: f,
+      folder: '$folder',
+    );
+    imageUrl.add(result!.url!);
+
+    uploadResults.add(result);
+  }
+  return imageUrl;
+}
+
+Future<File> _saveImage({required String url, required List<File> list}) async {
+  // Download image
+  final response = await http.get(Uri.parse(url));
+
+  // Get temporary directory
+  final path = (await getTemporaryDirectory()).path;
+
+  // Create an image name
+  final filename = '$path/image ${list.length + 1}.png';
+
+  // Save to filesystem
+  final file = File(filename);
+  return await file.writeAsBytes(response.bodyBytes);
+}
+
+Future<File> _saveAudio({required String url, required List<File> list}) async {
+  final numberFormat = NumberFormat('000', 'en_US');
+  // Download image
+  final response = await http.get(Uri.parse(url));
+  final path = (await getTemporaryDirectory()).path;
+
+  // Create an image name
+  final filename =
+      '$path/Recording_${numberFormat.format(list.length + 1)}.mp3';
+  final file = File(filename);
+  return await file.writeAsBytes(response.bodyBytes);
 }

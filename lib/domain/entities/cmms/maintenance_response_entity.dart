@@ -207,7 +207,19 @@ class MaintenanceResponseEntity {
   }
 
   String get searchDate {
-    return DateFormat('dd/MM/yyyy').format(updatedAt!);
+    if (updatedAt != null) {
+      updatedAt = DateTime.utc(
+        updatedAt!.year,
+        updatedAt!.month,
+        updatedAt!.day,
+        updatedAt!.hour,
+        updatedAt!.minute,
+        updatedAt!.second,
+      );
+      return DateFormat('dd/MM/yyyy').format(updatedAt!.toLocal());
+    } else {
+      return '--';
+    }
   }
 
   String get maintenanceType {

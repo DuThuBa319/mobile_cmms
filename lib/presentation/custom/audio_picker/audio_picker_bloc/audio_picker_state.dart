@@ -9,18 +9,18 @@ class AudioInfo {
 }
 
 class _ViewModel {
-  final List<AudioInfo>? audioFiles;
+  final List<AudioInfo>? audioInfos;
 
   const _ViewModel({
-    this.audioFiles,
+    this.audioInfos,
   });
 
   // Using copyWith function to retains the before data and just "update some specific props" instead of "update all props"
   _ViewModel copyWith({
-    List<AudioInfo>? audioFiles,
+    List<AudioInfo>? audioInfos,
   }) {
     return _ViewModel(
-      audioFiles: audioFiles ?? this.audioFiles,
+      audioInfos: audioInfos ?? this.audioInfos,
     );
   }
 }

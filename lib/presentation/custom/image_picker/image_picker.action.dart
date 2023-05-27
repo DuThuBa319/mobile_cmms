@@ -1,6 +1,18 @@
 part of 'image_picker_widget.dart';
 
 extension ImagePickerAction on _ImagePickerGridViewState {
+  void _blocListener(BuildContext context, ImagePickerState state) {
+    if (state is GetImageState && state.status == BlocStatusState.loading) {
+      showToast('Đang lấy hình ảnh');
+    }
+    if (state is GetImageState && state.status == BlocStatusState.success) {
+      showToast('Lấy hình ảnh thành công');
+
+      widget.receiveBloc!
+          .add(ReceiveImageFileEvent(imageFiles: state.viewModel.imageFiles));
+    }
+  }
+
   Future<ImageSource> selectSource() async {
     ImageSource source;
     final completer = Completer<ImageSource>();
