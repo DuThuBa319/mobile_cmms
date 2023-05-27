@@ -109,11 +109,7 @@ extension RepairTaskViewAction on _RepairTaskViewState {
         ),
       );
     }
-    // if (receiveState is LoadFileState &&
-    //     receiveState.status == BlocStatusState.success) {
-    //   imageBloc.add(
-    //       ReceiveImageEvent(imageFiles: receiveState.viewModel.imageFiles));
-    // }
+
     if (receiveState is ReceiveCorrectionState &&
         receiveState.status == BlocStatusState.success) {
       bloc.add(

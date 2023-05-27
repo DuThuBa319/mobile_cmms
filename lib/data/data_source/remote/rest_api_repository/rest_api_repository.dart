@@ -7,6 +7,8 @@ import '../../../models/cmms/maintenance_response/cause.dart';
 import '../../../models/cmms/maintenance_response/employee.dart';
 import '../../../models/cmms/maintenance_response/maintenance_response.dart';
 import '../../../models/cmms/maintenance_response/maintenance_response_item.dart';
+import '../../../models/cmms/material/material_info.dart';
+import '../../../models/cmms/post/create_material.dart';
 import '../../../models/cmms/post/create_request.dart';
 import '../../../models/cmms/put/update_response.dart';
 import '../../../models/example/weather_model.dart';
@@ -85,5 +87,12 @@ abstract class RestCmmsApiRepository {
   Future<void> updateMaintenanceResponse(
     @Path('maintenanceResponseId') String maintenanceResponseId,
     @Body() UpdateResponse updateResponse,
+  );
+
+  @GET('MaterialInfors')
+  Future<List<MaterialInfo>> getListMaterialInfo();
+  @POST('Materials')
+  Future<bool> createMaterial(
+    @Body() CreateMaterial CreateMaterial,
   );
 }

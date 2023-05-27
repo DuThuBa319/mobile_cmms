@@ -10,11 +10,8 @@ MaterialInfo _$MaterialInfoFromJson(Map<String, dynamic> json) => MaterialInfo(
       code: json['code'] as String?,
       minimumQuantity: (json['minimumQuantity'] as num?)?.toDouble(),
       name: json['name'] as String?,
-      note: json['note'] as String?,
-      specs: (json['specs'] as List<dynamic>?)
-          ?.map((e) => Map<String, String>.from(e as Map))
-          .toList(),
       unit: json['unit'] as String?,
+      materialInforId: json['materialInforId'] as String?,
     );
 
 Map<String, dynamic> _$MaterialInfoToJson(MaterialInfo instance) {
@@ -30,7 +27,6 @@ Map<String, dynamic> _$MaterialInfoToJson(MaterialInfo instance) {
   writeNotNull('name', instance.name);
   writeNotNull('unit', instance.unit);
   writeNotNull('minimumQuantity', instance.minimumQuantity);
-  writeNotNull('note', instance.note);
-  writeNotNull('specs', instance.specs);
+  writeNotNull('materialInforId', instance.materialInforId);
   return val;
 }

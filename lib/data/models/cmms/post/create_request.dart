@@ -20,6 +20,8 @@ class CreateRequest {
   String? requester;
   String? responsiblePerson;
   MaintenanceObject? maintenanceObject;
+  List<String>? images;
+  List<String>? sounds;
 
   CreateRequest({
     this.equipmentCode,
@@ -32,6 +34,8 @@ class CreateRequest {
     this.requestedCompletionDate,
     this.responsiblePerson,
     this.submissionDate,
+    this.images,
+    this.sounds,
   });
   factory CreateRequest.fromJson(Map<String, dynamic> json) =>
       _$CreateRequestFromJson(json);

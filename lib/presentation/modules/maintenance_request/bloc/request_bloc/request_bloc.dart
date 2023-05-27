@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
@@ -34,11 +35,16 @@ class RequestBloc extends AppBlocBase<RequestEvent, RequestState> {
       ),
     );
     try {
-      // if (event.imageFiles != null) await upLoadFile(event.imageFiles!);
-      // if (event.audioFiles != null) {
-      //   await upLoadFile(event.audioFiles!, type: 'audio/mpeg');
-      // }
-      // final newViewModel = state.viewModel.copyWith(allFiles: temp);
+      final date =
+          DateFormat('HH:mm dd/MM/yyyy').format(DateTime.now().toUtc());
+      final imageUrls = await upLoadImageFile(
+        imageFiles: event.imageFiles!,
+        folder: 'Maintenance Request/$date/images',
+      );
+      final audioUrls = await upLoadAudioFile(
+        audioFiles: event.audioFiles!,
+        folder: 'Maintenance Request/$date/audios',
+      );
       final request = CreateRequest(
         problem: event.problem,
         requestedPriority: event.priority,
@@ -50,6 +56,8 @@ class RequestBloc extends AppBlocBase<RequestEvent, RequestState> {
         status: RequestStatus.submitted,
         responsiblePerson: event.requestorCode,
         submissionDate: DateTime.now().toUtc(),
+        // images: imageUrls,
+        // sounds: audioUrls,
       );
       final isSuccess = await _repository.createMaintenanceRequest(
         createRequest: request,
@@ -65,28 +73,50 @@ class RequestBloc extends AppBlocBase<RequestEvent, RequestState> {
     }
   }
 
-  Future<void> upLoadFile(
-    List<File> files, {
-    String type = 'image/jpeg',
+  Future<List<String>> upLoadAudioFile({
+    required List<File> audioFiles,
+    required String folder,
   }) async {
     CloudStorageResult? result;
     final uploadResults = <CloudStorageResult>[];
-    for (var i = 0; i < files.length; i++) {
-      if (type == 'image/jpeg') {
-        final dir = (await getApplicationDocumentsDirectory()).path;
-        //String dir = path.dirname(file.path);
-        final newPath = path.join(
-          dir,
-          'image $i.jpg',
-        );
-        final f = await File(files[i].path).copy(newPath);
-        result = await FirebaseStorageService.uploadFile(file: f, type: type);
-      } else {
-        result =
-            await FirebaseStorageService.uploadFile(file: files[i], type: type);
+    final audioUrls = <String>[];
+    for (var i = 0; i < audioFiles.length; i++) {
+      result = await FirebaseStorageService.uploadFile(
+        file: audioFiles[i],
+        type: 'audio/mpeg',
+        folder: '$folder',
+      );
+      if (result != null) {
+        uploadResults.add(result);
+        audioUrls.add(result.url!);
       }
-
-      uploadResults.add(result!);
     }
+    return audioUrls;
+  }
+
+  Future<List<String>> upLoadImageFile({
+    required List<File> imageFiles,
+    required String folder,
+  }) async {
+    CloudStorageResult? result;
+    final uploadResults = <CloudStorageResult>[];
+    final imageUrl = <String>[];
+    for (var i = 0; i < imageFiles.length; i++) {
+      final dir = (await getApplicationDocumentsDirectory()).path;
+      //String dir = path.dirname(file.path);
+      final newPath = path.join(
+        dir,
+        'image $i.jpg',
+      );
+      final f = await File(imageFiles[i].path).copy(newPath);
+      result = await FirebaseStorageService.uploadFile(
+        file: f,
+        folder: '$folder',
+      );
+      imageUrl.add(result!.url!);
+
+      uploadResults.add(result);
+    }
+    return imageUrl;
   }
 }

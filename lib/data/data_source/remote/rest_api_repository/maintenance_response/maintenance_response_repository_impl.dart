@@ -26,16 +26,6 @@ class MaintenanceResponseRepositoryImpl
     );
   }
 
-  // @override
-  // Future<void> updateMaintenanceResponse({
-  //   required String maintenanceResponseId,
-  //   required MaintenanceResponseItem maintenanceResponseItem,
-  // }) async {
-  //   await cmmsApi.updateMaintenanceResponse(
-  //     maintenanceResponseId,
-  //     maintenanceResponseItem,
-  //   );
-  // }
   @override
   Future<void> updateMaintenanceResponse({
     required String maintenanceResponseId,

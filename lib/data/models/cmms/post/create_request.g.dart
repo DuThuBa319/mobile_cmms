@@ -23,6 +23,10 @@ CreateRequest _$CreateRequestFromJson(Map<String, dynamic> json) =>
       submissionDate: json['submissionDate'] == null
           ? null
           : DateTime.parse(json['submissionDate'] as String),
+      images:
+          (json['images'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      sounds:
+          (json['sounds'] as List<dynamic>?)?.map((e) => e as String).toList(),
     );
 
 Map<String, dynamic> _$CreateRequestToJson(CreateRequest instance) {
@@ -46,6 +50,8 @@ Map<String, dynamic> _$CreateRequestToJson(CreateRequest instance) {
   writeNotNull('responsiblePerson', instance.responsiblePerson);
   writeNotNull('maintenanceObject',
       _$MaintenanceObjectEnumMap[instance.maintenanceObject]);
+  writeNotNull('images', instance.images);
+  writeNotNull('sounds', instance.sounds);
   return val;
 }
 

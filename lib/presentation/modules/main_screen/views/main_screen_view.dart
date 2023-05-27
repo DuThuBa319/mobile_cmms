@@ -11,6 +11,7 @@ import '../../../common_widget/smart_refresher_wrapper.dart';
 import '../../../route/route_list.dart';
 import '../../../theme/theme_color.dart';
 
+import '../../add_material/view/add_material_screen.dart';
 import '../../task/general_check/view/general_check_screen.dart';
 import '../../task/repair_task/view/repair_task_screen.dart';
 import '../../task/replace_mold/view/replace_mold_screen.dart';

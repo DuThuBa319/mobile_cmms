@@ -32,6 +32,12 @@ extension MainScreenViewAction on _MainScreenViewState {
     } else {
       textController = barcodeScanRes;
       showToast(textController);
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => AddMaterialScreen(sku: textController),
+        ),
+      );
     }
   }
 

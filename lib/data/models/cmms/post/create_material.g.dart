@@ -1,21 +1,19 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'material.dart';
+part of 'create_material.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Materials _$MaterialsFromJson(Map<String, dynamic> json) => Materials(
-      materialId: json['materialId'] as String?,
-      materialInfo: json['materialInfo'] == null
-          ? null
-          : MaterialInfo.fromJson(json['materialInfo'] as Map<String, dynamic>),
+CreateMaterial _$CreateMaterialFromJson(Map<String, dynamic> json) =>
+    CreateMaterial(
+      materialInfor: json['materialInfor'] as String?,
       sku: json['sku'] as String?,
       status: $enumDecodeNullable(_$MaterialStatusEnumMap, json['status']),
     );
 
-Map<String, dynamic> _$MaterialsToJson(Materials instance) {
+Map<String, dynamic> _$CreateMaterialToJson(CreateMaterial instance) {
   final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {
@@ -24,8 +22,7 @@ Map<String, dynamic> _$MaterialsToJson(Materials instance) {
     }
   }
 
-  writeNotNull('materialId', instance.materialId);
-  writeNotNull('materialInfo', instance.materialInfo?.toJson());
+  writeNotNull('materialInfor', instance.materialInfor);
   writeNotNull('status', _$MaterialStatusEnumMap[instance.status]);
   writeNotNull('sku', instance.sku);
   return val;

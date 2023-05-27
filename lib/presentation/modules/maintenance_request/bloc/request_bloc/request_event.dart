@@ -13,9 +13,11 @@ class MakeRequestEvent extends RequestEvent {
     this.maintenanceObject = MaintenanceObject.equipment,
     this.requestStatus = RequestStatus.submitted,
     this.requestorCode,
+    this.audioFiles,
+    this.imageFiles,
   });
-  // List<File>? imageFiles;
-  // List<File>? audioFiles;
+  List<File>? imageFiles;
+  List<File>? audioFiles;
   DateTime? requestedCompletionDate;
   String? problem;
   MaintenanceType? type;

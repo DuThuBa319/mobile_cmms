@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,6 +34,8 @@ class MaintenanceRequestView extends StatefulWidget {
 }
 
 class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
+  List<File>? imageFiles = [];
+  List<File>? audioFiles = [];
   bool check = false;
   List<CauseEntity> tempListCauses = [];
   DateTime currentDate = DateTime.now();
@@ -74,9 +78,6 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
   Widget buildBase(BuildContext context) {
     final bodyTextStyle =
         Theme.of(context).textTheme.headline4?.copyWith(fontSize: 12);
-
-    Object? _dropdownValue;
-
     return BlocConsumer<GetRequestInfoBloc, GetRequestInfoState>(
       listener: _requestInfoBlocListener,
       builder: (context, state) {
@@ -310,18 +311,42 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                           ?.copyWith(color: Colors.black, height: 1.4),
                     ),
                   ),
-                  const Text(
-                    'Hình ảnh mô tả: ',
+                  BlocListener<ReceiveInfoSelectionBloc,
+                      ReceiveInfoSelectionState>(
+                    bloc: receiveBloc,
+                    listener: (context, receiveState) {
+                      if (receiveState is ReceiveImageFileState &&
+                          receiveState.status == BlocStatusState.success) {
+                        imageFiles = receiveState.viewModel.imageFiles;
+                      }
+                      if (receiveState is ReceiveAudioFileState &&
+                          receiveState.status == BlocStatusState.success) {
+                        audioFiles = receiveState.viewModel.audioFiles;
+                      }
+                    },
+                    child: Column(
+                      children: [
+                        const Text(
+                          'Hình ảnh mô tả: ',
+                        ),
+                        check
+                            ? ImagePickerGridView(
+                                bloc: imageBloc,
+                                receiveBloc: receiveBloc,
+                              )
+                            : disableImagePicker(),
+                        const Text(
+                          'Ghi âm mô tả: ',
+                        ),
+                        check
+                            ? AudioListView(
+                                bloc: audioBloc,
+                                receiveBloc: receiveBloc,
+                              )
+                            : disableAudioPicker(),
+                      ],
+                    ),
                   ),
-                  check
-                      ? ImagePickerGridView(
-                          bloc: imageBloc,
-                        )
-                      : disableImagePicker(),
-                  const Text(
-                    'Ghi âm mô tả: ',
-                  ),
-                  check ? AudioListView(bloc: audioBloc) : disableAudioPicker(),
                   const SizedBox(
                     height: 30,
                   ),
@@ -338,17 +363,10 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                       child: TextButton(
                         onPressed: () {
                           if (check) {
-                            // final temp = <File>[];
-                            // if (audioBloc.state.viewModel.audioFiles != null) {
-                            //   for (final fileInfo
-                            //       in audioBloc.state.viewModel.audioFiles!) {
-                            //     temp.add(fileInfo.file!);
-                            //   }
-                            // }
                             bloc.add(
                               MakeRequestEvent(
-                                // imageFiles: bloc.state.viewModel.imageFiles,
-                                // audioFiles: temp,
+                                imageFiles: imageFiles,
+                                audioFiles: audioFiles,
                                 priority: priority,
                                 problem: descriptionTextController.text,
                                 requestedCompletionDate: currentDate,
