@@ -325,6 +325,7 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                       }
                     },
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
                           'Hình ảnh mô tả: ',

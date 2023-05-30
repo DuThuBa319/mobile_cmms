@@ -36,7 +36,7 @@ class RequestBloc extends AppBlocBase<RequestEvent, RequestState> {
     );
     try {
       final date =
-          DateFormat('HH:mm dd/MM/yyyy').format(DateTime.now().toUtc());
+          DateFormat('HH:mm dd-MM-yyyy').format(DateTime.now().toUtc());
       final imageUrls = await upLoadImageFile(
         imageFiles: event.imageFiles!,
         folder: 'Maintenance Request/$date/images',
@@ -56,8 +56,8 @@ class RequestBloc extends AppBlocBase<RequestEvent, RequestState> {
         status: RequestStatus.submitted,
         responsiblePerson: event.requestorCode,
         submissionDate: DateTime.now().toUtc(),
-        // images: imageUrls,
-        // sounds: audioUrls,
+        images: imageUrls,
+        sounds: audioUrls,
       );
       final isSuccess = await _repository.createMaintenanceRequest(
         createRequest: request,

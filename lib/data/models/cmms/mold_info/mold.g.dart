@@ -7,7 +7,7 @@ part of 'mold.dart';
 // **************************************************************************
 
 Mold _$MoldFromJson(Map<String, dynamic> json) => Mold(
-      id: json['id'] as String?,
+      moldId: json['moldId'] as String?,
       code: json['code'] as String?,
       name: json['name'] as String?,
       cavity: json['cavity'] as int?,
@@ -50,7 +50,7 @@ Map<String, dynamic> _$MoldToJson(Mold instance) {
     }
   }
 
-  writeNotNull('id', instance.id);
+  writeNotNull('moldId', instance.moldId);
   writeNotNull('code', instance.code);
   writeNotNull('name', instance.name);
   writeNotNull('cavity', instance.cavity);
