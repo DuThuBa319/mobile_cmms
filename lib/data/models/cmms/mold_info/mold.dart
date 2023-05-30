@@ -13,7 +13,7 @@ part 'mold.g.dart';
 @JsonSerializable(explicitToJson: true)
 // ignore: must_be_immutable
 class Mold {
-  String? id;
+  String? moldId;
   String? code;
   String? name;
   int? cavity;
@@ -29,7 +29,7 @@ class Mold {
   List<ChartObj>? errors;
   List<EquipmentMaterial>? material;
   Mold({
-    this.id,
+    this.moldId,
     this.code,
     this.name,
     this.cavity,
