@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:badges/badges.dart';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Badge;
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../common/utils.dart';
@@ -186,7 +186,7 @@ class BottomItem extends StatelessWidget {
                 showBadge: count > 0,
                 badgeContent: Text(
                   '${min(count, 99)}${count > 99 ? '+' : ''}',
-                  style: theme.textTheme.subtitle1?.copyWith(
+                  style: theme.textTheme.titleMedium?.copyWith(
                     fontSize: count > 99 ? 8 : 10,
                     color: AppColor.white,
                   ),
@@ -239,13 +239,13 @@ class BottomItem extends StatelessWidget {
   TextStyle _getTextStyle(BuildContext context) {
     final theme = Theme.of(context);
     if (selected) {
-      return theme.textTheme.subtitle1!.copyWith(
+      return theme.textTheme.titleMedium!.copyWith(
         color: theme.colorScheme.secondary,
         fontSize: 12,
         fontWeight: FontWeight.bold,
       );
     } else {
-      return theme.textTheme.subtitle1!.copyWith(
+      return theme.textTheme.titleMedium!.copyWith(
         color: Colors.white,
         fontSize: 12,
         fontWeight: FontWeight.w500,

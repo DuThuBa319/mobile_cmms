@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../../common/utils.dart';
 import '../../base/base.dart';
@@ -169,7 +169,7 @@ class _WebviewScreenState extends StateBase<WebviewScreen> {
           Icons.content_copy_outlined,
         ),
         onTap: () async {
-          await Clipboard.setData(ClipboardData(text: url));
+          await Clipboard.setData(ClipboardData(text: url!));
           showToast('Đã sao chép');
         },
       )
