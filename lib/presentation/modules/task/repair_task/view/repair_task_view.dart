@@ -84,7 +84,7 @@ class _RepairTaskViewState extends StateBase<RepairTaskView> {
                 equipmentCode: state.viewModel.responseEntity?.equipment?.code,
               ),
               Wrap(
-                spacing: 8,
+                spacing: 5,
                 direction: Axis.vertical,
                 children: [
                   Text(
@@ -100,12 +100,24 @@ class _RepairTaskViewState extends StateBase<RepairTaskView> {
                   ),
                   Container(
                     width: 378,
-                    height: 36,
-                    child: DropdownWidget<String>(
-                      controller: problemController,
-                      itemBuilder: itemBuilder,
-                      borderColor: AppColor.gray767676,
-                      items: problem,
+                    height: 50,
+                    margin: const EdgeInsets.only(bottom: 10, top: 10),
+                    padding: const EdgeInsets.fromLTRB(12, 9, 16, 10),
+                    decoration: BoxDecoration(
+                      border:
+                          Border.all(color: AppColor.gray767676, width: 0.5),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    alignment: Alignment.centerLeft,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        itemBuilder('--', textColor: AppColor.gray767676),
+                        const Icon(
+                          Icons.keyboard_arrow_right,
+                          color: AppColor.gray767676,
+                        )
+                      ],
                     ),
                   ),
 
@@ -159,12 +171,37 @@ class _RepairTaskViewState extends StateBase<RepairTaskView> {
 
                   //-------------------------------------------------//
 
-                  Text(
-                    'LINH KIỆN: ',
-                    style: Theme.of(context)
-                        .textTheme
-                        .caption
-                        ?.copyWith(color: AppColor.gray767676),
+                  Container(
+                    width: 378,
+                    height: 36,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'LINH KIỆN: ',
+                          style: Theme.of(context)
+                              .textTheme
+                              .caption
+                              ?.copyWith(color: AppColor.gray767676),
+                        ),
+                        TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            'Quét SKU',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2
+                                ?.copyWith(
+                                  color:
+                                      state.viewModel.responseEntity?.status ==
+                                              MaintenanceStatus.inProgress
+                                          ? AppColor.blue0089D7
+                                          : AppColor.gray767676,
+                                ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   Text(
                     'Tên linh kiện',
@@ -183,45 +220,6 @@ class _RepairTaskViewState extends StateBase<RepairTaskView> {
                   const SizedBox(
                     height: 15,
                   ),
-                  SizedBox(
-                    width: 378,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Số lượng sử dụng',
-                          style: bodyTextStyle,
-                        ),
-                        SizedBox(
-                          width: 120,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Container(
-                                width: 80,
-                                height: 32,
-                                decoration: BoxDecoration(
-                                  border:
-                                      Border.all(color: AppColor.gray767676),
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                                child: TextField(
-                                  controller: quantity,
-                                  keyboardType: TextInputType.number,
-                                  decoration: const InputDecoration(
-                                    contentPadding: EdgeInsets.only(bottom: 18),
-                                  ),
-                                  textAlign: TextAlign.center,
-                                  style: bodyTextStyle,
-                                ),
-                              ),
-                              Text('cái', style: bodyTextStyle),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
 
                   const SizedBox(height: 18),
                 ],
@@ -238,25 +236,22 @@ class _RepairTaskViewState extends StateBase<RepairTaskView> {
                 'Hình ảnh báo cáo: ',
                 style: bodyTextStyle,
               ),
-              state.viewModel.responseEntity?.status ==
-                      MaintenanceStatus.inProgress
-                  ? ImagePickerGridView(
-                      bloc: imageBloc,
-                      receiveBloc: receiveBloc,
-                    )
-                  : disableImagePicker(),
+              ImagePickerGridView(
+                bloc: imageBloc,
+                receiveBloc: receiveBloc,
+                isEnable: isInProgress,
+                availableImgae: state.viewModel.imageCount,
+              ),
 
               Text(
                 'Ghi âm báo cáo: ',
                 style: bodyTextStyle,
               ),
-              state.viewModel.responseEntity?.status ==
-                      MaintenanceStatus.inProgress
-                  ? AudioListView(
-                      bloc: audioBloc,
-                      receiveBloc: receiveBloc,
-                    )
-                  : disableAudioPicker(),
+              AudioListView(
+                bloc: audioBloc,
+                receiveBloc: receiveBloc,
+                isEnable: isInProgress,
+              ),
 
               const SizedBox(height: 30),
               buildButton(
@@ -327,7 +322,7 @@ class _RepairTaskViewState extends StateBase<RepairTaskView> {
     if (status == MaintenanceStatus.assigned) {
       return Container(
         decoration: BoxDecoration(
-          color: AppColor.greyD9,
+          color: AppColor.blue0089D7,
           borderRadius: BorderRadius.circular(8),
         ),
         width: 360,
@@ -339,7 +334,7 @@ class _RepairTaskViewState extends StateBase<RepairTaskView> {
           child: Text(
             'Bắt đầu công việc',
             style: Theme.of(context).textTheme.headline3?.copyWith(
-                  color: Colors.black,
+                  color: Colors.white,
                   fontWeight: FontWeight.w500,
                 ),
           ),
@@ -361,7 +356,7 @@ class _RepairTaskViewState extends StateBase<RepairTaskView> {
           child: Text(
             'Quay lại',
             style: Theme.of(context).textTheme.headline3?.copyWith(
-                  color: Colors.black,
+                  color: Colors.white,
                   fontWeight: FontWeight.w500,
                 ),
           ),

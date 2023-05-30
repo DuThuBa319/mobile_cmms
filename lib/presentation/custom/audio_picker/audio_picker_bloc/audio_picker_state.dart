@@ -67,6 +67,13 @@ class GetAudioState extends AudioPickerState {
   }) : super(viewModel, status: status);
 }
 
+class LoadAudioState extends AudioPickerState {
+  LoadAudioState({
+    _ViewModel viewModel = const _ViewModel(),
+    BlocStatusState status = BlocStatusState.initial,
+  }) : super(viewModel, status: status);
+}
+
 final _factories = <
     Type,
     Function(
@@ -78,6 +85,10 @@ final _factories = <
         status: status,
       ),
   GetAudioState: (viewModel, status) => GetAudioState(
+        viewModel: viewModel,
+        status: status,
+      ),
+  LoadAudioState: (viewModel, status) => LoadAudioState(
         viewModel: viewModel,
         status: status,
       ),

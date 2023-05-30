@@ -100,10 +100,12 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
         isChanged: false,
         listCauseId: listCauseId,
         listCorrectionId: listCorrectionId,
-        imageUrls: responseEntity.images,
-        audioUrls: responseEntity.sounds,
+        imageUrls: [],
+        audioUrls: [],
         imageFiles: listImageFiles,
         audioFiles: listAudioFiles,
+        imageCount: listImageFiles.length,
+        soundCount: listAudioFiles.length,
       );
       emit(
         state.copyWith(
@@ -198,13 +200,21 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
     );
     try {
       final id = state.viewModel.responseEntity!.id!;
-      final imageUrls = await upLoadImageFile(
-        imageFiles: state.viewModel.imageFiles!,
-        folder: 'Maintenance Response/$id/images',
+      final imageUrls = state.viewModel.imageUrls;
+      imageUrls!.addAll(
+        await upLoadImageFile(
+          imageFiles: state.viewModel.imageFiles!,
+          folder: 'Maintenance Response/$id/images',
+          availableImage: state.viewModel.imageCount ?? 0,
+        ),
       );
-      final audioUrls = await upLoadAudioFile(
-        audioFiles: state.viewModel.audioFiles!,
-        folder: 'Maintenance Response/$id/audios',
+      final audioUrls = state.viewModel.audioUrls;
+      audioUrls!.addAll(
+        await upLoadAudioFile(
+          audioFiles: state.viewModel.audioFiles!,
+          folder: 'Maintenance Response/$id/audios',
+          availableAudio: state.viewModel.soundCount ?? 0,
+        ),
       );
       final update = state.viewModel.updateResponse!.copyWith(
         updatedAt: DateTime.now().toUtc(),
@@ -359,19 +369,22 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
 Future<List<String>> upLoadAudioFile({
   required List<File> audioFiles,
   required String folder,
+  required int availableAudio,
 }) async {
   CloudStorageResult? result;
   final uploadResults = <CloudStorageResult>[];
   final audioUrls = <String>[];
   for (var i = 0; i < audioFiles.length; i++) {
-    result = await FirebaseStorageService.uploadFile(
-      file: audioFiles[i],
-      type: 'audio/mpeg',
-      folder: '$folder',
-    );
-    if (result != null) {
-      uploadResults.add(result);
-      audioUrls.add(result.url!);
+    if (i < availableAudio) {
+      result = await FirebaseStorageService.uploadFile(
+        file: audioFiles[i],
+        type: 'audio/mpeg',
+        folder: '$folder',
+      );
+      if (result != null) {
+        uploadResults.add(result);
+        audioUrls.add(result.url!);
+      }
     }
   }
   return audioUrls;
@@ -380,30 +393,36 @@ Future<List<String>> upLoadAudioFile({
 Future<List<String>> upLoadImageFile({
   required List<File> imageFiles,
   required String folder,
+  required int availableImage,
 }) async {
   CloudStorageResult? result;
   final uploadResults = <CloudStorageResult>[];
   final imageUrl = <String>[];
   for (var i = 0; i < imageFiles.length; i++) {
-    final dir = (await getApplicationDocumentsDirectory()).path;
-    //String dir = path.dirname(file.path);
-    final newPath = path.join(
-      dir,
-      'image $i.jpg',
-    );
-    final f = await File(imageFiles[i].path).copy(newPath);
-    result = await FirebaseStorageService.uploadFile(
-      file: f,
-      folder: '$folder',
-    );
-    imageUrl.add(result!.url!);
+    if (i >= availableImage) {
+      final dir = (await getApplicationDocumentsDirectory()).path;
+      //String dir = path.dirname(file.path);
+      final newPath = path.join(
+        dir,
+        'image $i.jpg',
+      );
+      final f = await File(imageFiles[i].path).copy(newPath);
+      result = await FirebaseStorageService.uploadFile(
+        file: f,
+        folder: '$folder',
+      );
+      imageUrl.add(result!.url!);
 
-    uploadResults.add(result);
+      uploadResults.add(result);
+    }
   }
   return imageUrl;
 }
 
-Future<File> _saveImage({required String url, required List<File> list}) async {
+Future<File> _saveImage({
+  required String url,
+  required List<File> list,
+}) async {
   // Download image
   final response = await http.get(Uri.parse(url));
 

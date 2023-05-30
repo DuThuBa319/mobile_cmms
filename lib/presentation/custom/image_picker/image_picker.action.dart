@@ -6,7 +6,7 @@ extension ImagePickerAction on _ImagePickerGridViewState {
       showToast('Đang lấy hình ảnh');
     }
     if (state is GetImageState && state.status == BlocStatusState.success) {
-      showToast('Lấy hình ảnh thành công');
+      //showToast('Lấy hình ảnh thành công');
 
       widget.receiveBloc!
           .add(ReceiveImageFileEvent(imageFiles: state.viewModel.imageFiles));

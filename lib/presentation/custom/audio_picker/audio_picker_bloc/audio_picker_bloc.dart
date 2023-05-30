@@ -31,7 +31,7 @@ class AudioPickerBloc extends AppBlocBase<AudioPickerEvent, AudioPickerState> {
     Emitter<AudioPickerState> emit,
   ) async {
     emit(
-      GetAudioState(
+      LoadAudioState(
         status: BlocStatusState.loading,
         viewModel: state.viewModel,
       ),

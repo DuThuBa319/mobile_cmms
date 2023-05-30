@@ -16,9 +16,17 @@ import 'audio_picker_bloc/audio_picker_bloc.dart';
 part 'audio_picker.action.dart';
 
 class AudioListView extends StatefulWidget {
-  AudioListView({super.key, this.bloc, this.receiveBloc});
+  AudioListView({
+    super.key,
+    this.bloc,
+    required this.receiveBloc,
+    required this.isEnable,
+    this.availableAudio = 0,
+  });
   final AudioPickerBloc? bloc;
   final ReceiveInfoSelectionBloc? receiveBloc;
+  final bool? isEnable;
+  final int? availableAudio;
   @override
   State<AudioListView> createState() => _AudioListViewState();
 }
@@ -61,7 +69,9 @@ class _AudioListViewState extends State<AudioListView> {
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
-                    editPicker(context, index);
+                    index < widget.availableAudio!
+                        ? null
+                        : editPicker(context, index);
                   },
                   child: Container(
                     width: 378,
@@ -69,7 +79,11 @@ class _AudioListViewState extends State<AudioListView> {
                     padding: const EdgeInsets.only(left: 10, right: 15),
                     margin: const EdgeInsets.only(top: 10, bottom: 5),
                     decoration: BoxDecoration(
-                      border: Border.all(color: AppColor.blue0089D7),
+                      border: Border.all(
+                        color: widget.isEnable == true
+                            ? AppColor.blue0089D7
+                            : AppColor.gray767676,
+                      ),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Row(
@@ -77,9 +91,11 @@ class _AudioListViewState extends State<AudioListView> {
                       children: [
                         Row(
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.play_circle_filled,
-                              color: AppColor.blue0089D7,
+                              color: widget.isEnable == true
+                                  ? AppColor.blue0089D7
+                                  : AppColor.gray767676,
                               size: 27,
                             ),
                             const SizedBox(width: 20),
@@ -108,17 +124,23 @@ class _AudioListViewState extends State<AudioListView> {
           width: 50,
           height: 50,
           decoration: BoxDecoration(
-            border: Border.all(color: AppColor.blue0089D7),
+            border: Border.all(
+              color: widget.isEnable == true
+                  ? AppColor.blue0089D7
+                  : AppColor.gray767676,
+            ),
             borderRadius: BorderRadius.circular(8),
           ),
           child: IconButton(
-            icon: const Icon(
+            icon: Icon(
               Icons.add,
-              color: AppColor.blue0089D7,
+              color: widget.isEnable == true
+                  ? AppColor.blue0089D7
+                  : AppColor.gray767676,
               size: 25,
             ),
             onPressed: () {
-              showPicker(context);
+              widget.isEnable == true ? showPicker(context) : null;
             },
           ),
         ),

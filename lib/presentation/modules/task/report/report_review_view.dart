@@ -97,13 +97,13 @@ class _ReportReviewViewState extends StateBase<ReportReviewView> {
             style: bodyTextStyle,
           ),
 
-          ImagePickerGridView(bloc: bloc),
+          ImagePickerGridView(bloc: bloc, isEnable: false, receiveBloc: null),
 
           Text(
             'Ghi âm báo cáo: ',
             style: bodyTextStyle,
           ),
-          AudioListView(bloc: audioBloc),
+          AudioListView(bloc: audioBloc, isEnable: false, receiveBloc: null),
           const SizedBox(height: 40),
           Container(
             decoration: BoxDecoration(

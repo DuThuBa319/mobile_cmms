@@ -3,17 +3,22 @@ part of 'audio_picker_widget.dart';
 extension AudioPickerAction on _AudioListViewState {
   void _blocListener(BuildContext context, AudioPickerState state) {
     if (state is GetAudioState && state.status == BlocStatusState.loading) {
-      showToast('Đang lấy hình ảnh');
+      //  showToast('Đang lấy ghi âm');
     }
     if (state is GetAudioState && state.status == BlocStatusState.success) {
       audioInfos = state.viewModel.audioInfos!;
-      showToast('Lấy hình ảnh thành công');
+      //  showToast('Lấy hình ảnh thành công');
       final audioFiles = state.viewModel.audioInfos;
       final temp = <File>[];
       for (final file in audioFiles!) {
         temp.add(file.file!);
       }
       widget.receiveBloc!.add(ReceiveAudioFileEvent(audioFiles: temp));
+    }
+    if (state is LoadAudioState && state.status == BlocStatusState.success) {
+      audioInfos = state.viewModel.audioInfos!;
+      //  showToast('Lấy hình ảnh thành công');
+      final audioFiles = state.viewModel.audioInfos;
     }
   }
 
@@ -65,7 +70,7 @@ extension AudioPickerAction on _AudioListViewState {
                   Icons.mic,
                 ),
                 title: const Text(
-                  'Camera',
+                  'Micro',
                   style: TextStyle(),
                 ),
                 onTap: () {

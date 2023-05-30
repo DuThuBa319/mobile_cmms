@@ -53,7 +53,7 @@ class SelectInfoBloc extends AppBlocBase<SelectInfoEvent, SelectInfoState> {
       } else {
         correctionResponses = await _usecase.getListCorrections();
         responses = correctionResponses;
-        final temps = <int>[];
+
         if (event.selectedCorrection!.isNotEmpty) {
           for (var i = 0; i < correctionResponses!.length; i++) {
             for (final item in event.selectedCorrection!) {

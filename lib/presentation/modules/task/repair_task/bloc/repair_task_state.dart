@@ -15,6 +15,8 @@ class _ViewModel {
   final List<File>? audioFiles;
   final List<String>? imageUrls;
   final List<String>? audioUrls;
+  final int? imageCount;
+  final int? soundCount;
   const _ViewModel({
     this.response,
     this.responseEntity,
@@ -28,6 +30,8 @@ class _ViewModel {
     this.imageUrls,
     this.audioFiles,
     this.audioUrls,
+    this.imageCount,
+    this.soundCount,
   });
 
   // Using copyWith function to retains the before data and just "update some specific props" instead of "update all props"
@@ -44,6 +48,8 @@ class _ViewModel {
     List<String>? imageUrls,
     List<File>? audioFiles,
     List<String>? audioUrls,
+    int? imageCount,
+    int? soundCount,
   }) {
     return _ViewModel(
       response: response ?? this.response,
@@ -59,6 +65,8 @@ class _ViewModel {
       imageUrls: imageUrls ?? this.imageUrls,
       audioFiles: audioFiles ?? this.audioFiles,
       audioUrls: audioUrls ?? this.audioUrls,
+      imageCount: imageCount ?? this.imageCount,
+      soundCount: soundCount ?? this.soundCount,
     );
   }
 }

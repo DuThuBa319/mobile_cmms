@@ -62,14 +62,15 @@ class _ReplaceMoldViewState extends StateBase<ReplaceMoldView> {
                 'Hình ảnh báo cáo: ',
                 style: bodyTextStyle,
               ),
-              ImagePickerGridView(bloc: bloc),
+              ImagePickerGridView(
+                  bloc: bloc, isEnable: false, receiveBloc: null),
             ],
           ),
           Text(
             'Ghi âm báo cáo: ',
             style: bodyTextStyle,
           ),
-          AudioListView(bloc: audioBloc),
+          AudioListView(bloc: audioBloc, isEnable: false, receiveBloc: null),
           const SizedBox(
             height: 30,
           ),

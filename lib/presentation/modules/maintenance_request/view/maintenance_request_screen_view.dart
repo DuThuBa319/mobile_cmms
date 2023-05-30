@@ -274,7 +274,7 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        itemBuilder1('item'),
+                        itemBuilder1('--'),
                         const Icon(
                           Icons.keyboard_arrow_right,
                           color: AppColor.gray767676,
@@ -330,21 +330,19 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                         const Text(
                           'Hình ảnh mô tả: ',
                         ),
-                        check
-                            ? ImagePickerGridView(
-                                bloc: imageBloc,
-                                receiveBloc: receiveBloc,
-                              )
-                            : disableImagePicker(),
+                        ImagePickerGridView(
+                          bloc: imageBloc,
+                          receiveBloc: receiveBloc,
+                          isEnable: check,
+                        ),
                         const Text(
                           'Ghi âm mô tả: ',
                         ),
-                        check
-                            ? AudioListView(
-                                bloc: audioBloc,
-                                receiveBloc: receiveBloc,
-                              )
-                            : disableAudioPicker(),
+                        AudioListView(
+                          bloc: audioBloc,
+                          receiveBloc: receiveBloc,
+                          isEnable: check,
+                        ),
                       ],
                     ),
                   ),

@@ -25,7 +25,7 @@ class ImagePickerBloc extends AppBlocBase<ImagePickerEvent, ImagePickerState> {
     Emitter<ImagePickerState> emit,
   ) async {
     emit(
-      GetImageState(
+      LoadImageState(
         status: BlocStatusState.loading,
         viewModel: state.viewModel,
       ),

@@ -56,6 +56,13 @@ class GetImageState extends ImagePickerState {
   }) : super(viewModel, status: status);
 }
 
+class LoadImageState extends ImagePickerState {
+  LoadImageState({
+    _ViewModel viewModel = const _ViewModel(),
+    BlocStatusState status = BlocStatusState.initial,
+  }) : super(viewModel, status: status);
+}
+
 final _factories = <
     Type,
     Function(
@@ -67,6 +74,10 @@ final _factories = <
         status: status,
       ),
   GetImageState: (viewModel, status) => GetImageState(
+        viewModel: viewModel,
+        status: status,
+      ),
+  LoadImageState: (viewModel, status) => LoadImageState(
         viewModel: viewModel,
         status: status,
       ),
