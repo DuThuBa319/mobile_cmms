@@ -24,10 +24,10 @@ extension AudioPickerAction on _AudioListViewState {
 
   //----------------------------------//
   Future initRecorder() async {
-    final status = await Permission.microphone.request();
-    if (status != PermissionStatus.granted) {
-      throw 'Microphone permission not granted';
-    }
+    await [
+      Permission.microphone,
+      Permission.camera,
+    ].request();
 
     await recorder.openRecorder();
     // isRecorderReady = true;

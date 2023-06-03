@@ -53,7 +53,6 @@ class _MainScreenViewState extends StateBase<MainScreenView> {
                 function: scheduleNavigator,
               ),
               BoxIcon(Icons.qr_code_scanner, 'Quét mã', function: scanQR),
-              BoxIcon(Icons.dns, 'Kho phụ kiện'),
               BoxIcon(
                 Icons.send,
                 'Tạo yêu cầu',

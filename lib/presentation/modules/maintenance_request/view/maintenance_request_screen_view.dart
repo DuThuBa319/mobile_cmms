@@ -183,7 +183,7 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                                 SizedBox(
                                   width: 100,
                                   child: Text(
-                                    DateFormat('dd-MM-yyyy').format(
+                                    DateFormat('HH:mm dd-MM-yyyy').format(
                                       state.viewModel.selectedDate ??
                                           currentDate,
                                     ),
@@ -200,24 +200,7 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                                 IconButton(
                                   padding: const EdgeInsets.only(bottom: 3),
                                   onPressed: () {
-                                    if (state.viewModel.isEnable!) {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return AlertDialog(
-                                            content:
-                                                const Text('Chọn thời gian'),
-                                            actions: [
-                                              CupertinoDatePickerCustom(
-                                                initialDateTime: currentDate,
-                                                onCancelled: null,
-                                                onComfirmed: setDate,
-                                              )
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    }
+                                    selectTime(state, context);
                                   },
                                   icon: Icon(
                                     Icons.calendar_month,
@@ -292,7 +275,10 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                   ),
                   Container(
                     width: 388,
-                    height: 66,
+                    constraints: const BoxConstraints(
+                      minHeight: 66,
+                      maxHeight: 200,
+                    ),
                     margin: const EdgeInsets.only(bottom: 17, top: 10),
                     padding: const EdgeInsets.fromLTRB(12, 9, 16, 10),
                     decoration: BoxDecoration(
@@ -301,13 +287,16 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: TextField(
+                      keyboardType: TextInputType.multiline,
+
+                      maxLines: 2,
                       enabled: state.viewModel.isEnable!,
                       controller: descriptionTextController,
                       // Text('Sản phẩm ép ra bị giáp mí nặng, có dấu hiệu sản phẩm dơ do mỡ bò bị tràn ra ngoài')
-                      style: Theme.of(context)
-                          .textTheme
-                          .subtitle1
-                          ?.copyWith(color: Colors.black, height: 1.4),
+                      style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                            color: Colors.black,
+                            fontSize: 20,
+                          ),
                     ),
                   ),
                   BlocListener<ReceiveInfoSelectionBloc,

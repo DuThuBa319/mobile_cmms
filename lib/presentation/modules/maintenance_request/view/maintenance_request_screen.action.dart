@@ -144,10 +144,30 @@ extension MaintenanceRequestViewAction on _MaintenanceRequestViewState {
     }
   }
 
-  void setDate(DateTime? setDate) {
-    currentDate = setDate ?? DateTime.now();
-    requestInfoBloc.add(ChangeDateEvent(selectedDate: currentDate));
+  void selectTime(GetRequestInfoState state, BuildContext context) async {
+    if (state.viewModel.isEnable!) {
+      DateTime? date = await pickDate();
+      if (date == null) return;
+      TimeOfDay? time = await pickTime();
+      if (time == null) return;
+      currentDate =
+          DateTime(date.year, date.month, date.day, time.hour, time.minute);
+      requestInfoBloc.add(ChangeDateEvent(selectedDate: currentDate));
+    }
   }
+
+  Future<DateTime?> pickDate() {
+    return showDatePicker(
+        context: context,
+        initialDate: currentDate,
+        firstDate: DateTime(1900),
+        lastDate: DateTime(2100));
+  }
+
+  Future<TimeOfDay?> pickTime() => showTimePicker(
+      context: context,
+      initialTime:
+          TimeOfDay(hour: currentDate.hour, minute: currentDate.minute));
 
   String? textCause({List<CauseEntity>? list}) {
     if (list == null) {
