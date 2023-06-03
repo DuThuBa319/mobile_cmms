@@ -76,9 +76,12 @@ class _ImagePickerGridViewState extends State<ImagePickerGridView> {
                       radius: const Radius.circular(4),
                       child: GestureDetector(
                         onTap: () {
-                          index == imageCount
-                              ? showPicker(context)
-                              : editPicker(context, index);
+                          if (widget.isEnable == true) {
+                            index == imageCount
+                                ? showPicker(context)
+                                : editPicker(context, index);
+                          }
+
                           //: editPicker(context, index);// delete or replace image
                         },
                         child: index == imageCount

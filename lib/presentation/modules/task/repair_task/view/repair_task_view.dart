@@ -1,7 +1,7 @@
-import 'dart:io';
-
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../data/models/cmms/cmms_enum.dart';
@@ -15,30 +15,38 @@ import '../../../../custom/audio_picker/audio_picker_widget.dart';
 import '../../../../custom/general_report_container.dart';
 import '../../../../custom/image_picker/image_picker_bloc/image_picker_bloc.dart';
 import '../../../../custom/image_picker/image_picker_widget.dart';
-
 import '../../../../custom/select_info_screen/bloc/receive_info_selection_bloc/receive_info_selection_bloc.dart';
 import '../../../../custom/select_info_screen/bloc/select_info_bloc/select_info_bloc.dart';
 import '../../../../custom/select_info_screen/view/select_info_dropdown.dart';
 import '../../../../custom/select_info_screen/view/select_info_screen.dart';
 import '../../../../theme/theme_color.dart';
+import '../../../schedule/bloc/schedule_bloc.dart';
 import '../bloc/repair_task_bloc.dart';
-import 'repair_task_screen.dart';
 
 part 'repair_task.action.dart';
 
 class RepairTaskView extends StatefulWidget {
-  const RepairTaskView({super.key, required this.responseId});
+  const RepairTaskView({
+    super.key,
+    required this.responseId,
+    this.scheduleBloc,
+    this.selectedDate,
+  });
   final String responseId;
+  final ScheduleBloc? scheduleBloc;
+  final String? selectedDate;
 
   @override
   State<RepairTaskView> createState() => _RepairTaskViewState();
 }
 
 class _RepairTaskViewState extends StateBase<RepairTaskView> {
-  File? _image;
+  late String textController;
+
   bool isInProgress = false;
   List<CauseEntity> listCauseSelected = [];
   List<CorrectionEntity> listCorrectionSelected = [];
+  List<MaterialMenuItem> materialItems = [];
   @override
   void initState() {
     // TODO: implement initState
@@ -171,60 +179,87 @@ class _RepairTaskViewState extends StateBase<RepairTaskView> {
 
                   //-------------------------------------------------//
 
-                  Container(
-                    width: 378,
-                    height: 36,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'LINH KIỆN: ',
-                          style: Theme.of(context)
-                              .textTheme
-                              .caption
-                              ?.copyWith(color: AppColor.gray767676),
-                        ),
-                        TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            'Quét SKU',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText2
-                                ?.copyWith(
-                                  color:
-                                      state.viewModel.responseEntity?.status ==
-                                              MaintenanceStatus.inProgress
-                                          ? AppColor.blue0089D7
-                                          : AppColor.gray767676,
-                                ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Text(
-                    'Tên linh kiện',
-                    style: bodyTextStyle,
-                  ),
-                  Container(
-                    width: 378,
-                    height: 36,
-                    child: DropdownWidget<String>(
-                      controller: sparePartController,
-                      itemBuilder: itemBuilder,
-                      borderColor: AppColor.gray767676,
-                      items: sparePart,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-
-                  const SizedBox(height: 18),
+                  const SizedBox(height: 10),
                 ],
               ),
               //-------------------------------------------------//
+              Container(
+                width: 378,
+                height: 36,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'LINH KIỆN: ',
+                      style: Theme.of(context)
+                          .textTheme
+                          .caption
+                          ?.copyWith(color: AppColor.gray767676),
+                    ),
+                    TextButton(
+                      onPressed: scanQR,
+                      child: Text(
+                        'Quét SKU',
+                        style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                              color: state.viewModel.responseEntity?.status ==
+                                      MaintenanceStatus.inProgress
+                                  ? AppColor.blue0089D7
+                                  : AppColor.gray767676,
+                            ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+//state.viewModel.materialMenuItems?
+              ListView.builder(
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: materialItems.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    color: AppColor.greyF3,
+                    margin: const EdgeInsets.only(top: 10, bottom: 5),
+                    width: 380,
+                    constraints: const BoxConstraints(
+                      maxHeight: double.infinity,
+                      minHeight: 83,
+                    ),
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.only(left: 17, top: 8),
+                          width: 380,
+                          height: 37,
+                          color: AppColor.greyD9,
+                          child: Text(
+                            materialItems[index].name,
+                            style: Theme.of(context).textTheme.caption,
+                          ),
+                        ),
+                        ListView.builder(
+                          padding: const EdgeInsets.only(left: 17, top: 5),
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: materialItems[index].listSku.length,
+                          itemBuilder: (context, i) => Text(
+                            '${i + 1}. ${materialItems[index].listSku[i]}',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2
+                                ?.copyWith(height: 1.5),
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                },
+              ),
+
+              const SizedBox(
+                height: 15,
+              ),
               Text(
                 'BÁO CÁO KỸ THUẬT: ',
                 style: Theme.of(context)

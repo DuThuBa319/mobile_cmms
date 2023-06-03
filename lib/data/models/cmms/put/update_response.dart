@@ -1,7 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import '../cmms_enum.dart';
-import '../correction.dart';
 import '../material/material.dart';
 
 part 'update_response.g.dart';
@@ -17,7 +16,7 @@ class UpdateResponse {
   DateTime? updatedAt;
   List<String>? images;
   List<String>? sounds;
-  List<Materials>? materials;
+  List<String>? materials;
 
   UpdateResponse({
     this.actualFinishTime,
@@ -40,7 +39,7 @@ class UpdateResponse {
     DateTime? updatedAt,
     List<String>? images,
     List<String>? sounds,
-    List<Materials>? materials,
+    List<String>? materials,
   }) {
     return UpdateResponse(
       cause: cause ?? this.cause,

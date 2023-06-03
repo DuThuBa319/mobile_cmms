@@ -3,46 +3,58 @@ part of 'get_request_info_bloc.dart';
 // ViewModel is used for store all properties which want to be stored, processed and updated
 
 class _ViewModel {
-  final List<String>? employeeId;
-  final List<String>? equipmentCode;
-  final String? equipmentName;
+  final List<String>? employeeName;
+  final String? employeeId;
+  final List<String>? objectCode;
+  final String? objectName;
   final List<EquipmentEntity>? equipmentEntities;
   final List<EmployeeEntity>? employeeEntities;
-  final bool? isSelected;
 
+  final bool? isEnable;
+  final List<MoldEntity>? moldEntities;
   final List<CauseEntity>? listCausesSelected;
   final DateTime? selectedDate;
+  final MaintenanceObject? maintenanceObject;
   const _ViewModel({
-    this.employeeId,
-    this.equipmentCode,
-    this.equipmentName,
-    this.isSelected,
+    this.employeeName,
+    this.objectCode,
+    this.objectName,
+    this.isEnable = false,
     this.equipmentEntities,
     this.employeeEntities,
     this.listCausesSelected,
     this.selectedDate,
+    this.moldEntities,
+    this.maintenanceObject,
+    this.employeeId,
   });
 
   // Using copyWith function to retains the before data and just "update some specific props" instead of "update all props"
   _ViewModel copyWith({
-    List<String>? employeeId,
-    List<String>? equipmentCode,
-    String? equipmentName,
+    List<String>? employeeName,
+    List<String>? objectCode,
+    String? objectName,
     List<EquipmentEntity>? equipmentEntities,
-    bool? isSelected,
     List<EmployeeEntity>? employeeEntities,
     List<CauseEntity>? listCausesSelected,
     DateTime? selectedDate,
+    MaintenanceObject? maintenanceObject,
+    List<MoldEntity>? moldEntities,
+    bool? isEnable,
+    String? employeeId,
   }) {
     return _ViewModel(
-      employeeId: employeeId ?? this.employeeId,
-      equipmentCode: equipmentCode ?? this.equipmentCode,
-      equipmentName: equipmentName ?? this.equipmentName,
-      isSelected: isSelected ?? this.isSelected,
+      employeeName: employeeName ?? this.employeeName,
+      objectCode: objectCode ?? this.objectCode,
+      objectName: objectName ?? this.objectName,
       equipmentEntities: equipmentEntities ?? this.equipmentEntities,
       employeeEntities: employeeEntities ?? this.employeeEntities,
       listCausesSelected: listCausesSelected ?? this.listCausesSelected,
       selectedDate: selectedDate ?? this.selectedDate,
+      moldEntities: moldEntities ?? this.moldEntities,
+      maintenanceObject: maintenanceObject ?? this.maintenanceObject,
+      isEnable: isEnable ?? this.isEnable,
+      employeeId: employeeId ?? this.employeeId,
     );
   }
 }

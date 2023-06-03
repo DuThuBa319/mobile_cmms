@@ -9,16 +9,23 @@ class MaintenanceRequestRepositoryImpl extends MaintenanceRequestRepository {
   final EmployeeRepository _employeeApi;
   final CauseRepository _causeApi;
   final RequestRepository _requestApi;
+  final MoldRepository _moldApi;
   MaintenanceRequestRepositoryImpl(
     this._equipmentApi,
     this._employeeApi,
     this._causeApi,
     this._requestApi,
+    this._moldApi,
   );
 
   @override
   Future<List<Equipment>> getListEquipments() {
     return _equipmentApi.getListEquipments();
+  }
+
+  @override
+  Future<List<Mold>> getListMolds() {
+    return _moldApi.getListMolds();
   }
 
   @override

@@ -27,6 +27,7 @@ CreateRequest _$CreateRequestFromJson(Map<String, dynamic> json) =>
           (json['images'] as List<dynamic>?)?.map((e) => e as String).toList(),
       sounds:
           (json['sounds'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      moldCode: json['mold'] as String?,
     );
 
 Map<String, dynamic> _$CreateRequestToJson(CreateRequest instance) {
@@ -52,6 +53,7 @@ Map<String, dynamic> _$CreateRequestToJson(CreateRequest instance) {
       _$MaintenanceObjectEnumMap[instance.maintenanceObject]);
   writeNotNull('images', instance.images);
   writeNotNull('sounds', instance.sounds);
+  writeNotNull('mold', instance.moldCode);
   return val;
 }
 

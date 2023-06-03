@@ -36,25 +36,24 @@ class MaintenanceRequestView extends StatefulWidget {
 class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
   List<File>? imageFiles = [];
   List<File>? audioFiles = [];
-  bool check = false;
   List<CauseEntity> tempListCauses = [];
   DateTime currentDate = DateTime.now();
   TextEditingController descriptionTextController = TextEditingController();
   int priority = 1;
   MaintenanceType maintenanceType = MaintenanceType.reactive;
-  String? requestorId;
-  String? equipmentCode;
-  DropdownController<String, DropdownData<String>> equipmentCodeController =
+
+  String? objectCode;
+  DropdownController<String, DropdownData<String>> objectCodeController =
       DropdownController<String, DropdownData<String>>(
-    value: DropdownData(value: equipmentCodeSelection[0], validation: null),
+    value: DropdownData(value: objectCodeSelection[0], validation: null),
   );
   DropdownController<int, DropdownData<int>> priorityController =
       DropdownController<int, DropdownData<int>>(
     value: DropdownData(value: prioritySelection[0], validation: null),
   );
-  DropdownController<String, DropdownData<String>> equipmentController =
+  DropdownController<String, DropdownData<String>> objectController =
       DropdownController<String, DropdownData<String>>(
-    value: DropdownData(value: equipment[0], validation: null),
+    value: DropdownData(value: object[0], validation: null),
   );
   DropdownController<String, DropdownData<String>> maintenanceTypeController =
       DropdownController<String, DropdownData<String>>(
@@ -106,8 +105,8 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                         children: [
                           const Text('Thiết bị'),
                           Dropdown1(
-                            controller: equipmentController,
-                            item: equipment,
+                            controller: objectController,
+                            item: object,
                             onChanged: equipmentTypeChanged,
                           ),
                         ],
@@ -118,8 +117,8 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                         children: [
                           const Text('Mã thiết bị'),
                           Dropdown1(
-                            controller: equipmentCodeController,
-                            item: equipmentCodeSelection,
+                            controller: objectCodeController,
+                            item: objectCodeSelection,
                             onChanged: equipmentCodeChanged,
                           )
                         ],
@@ -139,7 +138,7 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                     padding: const EdgeInsets.only(left: 12, right: 12),
                     margin: const EdgeInsets.only(top: 10),
                     child: Text(
-                      state.viewModel.equipmentName ?? '--',
+                      state.viewModel.objectName ?? '--',
                       style: const TextStyle(
                         color: Colors.black,
                         fontSize: 12,
@@ -159,7 +158,7 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text('Mức độ'),
-                          check
+                          state.viewModel.isEnable!
                               ? Dropdown1(
                                   controller: priorityController,
                                   item: prioritySelection,
@@ -192,7 +191,7 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                                     style: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w500,
-                                      color: check
+                                      color: state.viewModel.isEnable!
                                           ? Colors.black
                                           : AppColor.gray767676,
                                     ),
@@ -201,7 +200,7 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                                 IconButton(
                                   padding: const EdgeInsets.only(bottom: 3),
                                   onPressed: () {
-                                    if (check) {
+                                    if (state.viewModel.isEnable!) {
                                       showDialog(
                                         context: context,
                                         builder: (context) {
@@ -223,7 +222,7 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                                   icon: Icon(
                                     Icons.calendar_month,
                                     size: 30,
-                                    color: check
+                                    color: state.viewModel.isEnable!
                                         ? Colors.black
                                         : AppColor.gray767676,
                                   ),
@@ -232,7 +231,7 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                             ),
                           ),
                           const Text('Loại bảo trì'),
-                          check
+                          state.viewModel.isEnable!
                               ? Dropdown1(
                                   controller: maintenanceTypeController,
                                   item: maintenanceTypeSelection,
@@ -246,7 +245,7 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text('Chỉ định KTV'),
-                          check
+                          state.viewModel.isEnable!
                               ? Dropdown1(
                                   controller: employeeController,
                                   item: employee,
@@ -285,7 +284,7 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                   const Text(
                     'Nguyên nhân',
                   ),
-                  check
+                  state.viewModel.isEnable!
                       ? selectionDropdown(context, state)
                       : disableSelectionDropdown(context, state),
                   const Text(
@@ -302,7 +301,7 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: TextField(
-                      enabled: check,
+                      enabled: state.viewModel.isEnable!,
                       controller: descriptionTextController,
                       // Text('Sản phẩm ép ra bị giáp mí nặng, có dấu hiệu sản phẩm dơ do mỡ bò bị tràn ra ngoài')
                       style: Theme.of(context)
@@ -333,7 +332,7 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                         ImagePickerGridView(
                           bloc: imageBloc,
                           receiveBloc: receiveBloc,
-                          isEnable: check,
+                          isEnable: state.viewModel.isEnable!,
                         ),
                         const Text(
                           'Ghi âm mô tả: ',
@@ -341,7 +340,7 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                         AudioListView(
                           bloc: audioBloc,
                           receiveBloc: receiveBloc,
-                          isEnable: check,
+                          isEnable: state.viewModel.isEnable!,
                         ),
                       ],
                     ),
@@ -354,27 +353,16 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                     listener: _requestBlocListener,
                     child: Container(
                       decoration: BoxDecoration(
-                        color: check ? AppColor.blue0089D7 : AppColor.greyD9,
+                        color: state.viewModel.isEnable!
+                            ? AppColor.blue0089D7
+                            : AppColor.greyD9,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       width: 360,
                       height: 70,
                       child: TextButton(
                         onPressed: () {
-                          if (check) {
-                            bloc.add(
-                              MakeRequestEvent(
-                                imageFiles: imageFiles,
-                                audioFiles: audioFiles,
-                                priority: priority,
-                                problem: descriptionTextController.text,
-                                requestedCompletionDate: currentDate,
-                                type: maintenanceType,
-                                equipmentCode: equipmentCode,
-                                requestorCode: requestorId,
-                              ),
-                            );
-                          }
+                          createRequest(state);
                         },
                         child: Text(
                           'Tạo yêu cầu',

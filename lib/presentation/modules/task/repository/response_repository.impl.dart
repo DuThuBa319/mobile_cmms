@@ -6,7 +6,8 @@ part of 'response_repository.dart';
 )
 class ResponseRepositoryImpl extends ResponseRepository {
   final MaintenanceResponseRepository _restApi;
-  ResponseRepositoryImpl(this._restApi);
+  final MaterialRepository _materialApi;
+  ResponseRepositoryImpl(this._restApi, this._materialApi);
 
   @override
   Future<MaintenanceResponseItem> getMaintenanceResponse({
@@ -17,26 +18,6 @@ class ResponseRepositoryImpl extends ResponseRepository {
     );
   }
 
-  // @override
-  // Future<void> updateMaintenanceResponse({
-  //   required String maintenanceResponseId,
-  //   required MaintenanceResponseItem maintenanceResponseItem,
-  // }) async {
-  //   await _restApi.updateMaintenanceResponse(
-  //     maintenanceResponseId: maintenanceResponseId,
-  //     maintenanceResponseItem: maintenanceResponseItem,
-  //   );
-  // }
-  // @override
-  // Future<void> updateMaintenanceResponse({
-  //   required String maintenanceResponseId,
-  //   required MaintenanceResponseItem maintenanceResponseItem,
-  // }) async {
-  //   await _restApi.updateMaintenanceResponse(
-  //     maintenanceResponseId: maintenanceResponseId,
-  //     maintenanceResponseItem: maintenanceResponseItem,
-  //   );
-  // }
   @override
   Future<void> updateMaintenanceResponse({
     required String maintenanceResponseId,
@@ -45,6 +26,15 @@ class ResponseRepositoryImpl extends ResponseRepository {
     await _restApi.updateMaintenanceResponse(
       maintenanceResponseId: maintenanceResponseId,
       updateResponse: updateResponse,
+    );
+  }
+
+  @override
+  Future<MaterialItems> getMaterialItem({
+    required String sku,
+  }) {
+    return _materialApi.getMaterialItem(
+      sku: sku,
     );
   }
 }

@@ -39,3 +39,7 @@ class ReceiveListAudioFileEvent extends RepairTaskEvent {
   ReceiveListAudioFileEvent({this.audioFiles});
   final List<File>? audioFiles;
 }
+class GetMaterialEvent extends RepairTaskEvent {
+  GetMaterialEvent({this.sku});
+  final String? sku;
+}

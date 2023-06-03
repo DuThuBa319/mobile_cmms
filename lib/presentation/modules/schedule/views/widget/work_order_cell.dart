@@ -9,14 +9,19 @@ import '../../../../theme/theme_color.dart';
 import '../../../task/general_check/view/general_check_screen.dart';
 import '../../../task/repair_task/view/repair_task_screen.dart';
 import '../../../task/replace_mold/view/replace_mold_screen.dart';
+import '../../bloc/schedule_bloc.dart';
 
 class WorkOrderCell extends StatefulWidget {
   final MaintenanceResponseEntity? maintenanceResponseEntity;
   final Widget? taskIcon;
+  final ScheduleBloc? bloc;
+  final String? selectedDate;
   const WorkOrderCell({
     Key? key,
     this.maintenanceResponseEntity,
     this.taskIcon,
+    this.bloc,
+    this.selectedDate,
   }) : super(key: key);
 
   @override
@@ -27,7 +32,7 @@ class _WorkOrderCellState extends State<WorkOrderCell> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final deviceName = widget.maintenanceResponseEntity?.equipment?.name;
+    final responseCode = widget.maintenanceResponseEntity?.code;
     final updateTime = widget.maintenanceResponseEntity?.updatedDate;
     final id = widget.maintenanceResponseEntity?.id;
     return GestureDetector(
@@ -35,21 +40,23 @@ class _WorkOrderCellState extends State<WorkOrderCell> {
         if (widget.maintenanceResponseEntity?.maintenanceTask == 'Sửa chữa') {
           goToScreen(
             RepairTaskScreen(
-              title: deviceName,
+              title: responseCode,
               responseId: id!,
+              scheduleBloc: widget.bloc,
+              selectedDate: widget.selectedDate,
             ),
           );
         } else if (widget.maintenanceResponseEntity?.maintenanceTask ==
             'Thay khuôn') {
           goToScreen(
             ReplaceMoldTaskScreen(
-              title: deviceName,
+              title: responseCode,
             ),
           );
         } else {
           goToScreen(
             GeneralCheckScreen(
-              title: deviceName,
+              title: responseCode,
             ),
           );
         }
@@ -68,8 +75,8 @@ class _WorkOrderCellState extends State<WorkOrderCell> {
                   Padding(
                     padding: const EdgeInsets.only(top: 3),
                     child: MenuItemView(
-                      title: deviceName ?? '--',
-                      titleSize: 13,
+                      title: responseCode ?? '--',
+                      titleSize: 15,
                       icon: widget.taskIcon ?? const Icon(Icons.abc),
                       divider: ItemDivider.line,
                       padding: const EdgeInsets.only(bottom: 9),

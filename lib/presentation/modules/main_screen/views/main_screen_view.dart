@@ -121,8 +121,7 @@ class _MainScreenViewState extends StateBase<MainScreenView> {
                         id: state.viewModel.responses?[index].id,
                         taskIcon: state.viewModel.responses?[index].taskIcon,
                         equipmentName:
-                            state.viewModel.responses?[index].equipment?.name ??
-                                '--',
+                            state.viewModel.responses?[index].code ?? '--',
                         // updatedTime: state.viewModel.responses?[index].updatedAt
                         //         ?.toIso8601String() ??
                         //     '--',

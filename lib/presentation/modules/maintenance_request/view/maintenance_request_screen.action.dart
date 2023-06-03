@@ -81,17 +81,16 @@ extension MaintenanceRequestViewAction on _MaintenanceRequestViewState {
     }
     if (state is GetEquipmentCodeState &&
         state.status == BlocStatusState.success) {
-      equipmentCodeSelection = <String>['<Chọn mã thiết bị>'];
+      objectCodeSelection = <String>['<Chọn mã thiết bị>'];
 
-      check = false;
-      equipmentCodeSelection.addAll(state.viewModel.equipmentCode ?? []);
+      objectCodeSelection.addAll(state.viewModel.objectCode ?? []);
     }
     if (state is GetEmployeesState && state.status == BlocStatusState.success) {
       employee = <String>[
         '<Chọn KTV>',
       ];
 
-      employee.addAll(state.viewModel.employeeId ?? []);
+      employee.addAll(state.viewModel.employeeName ?? []);
     }
 
     if (state.status == BlocStatusState.success) {
@@ -105,24 +104,28 @@ extension MaintenanceRequestViewAction on _MaintenanceRequestViewState {
   }
 
   void equipmentCodeChanged(dynamic value) {
-    equipmentCode = value;
-    if (value == '<Chọn mã thiết bị>') {
-      check = false;
-    } else {
-      check = true;
-      requestInfoBloc.add(GetEquipmentNameEvent(code: value));
-    }
+    objectCode = value;
+
+    requestInfoBloc.add(GetEquipmentNameEvent(code: value));
   }
 
   void equipmentTypeChanged(dynamic value) {
-    equipmentCodeController = DropdownController<String, DropdownData<String>>(
-      value: DropdownData(value: equipmentCodeSelection[0], validation: null),
+    objectCodeController = DropdownController<String, DropdownData<String>>(
+      value: DropdownData(value: objectCodeSelection[0], validation: null),
     );
-    requestInfoBloc.add(GetEquipmentCodeEvent(type: value));
+    if (value == 'Khuôn ép') {
+      requestInfoBloc.add(
+        GetEquipmentCodeEvent(maintenanceObject: MaintenanceObject.mold),
+      );
+    } else {
+      requestInfoBloc.add(GetEquipmentCodeEvent(type: value));
+    }
   }
 
   void employeeChanged(dynamic value) {
-    requestorId = value;
+    requestInfoBloc.add(
+      EmployeeChangedEvent(name: value),
+    );
   }
 
   void priorityChanged(dynamic value) {
@@ -157,5 +160,47 @@ extension MaintenanceRequestViewAction on _MaintenanceRequestViewState {
       return 'Nhiều nguyên nhân';
     }
     return list[0].name;
+  }
+
+  void createRequest(GetRequestInfoState state) {
+    if (state.viewModel.isEnable!) {
+      if (state.viewModel.employeeId == null) {
+        showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (BuildContext context) => Center(
+            child: AlertDialog(
+              title: const Text('Phản hồi'),
+              content: Text(
+                'Vui lòng chọn KTV',
+                style: Theme.of(context).textTheme.caption,
+              ),
+              actions: [
+                TextButton(
+                  child: const Text('Thực hiện lại'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      } else {
+        bloc.add(
+          MakeRequestEvent(
+            imageFiles: imageFiles,
+            audioFiles: audioFiles,
+            priority: priority,
+            problem: descriptionTextController.text,
+            requestedCompletionDate: currentDate,
+            type: maintenanceType,
+            objectCode: objectCode,
+            requestorCode: state.viewModel.employeeId,
+            maintenanceObject: state.viewModel.maintenanceObject,
+          ),
+        );
+      }
+    }
   }
 }

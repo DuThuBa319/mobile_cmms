@@ -22,7 +22,7 @@ UpdateResponse _$UpdateResponseFromJson(Map<String, dynamic> json) =>
       images:
           (json['images'] as List<dynamic>?)?.map((e) => e as String).toList(),
       materials: (json['materials'] as List<dynamic>?)
-          ?.map((e) => Materials.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => e as String)
           .toList(),
       sounds:
           (json['sounds'] as List<dynamic>?)?.map((e) => e as String).toList(),
@@ -50,8 +50,7 @@ Map<String, dynamic> _$UpdateResponseToJson(UpdateResponse instance) {
   writeNotNull('updatedAt', instance.updatedAt?.toIso8601String());
   writeNotNull('images', instance.images);
   writeNotNull('sounds', instance.sounds);
-  writeNotNull(
-      'materials', instance.materials?.map((e) => e.toJson()).toList());
+  writeNotNull('materials', instance.materials);
   return val;
 }
 

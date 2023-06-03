@@ -1,6 +1,11 @@
 part of 'repair_task_bloc.dart';
 
 // ViewModel is used for store all properties which want to be stored, processed and updated
+class MaterialMenuItem {
+  List<String> listSku = [];
+  String name = '--';
+  MaterialMenuItem({required this.listSku, required this.name});
+}
 
 class _ViewModel {
   final MaintenanceResponseItem? response;
@@ -17,6 +22,8 @@ class _ViewModel {
   final List<String>? audioUrls;
   final int? imageCount;
   final int? soundCount;
+  final List<MaterialMenuItem>? materialMenuItems;
+  final List<String>? listSku;
   const _ViewModel({
     this.response,
     this.responseEntity,
@@ -32,6 +39,8 @@ class _ViewModel {
     this.audioUrls,
     this.imageCount,
     this.soundCount,
+    this.materialMenuItems,
+    this.listSku,
   });
 
   // Using copyWith function to retains the before data and just "update some specific props" instead of "update all props"
@@ -50,6 +59,8 @@ class _ViewModel {
     List<String>? audioUrls,
     int? imageCount,
     int? soundCount,
+    List<MaterialMenuItem>? materialMenuItems,
+    List<String>? listSku,
   }) {
     return _ViewModel(
       response: response ?? this.response,
@@ -67,6 +78,8 @@ class _ViewModel {
       audioUrls: audioUrls ?? this.audioUrls,
       imageCount: imageCount ?? this.imageCount,
       soundCount: soundCount ?? this.soundCount,
+      materialMenuItems: materialMenuItems ?? this.materialMenuItems,
+      listSku: listSku ?? this.listSku,
     );
   }
 }
@@ -120,6 +133,13 @@ class ReceiveInfosState extends RepairTaskState {
   }) : super(viewModel, status: status);
 }
 
+class GetMaterialState extends RepairTaskState {
+  GetMaterialState({
+    _ViewModel viewModel = const _ViewModel(),
+    BlocStatusState status = BlocStatusState.initial,
+  }) : super(viewModel, status: status);
+}
+
 final _factories = <
     Type,
     Function(
@@ -141,6 +161,10 @@ final _factories = <
         status: status,
       ),
   ReceiveInfosState: (viewModel, status) => ReceiveInfosState(
+        viewModel: viewModel,
+        status: status,
+      ),
+  GetMaterialState: (viewModel, status) => GetMaterialState(
         viewModel: viewModel,
         status: status,
       ),

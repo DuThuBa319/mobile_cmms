@@ -22,7 +22,6 @@ extension MainScreenViewAction on _MainScreenViewState {
         true,
         ScanMode.QR,
       );
-      print(barcodeScanRes);
     } on PlatformException {
       barcodeScanRes = 'Failed to get platform version.';
     }

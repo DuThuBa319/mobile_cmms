@@ -9,13 +9,22 @@ import '../../../../custom/image_picker/image_picker_bloc/image_picker_bloc.dart
 
 import '../../../../custom/select_info_screen/bloc/receive_info_selection_bloc/receive_info_selection_bloc.dart';
 import '../../../../custom/select_info_screen/bloc/select_info_bloc/select_info_bloc.dart';
+import '../../../schedule/bloc/schedule_bloc.dart';
 import '../bloc/repair_task_bloc.dart';
 import 'repair_task_view.dart';
 
 class RepairTaskScreen extends StatefulWidget {
-  const RepairTaskScreen({super.key, this.title, required this.responseId});
+  const RepairTaskScreen({
+    super.key,
+    this.title,
+    required this.responseId,
+    this.scheduleBloc,
+    this.selectedDate,
+  });
   final String? title;
   final String responseId;
+  final ScheduleBloc? scheduleBloc;
+  final String? selectedDate;
   @override
   State<RepairTaskScreen> createState() => _RepairTaskScreenState();
 }
@@ -46,6 +55,8 @@ class _RepairTaskScreenState extends State<RepairTaskScreen> {
         ],
         child: RepairTaskView(
           responseId: widget.responseId,
+          scheduleBloc: widget.scheduleBloc,
+          selectedDate: widget.selectedDate,
         ),
       ),
     );

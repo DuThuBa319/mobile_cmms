@@ -22,6 +22,8 @@ class CreateRequest {
   MaintenanceObject? maintenanceObject;
   List<String>? images;
   List<String>? sounds;
+  @JsonKey(name: 'mold')
+  String? moldCode;
 
   CreateRequest({
     this.equipmentCode,
@@ -36,6 +38,7 @@ class CreateRequest {
     this.submissionDate,
     this.images,
     this.sounds,
+    this.moldCode,
   });
   factory CreateRequest.fromJson(Map<String, dynamic> json) =>
       _$CreateRequestFromJson(json);

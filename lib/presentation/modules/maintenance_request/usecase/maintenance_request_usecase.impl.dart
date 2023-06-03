@@ -22,6 +22,18 @@ class MaintenanceRequestUsecaseImpl extends MaintenanceRequestUsecase {
   }
 
   @override
+  Future<List<MoldEntity>?> getListMolds() async {
+    final responses = await _repository.getListMolds();
+
+    var responseEntities = <MoldEntity>[];
+    for (final response in responses) {
+      responseEntities = response.getListMoldsEntity(list: responseEntities);
+    }
+
+    return responseEntities;
+  }
+
+  @override
   Future<List<EmployeeEntity>?> getListEmployees() async {
     final responses = await _repository.getListEmployees();
 
@@ -37,7 +49,7 @@ class MaintenanceRequestUsecaseImpl extends MaintenanceRequestUsecase {
   Future<List<CauseEntity>?> getListCauses() async {
     final responses = await _repository.getListCauses();
 
-    var responseEntities = <CauseEntity>[];
+    final responseEntities = <CauseEntity>[];
     for (final response in responses) {
       responseEntities.add(response.getCauseEntity());
     }

@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
-import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
 import '../../../../../common/services/firebase/firebase_storage_service.dart';
@@ -38,6 +38,7 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
     on<ReceiveCorrectionIdEvent>(_onReceiveCorrectionIds);
     on<ReceiveListImageFileEvent>(_onReceiveImageFiles);
     on<ReceiveListAudioFileEvent>(_onReceiveAudioFiles);
+    on<GetMaterialEvent>(_onGetMaterial);
   }
 
   Future<void> _onGetMaintenanceResponses(
@@ -57,6 +58,8 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
       final listCorrectionId = <String>[];
       final listImageFiles = <File>[];
       final listAudioFiles = <File>[];
+      final materialList = <MaterialMenuItem>[];
+      final listSku = <String>[];
       final response = await _repository.getMaintenanceResponse(
         responseId: event.responseId,
       );
@@ -72,6 +75,25 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
         listCorrectionsSelected.add(correction.getCorrectionEntity());
         listCorrectionId.add(correction.id!);
       }
+      for (final material in responseEntity.materials!) {
+        listSku.add(material.sku!);
+        final materialEntity = material.getMaterialEntity();
+        var isExisted = false;
+        for (var i = 0; i < materialList.length; i++) {
+          if (materialEntity.materialInfo!.name == materialList[i].name) {
+            isExisted = true;
+            materialList[i].listSku.add(materialEntity.sku!);
+          }
+        }
+        if (isExisted == false) {
+          materialList.add(
+            MaterialMenuItem(
+              listSku: [materialEntity.sku!],
+              name: materialEntity.materialInfo!.name!,
+            ),
+          );
+        }
+      }
 
       final update = UpdateResponse().copyWith(
         actualFinishTime: response.items?[0].actualFinishTime,
@@ -82,6 +104,7 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
         correction: listCorrectionId,
         images: responseEntity.images,
         sounds: responseEntity.sounds,
+        materials: listSku,
       );
 
       for (final url in responseEntity.images!) {
@@ -100,12 +123,14 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
         isChanged: false,
         listCauseId: listCauseId,
         listCorrectionId: listCorrectionId,
-        imageUrls: [],
-        audioUrls: [],
+        imageUrls: responseEntity.images,
+        audioUrls: responseEntity.sounds,
         imageFiles: listImageFiles,
         audioFiles: listAudioFiles,
         imageCount: listImageFiles.length,
         soundCount: listAudioFiles.length,
+        materialMenuItems: materialList,
+        listSku: listSku,
       );
       emit(
         state.copyWith(
@@ -222,6 +247,7 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
         correction: state.viewModel.listCorrectionId,
         images: imageUrls,
         sounds: audioUrls,
+        materials: state.viewModel.listSku,
       );
       final newViewModel = state.viewModel.copyWith(
         updateResponse: update,
@@ -364,6 +390,69 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
       );
     }
   }
+
+  Future<void> _onGetMaterial(
+    GetMaterialEvent event,
+    Emitter<RepairTaskState> emit,
+  ) async {
+    emit(
+      GetMaterialState(
+        status: BlocStatusState.loading,
+        viewModel: state.viewModel,
+      ),
+    );
+    try {
+      final responseMaterial = await _usecase.getMaterialItem(sku: event.sku!);
+
+      if (responseMaterial!.status != MaterialStatus.available) {
+        emit(
+          state.copyWith(
+            status: BlocStatusState.failure,
+            viewModel: state.viewModel,
+          ),
+        );
+      } else {
+        var isExisted = false;
+        final materialList = state.viewModel.materialMenuItems;
+        final listSku = state.viewModel.listSku;
+        listSku?.add(event.sku!);
+        for (var i = 0; i < materialList!.length; i++) {
+          if (responseMaterial.materialInfo!.name == materialList[i].name) {
+            isExisted = true;
+            materialList[i].listSku.add(event.sku!);
+            break;
+          }
+        }
+        if (isExisted == false) {
+          materialList.add(
+            MaterialMenuItem(
+              listSku: [event.sku!],
+              name: responseMaterial.materialInfo!.name!,
+            ),
+          );
+        }
+        final newViewModel = state.viewModel.copyWith(
+          isChanged: true,
+          materialMenuItems: materialList,
+          listSku: listSku,
+        );
+
+        emit(
+          state.copyWith(
+            status: BlocStatusState.success,
+            viewModel: newViewModel,
+          ),
+        );
+      }
+    } catch (exception) {
+      emit(
+        ReceiveInfosState(
+          viewModel: state.viewModel,
+          status: BlocStatusState.failure,
+        ),
+      );
+    }
+  }
 }
 
 Future<List<String>> upLoadAudioFile({
@@ -375,7 +464,7 @@ Future<List<String>> upLoadAudioFile({
   final uploadResults = <CloudStorageResult>[];
   final audioUrls = <String>[];
   for (var i = 0; i < audioFiles.length; i++) {
-    if (i < availableAudio) {
+    if (i >= availableAudio) {
       result = await FirebaseStorageService.uploadFile(
         file: audioFiles[i],
         type: 'audio/mpeg',
@@ -400,15 +489,15 @@ Future<List<String>> upLoadImageFile({
   final imageUrl = <String>[];
   for (var i = 0; i < imageFiles.length; i++) {
     if (i >= availableImage) {
-      final dir = (await getApplicationDocumentsDirectory()).path;
-      //String dir = path.dirname(file.path);
-      final newPath = path.join(
-        dir,
-        'image $i.jpg',
-      );
-      final f = await File(imageFiles[i].path).copy(newPath);
+      // final dir = (await getApplicationDocumentsDirectory()).path;
+      // //String dir = path.dirname(file.path);
+      // final newPath = path.join(
+      //   dir,
+      //   'image $i.jpg',
+      // );
+      // final f = await File(imageFiles[i].path).copy(newPath);
       result = await FirebaseStorageService.uploadFile(
-        file: f,
+        file: imageFiles[i],
         folder: '$folder',
       );
       imageUrl.add(result!.url!);

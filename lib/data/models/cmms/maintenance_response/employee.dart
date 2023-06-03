@@ -23,6 +23,7 @@ class Employee {
   }) {
     final result = EmployeeEntity(
       personId: id,
+      personName: name,
     );
     list.add(result);
 

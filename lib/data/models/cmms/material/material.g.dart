@@ -8,9 +8,10 @@ part of 'material.dart';
 
 Materials _$MaterialsFromJson(Map<String, dynamic> json) => Materials(
       materialId: json['materialId'] as String?,
-      materialInfo: json['materialInfo'] == null
+      materialInfor: json['materialInfor'] == null
           ? null
-          : MaterialInfo.fromJson(json['materialInfo'] as Map<String, dynamic>),
+          : MaterialInfo.fromJson(
+              json['materialInfor'] as Map<String, dynamic>),
       sku: json['sku'] as String?,
       status: $enumDecodeNullable(_$MaterialStatusEnumMap, json['status']),
     );
@@ -25,7 +26,7 @@ Map<String, dynamic> _$MaterialsToJson(Materials instance) {
   }
 
   writeNotNull('materialId', instance.materialId);
-  writeNotNull('materialInfo', instance.materialInfo?.toJson());
+  writeNotNull('materialInfor', instance.materialInfor?.toJson());
   writeNotNull('status', _$MaterialStatusEnumMap[instance.status]);
   writeNotNull('sku', instance.sku);
   return val;

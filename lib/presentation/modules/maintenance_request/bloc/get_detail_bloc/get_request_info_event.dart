@@ -4,9 +4,13 @@ part of 'get_request_info_bloc.dart';
 abstract class GetRequestInfoEvent {}
 
 class GetEquipmentCodeEvent extends GetRequestInfoEvent {
-  GetEquipmentCodeEvent({this.type});
+  GetEquipmentCodeEvent({
+    this.type,
+    this.maintenanceObject = MaintenanceObject.equipment,
+  });
 
   final String? type;
+  final MaintenanceObject? maintenanceObject;
 }
 
 class GetEquipmentNameEvent extends GetRequestInfoEvent {
@@ -16,6 +20,12 @@ class GetEquipmentNameEvent extends GetRequestInfoEvent {
 }
 
 class GetEmployeesEvent extends GetRequestInfoEvent {}
+
+class EmployeeChangedEvent extends GetRequestInfoEvent {
+  EmployeeChangedEvent({this.name});
+
+  final String? name;
+}
 
 class ChangeDateEvent extends GetRequestInfoEvent {
   ChangeDateEvent({this.selectedDate});

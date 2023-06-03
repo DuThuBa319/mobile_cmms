@@ -422,12 +422,12 @@ class _RestCmmsApiRepository implements RestCmmsApiRepository {
   }
 
   @override
-  Future<bool> createMaterial(CreateMaterial) async {
+  Future<bool> createMaterial(createMaterial) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(CreateMaterial.toJson());
+    _data.addAll(createMaterial.toJson());
     final _result = await _dio.fetch<bool>(_setStreamType<bool>(Options(
       method: 'POST',
       headers: _headers,
@@ -441,6 +441,54 @@ class _RestCmmsApiRepository implements RestCmmsApiRepository {
         )
         .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = _result.data!;
+    return value;
+  }
+
+  @override
+  Future<MaterialItems> getMaterialItem(sku) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<MaterialItems>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'Materials/Sku/${sku}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = MaterialItems.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<List<Mold>> getListMolds() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result =
+        await _dio.fetch<List<dynamic>>(_setStreamType<List<Mold>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'Molds',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    var value = _result.data!
+        .map((dynamic i) => Mold.fromJson(i as Map<String, dynamic>))
+        .toList();
     return value;
   }
 

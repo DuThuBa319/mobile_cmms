@@ -2,8 +2,6 @@
 
 class EmployeeEntity {
   String? personId;
-
-  EmployeeEntity({
-    this.personId,
-  });
+  String? personName;
+  EmployeeEntity({this.personId, this.personName});
 }

@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../../../common/utils/singletons.dart';
-import '../../../../data/models/mock_work_order/device_model.dart';
 import '../../../base/base.dart';
 import '../../../base/state_base/bloc_status_state.dart';
 import '../../../common_widget/date_picker/cupertino_date_picker_custom.dart';
@@ -28,15 +27,7 @@ class _ScheduleState extends StateBase<ScheduleScreen> {
   DateTime currentDate = DateTime.now();
   String strDate = DateFormat('dd/MM/yyyy').format(DateTime.now());
   bool isCorrectiveMaintenance = false;
-  DeviceObjectModel? deviceObjectModel = DeviceObjectModel(
-    id: 201,
-    deviceName: 'h',
-    level: '1',
-    maintenanceType: '23',
-    status: '12',
-    task: '21',
-    timeUpdate: '12',
-  );
+
   @override
   ScheduleBloc get bloc => BlocProvider.of(context);
 
@@ -241,6 +232,8 @@ class _ScheduleState extends StateBase<ScheduleScreen> {
                                 task: state.viewModel.responses?[index]
                                     .maintenanceTask,
                               ),
+                              bloc: bloc,
+                              selectedDate: strDate,
                             );
                           },
                         ),

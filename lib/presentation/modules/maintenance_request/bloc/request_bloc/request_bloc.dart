@@ -50,14 +50,19 @@ class RequestBloc extends AppBlocBase<RequestEvent, RequestState> {
         requestedPriority: event.priority,
         requestedCompletionDate: event.requestedCompletionDate!.toUtc(),
         type: event.type,
-        equipmentCode: event.equipmentCode,
-        maintenanceObject: MaintenanceObject.equipment,
+        equipmentCode: event.maintenanceObject == MaintenanceObject.equipment
+            ? event.objectCode
+            : null,
+        maintenanceObject: event.maintenanceObject,
         requester: event.requestorCode,
-        status: RequestStatus.submitted,
+        status: event.requestStatus,
         responsiblePerson: event.requestorCode,
         submissionDate: DateTime.now().toUtc(),
         images: imageUrls,
         sounds: audioUrls,
+        moldCode: event.maintenanceObject == MaintenanceObject.mold
+            ? event.objectCode
+            : null,
       );
       final isSuccess = await _repository.createMaintenanceRequest(
         createRequest: request,

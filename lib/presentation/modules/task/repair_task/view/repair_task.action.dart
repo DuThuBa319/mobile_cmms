@@ -61,6 +61,12 @@ extension RepairTaskViewAction on _RepairTaskViewState {
                 onPressed: () {
                   Navigator.pop(context);
                   Navigator.pop(context);
+                  widget.scheduleBloc!.add(
+                    GetListMaintenanceResponsesEvent(
+                      dateRequest: widget.selectedDate,
+                      maintenanceTypeRequest: 'Khắc phục',
+                    ),
+                  );
                 },
               ),
             ],
@@ -94,6 +100,36 @@ extension RepairTaskViewAction on _RepairTaskViewState {
           ),
         ),
       );
+    }
+    if (state is GetMaterialState && state.status == BlocStatusState.failure) {
+      //Navigator.pop(context);
+      showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) => Center(
+          child: AlertDialog(
+            title: const Text('Phản hồi'),
+            content: Text(
+              'Linh kiện không khả dụng',
+              style: Theme.of(context).textTheme.caption,
+            ),
+            actions: [
+              TextButton(
+                child: const Text('Thực hiện lại'),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+    if (state is GetMaterialState ||
+        state is GetMaintenanceResponseState &&
+            state.status == BlocStatusState.success) {
+      //Navigator.pop(context);
+      materialItems = state.viewModel.materialMenuItems!;
     }
   }
 
@@ -133,6 +169,28 @@ extension RepairTaskViewAction on _RepairTaskViewState {
           audioFiles: receiveState.viewModel.audioFiles,
         ),
       );
+    }
+  }
+
+  Future<void> scanQR() async {
+    String barcodeScanRes;
+    try {
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+        '#e60000',
+        'Cancel',
+        true,
+        ScanMode.QR,
+      );
+    } on PlatformException {
+      barcodeScanRes = 'Failed to get platform version.';
+    }
+
+    if (barcodeScanRes == '-1') {
+      showToast('Quét không thành công');
+    } else {
+      textController = barcodeScanRes;
+      showToast(textController);
+      bloc.add(GetMaterialEvent(sku: textController));
     }
   }
 }
