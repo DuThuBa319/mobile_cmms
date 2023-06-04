@@ -12,6 +12,7 @@ import '../../../route/route_list.dart';
 import '../../../theme/theme_color.dart';
 
 import '../../add_material/view/add_material_screen.dart';
+import '../../maintenance_request/view/maintenance_request_screen.dart';
 import '../../task/general_check/view/general_check_screen.dart';
 import '../../task/repair_task/view/repair_task_screen.dart';
 import '../../task/replace_mold/view/replace_mold_screen.dart';
@@ -131,7 +132,7 @@ class _MainScreenViewState extends StateBase<MainScreenView> {
                             state.viewModel.responses?[index].maintenanceTask ??
                                 '--',
                         equipmentCode:
-                            state.viewModel.responses?[index].equipment?.code ??
+                            state.viewModel.responses?[index].objectCode ??
                                 '--',
                         equipmentType: state.viewModel.responses?[index]
                                     .maintenanceObject ==

@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import '../../../../domain/entities/cmms/inspection_report_entity.dart';
 import '../../../../domain/entities/cmms/maintenance_response_entity.dart';
 import '../cmms_enum.dart';
 import '../correction.dart';
@@ -8,6 +9,7 @@ import '../material/material.dart';
 import '../mold_info/mold.dart';
 import 'cause.dart';
 import 'employee.dart';
+import 'inspection_report.dart';
 import 'maintenance_request.dart';
 
 part 'maintenance_response.g.dart';
@@ -41,6 +43,7 @@ class MaintenanceResponse {
   Mold? mold;
   DateTime? dueDate;
   MaintenanceType? type;
+  List<InspectionReport>? inspectionReports;
 
   MaintenanceResponse({
     this.id,
@@ -68,6 +71,7 @@ class MaintenanceResponse {
     this.updatedAt,
     this.dueDate,
     this.type,
+    this.inspectionReports,
   });
 
   MaintenanceResponseEntity getMaintenanceResponseEntity() {
@@ -97,6 +101,10 @@ class MaintenanceResponse {
       images: images,
       sounds: sounds,
       type: type,
+      inspectionReportEntity: List<InspectionReportEntity>.generate(
+        inspectionReports!.length,
+        (index) => inspectionReports![index].getInspectionReportEntity(),
+      ),
     );
 
     return result;

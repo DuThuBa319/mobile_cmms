@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import '../cmms_enum.dart';
-import '../material/material.dart';
+import '../maintenance_response/inspection_report.dart';
 
 part 'update_response.g.dart';
 
@@ -17,6 +17,8 @@ class UpdateResponse {
   List<String>? images;
   List<String>? sounds;
   List<String>? materials;
+  List<InspectionReport>? inspectionReports;
+  MaintenanceType? type;
 
   UpdateResponse({
     this.actualFinishTime,
@@ -28,6 +30,8 @@ class UpdateResponse {
     this.sounds,
     this.status,
     this.updatedAt,
+    this.inspectionReports,
+    this.type,
   });
 
   UpdateResponse copyWith({
@@ -40,6 +44,8 @@ class UpdateResponse {
     List<String>? images,
     List<String>? sounds,
     List<String>? materials,
+    List<InspectionReport>? inspectionReports,
+    MaintenanceType? type,
   }) {
     return UpdateResponse(
       cause: cause ?? this.cause,
@@ -51,6 +57,8 @@ class UpdateResponse {
       images: images ?? this.images,
       sounds: sounds ?? this.sounds,
       materials: materials ?? this.materials,
+      inspectionReports: inspectionReports ?? this.inspectionReports,
+      type: type ?? this.type,
     );
   }
 

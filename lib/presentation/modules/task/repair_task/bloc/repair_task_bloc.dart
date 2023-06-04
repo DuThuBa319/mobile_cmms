@@ -10,7 +10,6 @@ import 'package:path_provider/path_provider.dart';
 
 import '../../../../../common/services/firebase/firebase_storage_service.dart';
 import '../../../../../data/models/cmms/cmms_enum.dart';
-import '../../../../../data/models/cmms/maintenance_response/maintenance_response_item.dart';
 import '../../../../../data/models/cmms/put/update_response.dart';
 import '../../../../../domain/entities/cmms/cause_entity.dart';
 import '../../../../../domain/entities/cmms/correction_entity.dart';
@@ -60,11 +59,9 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
       final listAudioFiles = <File>[];
       final materialList = <MaterialMenuItem>[];
       final listSku = <String>[];
-      final response = await _repository.getMaintenanceResponse(
-        responseId: event.responseId,
-      );
 
-      final responseEntity = response.getMaintenanceResponseItemEntity();
+      final responseEntity =
+          await _usecase.getMaintenanceResponse(responseId: event.responseId);
       for (final cause in responseEntity!.cause!) {
         final causeEntity = cause.getCauseEntity();
         listCausesSelected.add(causeEntity);
@@ -96,15 +93,16 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
       }
 
       final update = UpdateResponse().copyWith(
-        actualFinishTime: response.items?[0].actualFinishTime,
-        actualStartTime: response.items?[0].actualStartTime,
-        status: response.items?[0].status,
-        updatedAt: response.items?[0].updatedAt,
+        actualFinishTime: responseEntity.actualFinishTime,
+        actualStartTime: responseEntity.actualStartTime,
+        status: responseEntity.status,
+        updatedAt: responseEntity.updatedAt,
         cause: listCauseId,
         correction: listCorrectionId,
         images: responseEntity.images,
         sounds: responseEntity.sounds,
         materials: listSku,
+        type: responseEntity.type,
       );
 
       for (final url in responseEntity.images!) {
@@ -116,7 +114,6 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
 
       final newViewModel = state.viewModel.copyWith(
         responseEntity: responseEntity,
-        response: response,
         updateResponse: update,
         listCausesSelected: listCausesSelected,
         listCorrectionsSelected: listCorrectionsSelected,

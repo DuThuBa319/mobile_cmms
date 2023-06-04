@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
+import '../../../../common/services/permission_service.dart';
 import '../../../base/base.dart';
 import '../../../base/state_base/bloc_status_state.dart';
 
@@ -129,6 +130,9 @@ class ImagePickerBloc extends AppBlocBase<ImagePickerEvent, ImagePickerState> {
 Future<List<File>?> selectFile(ImageSource source) async {
   final files = <File>[];
   if (source == ImageSource.camera) {
+    await [
+      Permission.camera,
+    ].request();
     final pickedFile = await ImagePicker().pickImage(
       source: source,
     );

@@ -45,7 +45,12 @@ extension MainScreenViewAction on _MainScreenViewState {
   }
 
   void maintenanceRequestNavigator() {
-    Navigator.pushNamed(context, RouteList.request);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const MaintenanceRequestScreen(),
+      ),
+    );
   }
 
   Widget taskIcon({String? task}) {
@@ -89,7 +94,7 @@ extension MainScreenViewAction on _MainScreenViewState {
       );
     } else {
       goToScreen(
-        GeneralCheckScreen(title: title),
+        GeneralCheckScreen(title: title, responseId: id),
       );
     }
   }

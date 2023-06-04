@@ -80,23 +80,23 @@ import '../presentation/custom/image_picker/image_picker_bloc/image_picker_bloc.
 import '../presentation/custom/select_info_screen/bloc/receive_info_selection_bloc/receive_info_selection_bloc.dart'
     as _i31;
 import '../presentation/custom/select_info_screen/bloc/select_info_bloc/select_info_bloc.dart'
-    as _i65;
+    as _i66;
 import '../presentation/custom/select_info_screen/repository/select_info_repository.dart'
     as _i37;
 import '../presentation/custom/select_info_screen/usecase/select_info_usecase.dart'
     as _i38;
 import '../presentation/modules/add_material/bloc/add_material_bloc.dart'
-    as _i67;
+    as _i68;
 import '../presentation/modules/add_material/repository/add_material_repository.dart'
     as _i50;
 import '../presentation/modules/add_material/usecase/add_material_usecase.dart'
     as _i51;
-import '../presentation/modules/example/bloc/example_bloc.dart' as _i68;
+import '../presentation/modules/example/bloc/example_bloc.dart' as _i69;
 import '../presentation/modules/example/repository/example_repository.dart'
     as _i52;
 import '../presentation/modules/example/usecase/example_usecase.dart' as _i55;
 import '../presentation/modules/example_temp_humid/bloc/example_temp_humid_bloc.dart'
-    as _i69;
+    as _i70;
 import '../presentation/modules/example_temp_humid/repository/example_temp_humid_repository.dart'
     as _i53;
 import '../presentation/modules/example_temp_humid/usecase/example_temp_humid_usecase.dart'
@@ -107,37 +107,39 @@ import '../presentation/modules/main_page/account/interactor/account_interactor.
     as _i3;
 import '../presentation/modules/main_page/account/repository/account_repository.dart'
     as _i4;
-import '../presentation/modules/main_page/home/bloc/home_bloc.dart' as _i71;
+import '../presentation/modules/main_page/home/bloc/home_bloc.dart' as _i72;
 import '../presentation/modules/main_page/home/interactor/home_interactor.dart'
-    as _i56;
+    as _i57;
 import '../presentation/modules/main_page/home/repository/home_repository.dart'
     as _i18;
-import '../presentation/modules/main_screen/bloc/main_screen_bloc.dart' as _i72;
+import '../presentation/modules/main_screen/bloc/main_screen_bloc.dart' as _i73;
 import '../presentation/modules/main_screen/repository/main_screen_repository.dart'
-    as _i57;
-import '../presentation/modules/main_screen/usecase/main_screen_usecase.dart'
     as _i58;
-import '../presentation/modules/maintenance_request/bloc/get_detail_bloc/get_request_info_bloc.dart'
-    as _i70;
-import '../presentation/modules/maintenance_request/bloc/request_bloc/request_bloc.dart'
-    as _i62;
-import '../presentation/modules/maintenance_request/repository/maintenance_request_repository.dart'
+import '../presentation/modules/main_screen/usecase/main_screen_usecase.dart'
     as _i59;
-import '../presentation/modules/maintenance_request/usecase/maintenance_request_usecase.dart'
-    as _i60;
-import '../presentation/modules/schedule/bloc/schedule_bloc.dart' as _i73;
-import '../presentation/modules/schedule/repository/schedule_repository.dart'
+import '../presentation/modules/maintenance_request/bloc/get_detail_bloc/get_request_info_bloc.dart'
+    as _i71;
+import '../presentation/modules/maintenance_request/bloc/request_bloc/request_bloc.dart'
     as _i63;
-import '../presentation/modules/schedule/usecase/schedule_usecase.dart' as _i64;
-import '../presentation/modules/task/repair_task/bloc/repair_task_bloc.dart'
+import '../presentation/modules/maintenance_request/repository/maintenance_request_repository.dart'
+    as _i60;
+import '../presentation/modules/maintenance_request/usecase/maintenance_request_usecase.dart'
     as _i61;
+import '../presentation/modules/schedule/bloc/schedule_bloc.dart' as _i74;
+import '../presentation/modules/schedule/repository/schedule_repository.dart'
+    as _i64;
+import '../presentation/modules/schedule/usecase/schedule_usecase.dart' as _i65;
+import '../presentation/modules/task/general_check/bloc/general_check_bloc.dart'
+    as _i56;
+import '../presentation/modules/task/repair_task/bloc/repair_task_bloc.dart'
+    as _i62;
 import '../presentation/modules/task/repository/response_repository.dart'
     as _i34;
 import '../presentation/modules/task/usecase/response_usecase.dart' as _i35;
-import '../presentation/modules/welcome/splash/bloc/splash_bloc.dart' as _i66;
+import '../presentation/modules/welcome/splash/bloc/splash_bloc.dart' as _i67;
 import '../presentation/modules/welcome/splash/interactor/splash_interactor.dart'
     as _i39;
-import 'di.dart' as _i74;
+import 'di.dart' as _i75;
 
 // ignore_for_file: unnecessary_lambdas
 // ignore_for_file: lines_longer_than_80_chars
@@ -217,59 +219,63 @@ _i1.GetIt $initGetIt(
       _i54.ExampleTempHumidUsecaseImpl(gh<_i53.ExampleTempHumidRepository>()));
   gh.factory<_i55.ExampleUsecase>(
       () => _i55.ExampleUsecaseImpl(gh<_i52.ExampleRepository>()));
-  gh.factory<_i56.HomeInteractor>(
-      () => _i56.HomeInteractorImpl(gh<_i18.HomeRepository>()));
-  gh.factory<_i57.MainScreenRepository>(() =>
-      _i57.MainScreenRepositoryImpl(gh<_i21.MaintenanceResponseRepository>()));
-  gh.factory<_i58.MainScreenUsecase>(
-      () => _i58.MainScreenUsecaseImpl(gh<_i57.MainScreenRepository>()));
-  gh.factory<_i59.MaintenanceRequestRepository>(
-      () => _i59.MaintenanceRequestRepositoryImpl(
+  gh.factory<_i56.GeneralCheckBloc>(() => _i56.GeneralCheckBloc(
+        gh<_i35.ResponseUsecase>(),
+        gh<_i34.ResponseRepository>(),
+      ));
+  gh.factory<_i57.HomeInteractor>(
+      () => _i57.HomeInteractorImpl(gh<_i18.HomeRepository>()));
+  gh.factory<_i58.MainScreenRepository>(() =>
+      _i58.MainScreenRepositoryImpl(gh<_i21.MaintenanceResponseRepository>()));
+  gh.factory<_i59.MainScreenUsecase>(
+      () => _i59.MainScreenUsecaseImpl(gh<_i58.MainScreenRepository>()));
+  gh.factory<_i60.MaintenanceRequestRepository>(
+      () => _i60.MaintenanceRequestRepositoryImpl(
             gh<_i15.EquipmentRepository>(),
             gh<_i13.EmployeeRepository>(),
             gh<_i9.CauseRepository>(),
             gh<_i32.RequestRepository>(),
             gh<_i27.MoldRepository>(),
           ));
-  gh.factory<_i60.MaintenanceRequestUsecase>(() =>
-      _i60.MaintenanceRequestUsecaseImpl(
-          gh<_i59.MaintenanceRequestRepository>()));
-  gh.factory<_i61.RepairTaskBloc>(() => _i61.RepairTaskBloc(
+  gh.factory<_i61.MaintenanceRequestUsecase>(() =>
+      _i61.MaintenanceRequestUsecaseImpl(
+          gh<_i60.MaintenanceRequestRepository>()));
+  gh.factory<_i62.RepairTaskBloc>(() => _i62.RepairTaskBloc(
         gh<_i35.ResponseUsecase>(),
         gh<_i34.ResponseRepository>(),
       ));
-  gh.factory<_i62.RequestBloc>(
-      () => _i62.RequestBloc(gh<_i59.MaintenanceRequestRepository>()));
-  gh.factory<_i63.ScheduleRepository>(() => _i63.ScheduleRepositoryImpl(
+  gh.factory<_i63.RequestBloc>(
+      () => _i63.RequestBloc(gh<_i60.MaintenanceRequestRepository>()));
+  gh.factory<_i64.ScheduleRepository>(() => _i64.ScheduleRepositoryImpl(
         gh<_i47.WorkOrderApiRepository>(),
         gh<_i21.MaintenanceResponseRepository>(),
       ));
-  gh.factory<_i64.ScheduleUsecase>(
-      () => _i64.ScheduleUsecaseImpl(gh<_i63.ScheduleRepository>()));
-  gh.factory<_i65.SelectInfoBloc>(
-      () => _i65.SelectInfoBloc(gh<_i38.SelectInfoUsecase>()));
-  gh.factory<_i66.SplashBloc>(
-      () => _i66.SplashBloc(gh<_i39.SplashInteractor>()));
-  gh.factory<_i67.AddMaterialBloc>(() => _i67.AddMaterialBloc(
+  gh.factory<_i65.ScheduleUsecase>(
+      () => _i65.ScheduleUsecaseImpl(gh<_i64.ScheduleRepository>()));
+  gh.factory<_i66.SelectInfoBloc>(
+      () => _i66.SelectInfoBloc(gh<_i38.SelectInfoUsecase>()));
+  gh.factory<_i67.SplashBloc>(
+      () => _i67.SplashBloc(gh<_i39.SplashInteractor>()));
+  gh.factory<_i68.AddMaterialBloc>(() => _i68.AddMaterialBloc(
         gh<_i51.AddMaterialUsecase>(),
         gh<_i50.AddMaterialRepository>(),
       ));
-  gh.factory<_i68.ExampleBloc>(
-      () => _i68.ExampleBloc(gh<_i55.ExampleUsecase>()));
-  gh.factory<_i69.ExampleTempHumidBloc>(
-      () => _i69.ExampleTempHumidBloc(gh<_i54.ExampleTempHumidUsecase>()));
-  gh.factory<_i70.GetRequestInfoBloc>(
-      () => _i70.GetRequestInfoBloc(gh<_i60.MaintenanceRequestUsecase>()));
-  gh.factory<_i71.HomeBloc>(() => _i71.HomeBloc(gh<_i56.HomeInteractor>()));
-  gh.factory<_i72.MainScreenBloc>(() => _i72.MainScreenBloc(
-        gh<_i58.MainScreenUsecase>(),
-        gh<_i57.MainScreenRepository>(),
+  gh.factory<_i69.ExampleBloc>(
+      () => _i69.ExampleBloc(gh<_i55.ExampleUsecase>()));
+  gh.factory<_i70.ExampleTempHumidBloc>(
+      () => _i70.ExampleTempHumidBloc(gh<_i54.ExampleTempHumidUsecase>()));
+  gh.factory<_i71.GetRequestInfoBloc>(
+      () => _i71.GetRequestInfoBloc(gh<_i61.MaintenanceRequestUsecase>()));
+  gh.factory<_i72.HomeBloc>(() => _i72.HomeBloc(gh<_i57.HomeInteractor>()));
+  gh.factory<_i73.MainScreenBloc>(() => _i73.MainScreenBloc(
+        gh<_i59.MainScreenUsecase>(),
+        gh<_i58.MainScreenRepository>(),
       ));
-  gh.factory<_i73.ScheduleBloc>(() => _i73.ScheduleBloc(
-        gh<_i64.ScheduleUsecase>(),
-        gh<_i63.ScheduleRepository>(),
+  gh.factory<_i74.ScheduleBloc>(() => _i74.ScheduleBloc(
+        gh<_i65.ScheduleUsecase>(),
+        gh<_i64.ScheduleRepository>(),
       ));
   return getIt;
 }
 
-class _$AppModule extends _i74.AppModule {}
+class _$AppModule extends _i75.AppModule {}

@@ -30,7 +30,7 @@ extension MaintenanceRequestViewAction on _MaintenanceRequestViewState {
                 child: const Text('Thoát'),
                 onPressed: () {
                   Navigator.pop(context);
-                  Navigator.pop(context);
+                  Navigator.pop(context, true);
                 },
               ),
             ],
@@ -141,6 +141,9 @@ extension MaintenanceRequestViewAction on _MaintenanceRequestViewState {
     }
     if (value == 'Dự đoán') {
       maintenanceType = MaintenanceType.predictive;
+    }
+    if (value == 'Kiểm tra tổng quát') {
+      maintenanceType = MaintenanceType.preventiveInspection;
     }
   }
 

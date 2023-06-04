@@ -30,6 +30,10 @@ UpdateResponse _$UpdateResponseFromJson(Map<String, dynamic> json) =>
       updatedAt: json['updatedAt'] == null
           ? null
           : DateTime.parse(json['updatedAt'] as String),
+      inspectionReports: (json['inspectionReports'] as List<dynamic>?)
+          ?.map((e) => InspectionReport.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      type: $enumDecodeNullable(_$MaintenanceTypeEnumMap, json['type']),
     );
 
 Map<String, dynamic> _$UpdateResponseToJson(UpdateResponse instance) {
@@ -51,6 +55,9 @@ Map<String, dynamic> _$UpdateResponseToJson(UpdateResponse instance) {
   writeNotNull('images', instance.images);
   writeNotNull('sounds', instance.sounds);
   writeNotNull('materials', instance.materials);
+  writeNotNull('inspectionReports',
+      instance.inspectionReports?.map((e) => e.toJson()).toList());
+  writeNotNull('type', _$MaintenanceTypeEnumMap[instance.type]);
   return val;
 }
 
@@ -59,4 +66,11 @@ const _$MaintenanceStatusEnumMap = {
   MaintenanceStatus.inProgress: 'inProgress',
   MaintenanceStatus.review: 'review',
   MaintenanceStatus.completed: 'completed',
+};
+
+const _$MaintenanceTypeEnumMap = {
+  MaintenanceType.reactive: 'reactive',
+  MaintenanceType.preventive: 'preventive',
+  MaintenanceType.predictive: 'predictive',
+  MaintenanceType.preventiveInspection: 'preventiveInspection',
 };

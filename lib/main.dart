@@ -24,7 +24,7 @@ import 'presentation/theme/theme_data.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Permission.manageExternalStorage.request();
+
   Config.instance.setup();
   configureDependencies();
   await Future.wait([]);

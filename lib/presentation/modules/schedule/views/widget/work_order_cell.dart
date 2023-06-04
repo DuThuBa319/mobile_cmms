@@ -57,6 +57,9 @@ class _WorkOrderCellState extends State<WorkOrderCell> {
           goToScreen(
             GeneralCheckScreen(
               title: responseCode,
+              responseId: id!,
+              scheduleBloc: widget.bloc,
+              selectedDate: widget.selectedDate,
             ),
           );
         }
@@ -142,11 +145,11 @@ class _WorkOrderCellState extends State<WorkOrderCell> {
                         children: [
                           const Text('Thiết bị: Máy ép'),
                           Text(
-                            'Thời gian: ${widget.maintenanceResponseEntity?.estProcessTime} phút',
+                            'Thời gian: ${widget.maintenanceResponseEntity?.estProcessTime ?? '--'} phút',
                           ),
-                          const Expanded(
+                          Expanded(
                             child: Text(
-                              'Nguyên nhân:',
+                              'Vấn đề: ${widget.maintenanceResponseEntity?.problem}',
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -159,7 +162,7 @@ class _WorkOrderCellState extends State<WorkOrderCell> {
                       direction: Axis.vertical,
                       children: [
                         Text(
-                          'Mã số: ${widget.maintenanceResponseEntity?.equipment?.code}',
+                          'Mã số: ${widget.maintenanceResponseEntity?.objectCode}',
                         ),
                       ],
                     ),

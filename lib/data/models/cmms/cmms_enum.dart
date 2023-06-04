@@ -19,3 +19,5 @@ enum MaterialStatus {
   missing,
   available,
 }
+
+enum PreventiveInspectionStatus { passed, failed, uninspectable }

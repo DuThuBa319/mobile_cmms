@@ -11,6 +11,7 @@ import '../../../data/models/cmms/maintenance_response/employee.dart';
 import '../../../data/models/cmms/maintenance_response/maintenance_request.dart';
 import '../../../data/models/cmms/material/material.dart';
 import '../../../data/models/cmms/mold_info/mold.dart';
+import 'inspection_report_entity.dart';
 
 class MaintenanceResponseEntity {
   String? id;
@@ -38,6 +39,7 @@ class MaintenanceResponseEntity {
   Mold? mold;
   DateTime? dueDate;
   MaintenanceType? type;
+  List<InspectionReportEntity>? inspectionReportEntity;
   MaintenanceResponseEntity({
     this.id,
     this.plannedStart,
@@ -64,7 +66,9 @@ class MaintenanceResponseEntity {
     this.updatedAt,
     this.dueDate,
     this.type,
+    this.inspectionReportEntity,
   });
+
   Color get priorityColor {
     switch (priority) {
       case 4:
@@ -225,11 +229,22 @@ class MaintenanceResponseEntity {
   String get maintenanceType {
     switch (type) {
       case MaintenanceType.preventive:
+      case MaintenanceType.preventiveInspection:
         return 'Đã lên lịch';
       case MaintenanceType.reactive:
         return 'Khắc phục';
       default:
         return '--';
     }
+  }
+
+  String get objectCode {
+    if (equipment == null) {
+      return mold!.code!;
+    }
+    if (equipment != null) {
+      return equipment!.code!;
+    }
+    return '--';
   }
 }

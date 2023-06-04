@@ -66,6 +66,9 @@ MaintenanceResponse _$MaintenanceResponseFromJson(Map<String, dynamic> json) =>
           ? null
           : DateTime.parse(json['dueDate'] as String),
       type: $enumDecodeNullable(_$MaintenanceTypeEnumMap, json['type']),
+      inspectionReports: (json['inspectionReports'] as List<dynamic>?)
+          ?.map((e) => InspectionReport.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$MaintenanceResponseToJson(MaintenanceResponse instance) {
@@ -106,6 +109,8 @@ Map<String, dynamic> _$MaintenanceResponseToJson(MaintenanceResponse instance) {
   writeNotNull('mold', instance.mold?.toJson());
   writeNotNull('dueDate', instance.dueDate?.toIso8601String());
   writeNotNull('type', _$MaintenanceTypeEnumMap[instance.type]);
+  writeNotNull('inspectionReports',
+      instance.inspectionReports?.map((e) => e.toJson()).toList());
   return val;
 }
 
