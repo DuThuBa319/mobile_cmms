@@ -63,8 +63,8 @@ class GeneralCheckBloc
             j < responseEntity.inspectionReportEntity!.length;
             j++) {
           if (inspectionReports[i].name ==
-              responseEntity.inspectionReportEntity![i].name) {
-            inspectionReports[i] = responseEntity.inspectionReportEntity![i];
+              responseEntity.inspectionReportEntity![j].name) {
+            inspectionReports[i] = responseEntity.inspectionReportEntity![j];
           }
         }
       }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../../data/models/cmms/cmms_enum.dart';
 import '../../../../common_widget/dropdown/dropdown_widget.dart';
-import '../../../../route/route_list.dart';
 import '../../../../theme/theme_color.dart';
 import '../../../maintenance_request/view/maintenance_request_screen.dart';
 import '../bloc/general_check_bloc.dart';
@@ -153,7 +152,7 @@ class _CheckDropDownState extends State<CheckDropDown> {
                       if ((widget.checkState.viewModel.inspectionReports ??
                                       [])[widget.index]
                                   .isRequest ==
-                              false ||
+                              false &&
                           widget.checkState.viewModel.responseEntity?.status ==
                               MaintenanceStatus.inProgress) {
                         widget.bloc.add(
@@ -175,7 +174,7 @@ class _CheckDropDownState extends State<CheckDropDown> {
                       color: (widget.checkState.viewModel.inspectionReports ??
                                           [])[widget.index]
                                       .isRequest ==
-                                  false ||
+                                  false &&
                               widget.checkState.viewModel.responseEntity
                                       ?.status ==
                                   MaintenanceStatus.inProgress
