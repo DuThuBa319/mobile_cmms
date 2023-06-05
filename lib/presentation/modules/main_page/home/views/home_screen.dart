@@ -115,7 +115,7 @@ class _HomeScreenState extends StateBase<HomeScreen> {
           ),
           TextButton(
             onPressed: () {
-              Navigator.pushNamed(context, RouteList.home);
+              Navigator.pushNamed(context, RouteList.login);
             },
             child: const Text('Go to CMMS Screen'),
           )

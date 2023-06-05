@@ -14,4 +14,5 @@ class RouteList {
   static const String replaceTask = 'replace';
   static const String generalCheck = 'check';
   static const String request = 'request';
+  static const String login = 'login';
 }

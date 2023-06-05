@@ -10,7 +10,6 @@ import '../../../common_widget/loading.dart';
 import '../../../common_widget/smart_refresher_wrapper.dart';
 import '../../../route/route_list.dart';
 import '../../../theme/theme_color.dart';
-
 import '../../add_material/view/add_material_screen.dart';
 import '../../maintenance_request/view/maintenance_request_screen.dart';
 import '../../task/general_check/view/general_check_screen.dart';
@@ -58,7 +57,7 @@ class _MainScreenViewState extends StateBase<MainScreenView> {
                 Icons.send,
                 'Tạo yêu cầu',
                 function: maintenanceRequestNavigator,
-              )
+              ),
             ],
           ),
           LineDivider(),

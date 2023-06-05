@@ -4,6 +4,7 @@ import '../common_widget/text_scale_fixed.dart';
 import '../modules/example/example_route.dart';
 import '../modules/example_temp_humid/example_temp_humid_route.dart';
 
+import '../modules/login/login_route.dart';
 import '../modules/main_page/main_page_route.dart';
 import '../modules/main_screen/main_screen_route.dart';
 import '../modules/maintenance_request/maintenance_request_route.dart';
@@ -17,6 +18,7 @@ class RouteGenerator {
         ...MainScreenRoute.getAll(settings),
         ...ScheduleRoute.getAll(settings),
         ...RequestRoute.getAll(settings),
+        ...LoginRoute.getAll(settings),
       }; // Add into Route Generator
 
   static Route<dynamic> generateRoute(RouteSettings settings) {

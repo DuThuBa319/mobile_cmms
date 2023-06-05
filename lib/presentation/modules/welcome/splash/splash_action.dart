@@ -7,7 +7,7 @@ extension SplashAction on _SplashScreenState {
 
   void _launchApp() {
     //if (userDataData.isLogin) {
-    Navigator.of(context).pushReplacementNamed(RouteList.home);
+    Navigator.of(context).pushReplacementNamed(RouteList.login);
     //} else {}
   }
 }
