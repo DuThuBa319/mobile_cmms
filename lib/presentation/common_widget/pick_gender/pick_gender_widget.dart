@@ -53,8 +53,8 @@ class PickGenderWidget extends StatelessWidget {
                             child: Text(
                               'Nam',
                               style: value.isMale
-                                  ? themeData.textTheme.bodyText1
-                                  : themeData.textTheme.subtitle2,
+                                  ? themeData.textTheme.bodyLarge
+                                  : themeData.textTheme.titleSmall,
                             ),
                           ),
                           SvgPicture.asset(
@@ -95,8 +95,8 @@ class PickGenderWidget extends StatelessWidget {
                             child: Text(
                               'Nữ',
                               style: value.isFemale
-                                  ? themeData.textTheme.bodyText1
-                                  : themeData.textTheme.subtitle2,
+                                  ? themeData.textTheme.bodyLarge
+                                  : themeData.textTheme.titleSmall,
                             ),
                           ),
                           SvgPicture.asset(
@@ -135,8 +135,8 @@ class PickGenderWidget extends StatelessWidget {
                       child: Text(
                         'Khác',
                         style: value.isOther
-                            ? themeData.textTheme.bodyText1
-                            : themeData.textTheme.subtitle2,
+                            ? themeData.textTheme.bodyLarge
+                            : themeData.textTheme.titleSmall,
                       ),
                     ),
                   ],

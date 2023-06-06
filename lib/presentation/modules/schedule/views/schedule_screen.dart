@@ -65,8 +65,8 @@ class _ScheduleState extends StateBase<ScheduleScreen> {
                         'Đã lên lịch',
                         textAlign: TextAlign.center,
                         style: isCorrectiveMaintenance
-                            ? Theme.of(context).textTheme.bodyText2
-                            : Theme.of(context).textTheme.headline5,
+                            ? Theme.of(context).textTheme.bodyMedium
+                            : Theme.of(context).textTheme.headlineSmall,
                       ),
                     ),
                   ),
@@ -89,8 +89,8 @@ class _ScheduleState extends StateBase<ScheduleScreen> {
                         'Khắc phục',
                         textAlign: TextAlign.center,
                         style: isCorrectiveMaintenance
-                            ? Theme.of(context).textTheme.headline5
-                            : Theme.of(context).textTheme.bodyText2,
+                            ? Theme.of(context).textTheme.headlineSmall
+                            : Theme.of(context).textTheme.bodyMedium,
                       ),
                     ),
                   ),
@@ -170,7 +170,7 @@ class _ScheduleState extends StateBase<ScheduleScreen> {
                             'Xảy ra lỗi khi tải dữ liệu',
                             style: Theme.of(context)
                                 .textTheme
-                                .caption
+                                .bodySmall
                                 ?.copyWith(color: Colors.red),
                           ),
                           IconButton(
@@ -191,7 +191,7 @@ class _ScheduleState extends StateBase<ScheduleScreen> {
                             'Ngày này không có dữ liệu',
                             style: Theme.of(context)
                                 .textTheme
-                                .caption
+                                .bodySmall
                                 ?.copyWith(color: Colors.red),
                           ),
                           IconButton(

@@ -293,7 +293,7 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                       enabled: state.viewModel.isEnable!,
                       controller: descriptionTextController,
                       // Text('Sản phẩm ép ra bị giáp mí nặng, có dấu hiệu sản phẩm dơ do mỡ bò bị tràn ra ngoài')
-                      style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             color: Colors.black,
                             fontSize: 20,
                           ),
@@ -355,11 +355,13 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                         },
                         child: Text(
                           'Tạo yêu cầu',
-                          style:
-                              Theme.of(context).textTheme.headline3?.copyWith(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .displaySmall
+                              ?.copyWith(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                              ),
                         ),
                       ),
                     ),
@@ -505,7 +507,7 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
               textCause(list: state.viewModel.listCausesSelected)!,
               style: Theme.of(context)
                   .textTheme
-                  .bodyText2
+                  .bodyMedium
                   ?.copyWith(color: AppColor.gray767676),
             ),
           ),

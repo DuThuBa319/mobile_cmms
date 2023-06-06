@@ -55,7 +55,7 @@ class _ExampleTempHumidState extends StateBase<ExampleTempHumidScreen> {
                     children: [
                       Text(
                         'Thời tiết ngày ',
-                        style: theme.textTheme.headline5,
+                        style: theme.textTheme.headlineSmall,
                       ),
                       const SizedBox(
                         height: 10,
@@ -70,7 +70,7 @@ class _ExampleTempHumidState extends StateBase<ExampleTempHumidScreen> {
                           children: [
                             Text(
                               '$strStartDate',
-                              style: theme.textTheme.headline5,
+                              style: theme.textTheme.headlineSmall,
                             ),
                             InkWell(
                               onTap: selectedDate,
@@ -95,7 +95,7 @@ class _ExampleTempHumidState extends StateBase<ExampleTempHumidScreen> {
                               controller: latitude,
                               style: Theme.of(context)
                                   .textTheme
-                                  .headline5
+                                  .headlineSmall
                                   ?.copyWith(
                                     fontSize: 14,
                                   ),
@@ -105,7 +105,7 @@ class _ExampleTempHumidState extends StateBase<ExampleTempHumidScreen> {
                                 hintText: '16.125',
                                 labelStyle: Theme.of(context)
                                     .textTheme
-                                    .headline5
+                                    .headlineSmall
                                     ?.copyWith(
                                       fontSize: 14,
                                     ),
@@ -122,7 +122,7 @@ class _ExampleTempHumidState extends StateBase<ExampleTempHumidScreen> {
                               controller: longtitude,
                               style: Theme.of(context)
                                   .textTheme
-                                  .headline5
+                                  .headlineSmall
                                   ?.copyWith(
                                     fontSize: 14,
                                   ),
@@ -132,7 +132,7 @@ class _ExampleTempHumidState extends StateBase<ExampleTempHumidScreen> {
                                 hintText: '108.125',
                                 labelStyle: Theme.of(context)
                                     .textTheme
-                                    .headline5
+                                    .headlineSmall
                                     ?.copyWith(
                                       fontSize: 14,
                                     ),

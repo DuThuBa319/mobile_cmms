@@ -54,12 +54,12 @@ class _ExampleState extends StateBase<ExampleScreen> {
                   child:
                       // Text(
                       //   'Thời tiết từ ngày 01/01 đến 08/02',
-                      //   style: theme.textTheme.headline5,
+                      //   style: theme.textTheme.headlineSmall,
                       // ),
                       Column(
                     children: [
                       DefaultTextStyle(
-                        style: theme.textTheme.headline5!,
+                        style: theme.textTheme.headlineSmall!,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -90,7 +90,7 @@ class _ExampleState extends StateBase<ExampleScreen> {
                               controller: latitude,
                               style: Theme.of(context)
                                   .textTheme
-                                  .headline5
+                                  .headlineSmall
                                   ?.copyWith(
                                     fontSize: 14,
                                   ),
@@ -100,7 +100,7 @@ class _ExampleState extends StateBase<ExampleScreen> {
                                 hintText: '16.125',
                                 labelStyle: Theme.of(context)
                                     .textTheme
-                                    .headline5
+                                    .headlineSmall
                                     ?.copyWith(
                                       fontSize: 14,
                                     ),
@@ -113,7 +113,7 @@ class _ExampleState extends StateBase<ExampleScreen> {
                               controller: longtitude,
                               style: Theme.of(context)
                                   .textTheme
-                                  .headline5
+                                  .headlineSmall
                                   ?.copyWith(
                                     fontSize: 14,
                                   ),
@@ -123,7 +123,7 @@ class _ExampleState extends StateBase<ExampleScreen> {
                                 hintText: '108.125',
                                 labelStyle: Theme.of(context)
                                     .textTheme
-                                    .headline5
+                                    .headlineSmall
                                     ?.copyWith(
                                       fontSize: 14,
                                     ),

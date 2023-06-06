@@ -67,7 +67,7 @@ class _SplashViewState extends State<SplashView> {
               if (kDebugMode)
                 Text(
                   Config.instance.appConfig.envName,
-                  style: theme.textTheme.subtitle1!.copyWith(
+                  style: theme.textTheme.titleMedium!.copyWith(
                     color: AppColor.primaryText,
                   ),
                 ),

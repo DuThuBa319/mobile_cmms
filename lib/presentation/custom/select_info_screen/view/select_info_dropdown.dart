@@ -108,7 +108,7 @@ class _InfoSelectionDropdownState extends State<InfoSelectionDropdown> {
                       )!,
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText2
+                          .bodyMedium
                           ?.copyWith(color: AppColor.gray767676, fontSize: 14),
                     ),
                   ),
@@ -195,7 +195,7 @@ class _InfoSelectionDropdownState extends State<InfoSelectionDropdown> {
                       )!,
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText2
+                          .bodyMedium
                           ?.copyWith(color: AppColor.gray767676, fontSize: 14),
                     ),
                   ),

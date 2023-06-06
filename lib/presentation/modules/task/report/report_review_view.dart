@@ -22,7 +22,7 @@ class _ReportReviewViewState extends StateBase<ReportReviewView> {
   AudioPickerBloc get audioBloc => BlocProvider.of(context);
   @override
   Widget buildBase(BuildContext context) {
-    final bodyTextStyle = Theme.of(context).textTheme.bodyText2;
+    final bodyTextStyle = Theme.of(context).textTheme.bodyMedium;
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -36,7 +36,7 @@ class _ReportReviewViewState extends StateBase<ReportReviewView> {
                 'CHẨN ĐOÁN, PHƯƠNG ÁN',
                 style: Theme.of(context)
                     .textTheme
-                    .caption
+                    .bodySmall
                     ?.copyWith(color: AppColor.gray767676),
               ),
               Text(
@@ -89,7 +89,7 @@ class _ReportReviewViewState extends StateBase<ReportReviewView> {
             'BÁO CÁO KỸ THUẬT: ',
             style: Theme.of(context)
                 .textTheme
-                .caption
+                .bodySmall
                 ?.copyWith(color: AppColor.gray767676),
           ),
           Text(
@@ -118,7 +118,7 @@ class _ReportReviewViewState extends StateBase<ReportReviewView> {
               },
               child: Text(
                 'Lưu',
-                style: Theme.of(context).textTheme.headline3?.copyWith(
+                style: Theme.of(context).textTheme.displaySmall?.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.w500,
                     ),
@@ -131,7 +131,7 @@ class _ReportReviewViewState extends StateBase<ReportReviewView> {
   }
 
   Widget itemBuilder(String item) {
-    return Text(item, style: Theme.of(context).textTheme.bodyText2);
+    return Text(item, style: Theme.of(context).textTheme.bodyMedium);
   }
 
   DropdownController<String, DropdownData<String>> hienTuongController =

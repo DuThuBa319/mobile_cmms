@@ -48,7 +48,7 @@ extension RepairTaskViewAction on _RepairTaskViewState {
               title: const Text('Phản hồi'),
               content: Text(
                 'Cập nhật công việc thành công',
-                style: Theme.of(context).textTheme.caption,
+                style: Theme.of(context).textTheme.bodySmall,
               ),
               actions: [
                 TextButton(
@@ -113,7 +113,7 @@ extension RepairTaskViewAction on _RepairTaskViewState {
                 'Linh kiện không khả dụng',
                 style: Theme.of(context)
                     .textTheme
-                    .caption!
+                    .bodySmall!
                     .copyWith(color: Colors.red),
               ),
               actions: [
@@ -207,12 +207,12 @@ Future<dynamic> successAlert(
           alertText,
           style: Theme.of(context)
               .textTheme
-              .caption!
+              .bodySmall!
               .copyWith(color: Colors.black),
         ),
         actions: [
           TextButton(
-            child: Text('Thoát'),
+            child: const Text('Thoát'),
             onPressed: () {
               Navigator.pop(context);
               Navigator.pop(context);
@@ -224,8 +224,10 @@ Future<dynamic> successAlert(
   );
 }
 
-Future<dynamic> failureAlert(BuildContext context,
-    {required String alertText}) {
+Future<dynamic> failureAlert(
+  BuildContext context, {
+  required String alertText,
+}) {
   return showDialog(
     barrierDismissible: false,
     context: context,
@@ -234,12 +236,14 @@ Future<dynamic> failureAlert(BuildContext context,
         title: const Text('Phản hồi'),
         content: Text(
           alertText,
-          style:
-              Theme.of(context).textTheme.caption!.copyWith(color: Colors.red),
+          style: Theme.of(context)
+              .textTheme
+              .bodySmall!
+              .copyWith(color: Colors.red),
         ),
         actions: [
           TextButton(
-            child: Text('Thực hiện lại'),
+            child: const Text('Thực hiện lại'),
             onPressed: () {
               Navigator.pop(context);
             },

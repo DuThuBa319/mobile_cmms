@@ -22,7 +22,6 @@ import '../../../../custom/select_info_screen/view/select_info_screen.dart';
 import '../../../../theme/theme_color.dart';
 import '../../../schedule/bloc/schedule_bloc.dart';
 import '../bloc/repair_task_bloc.dart';
-
 part 'repair_task.action.dart';
 
 class RepairTaskView extends StatefulWidget {
@@ -62,7 +61,7 @@ class _RepairTaskViewState extends StateBase<RepairTaskView> {
   @override
   Widget buildBase(BuildContext context) {
     final quantity = TextEditingController();
-    final bodyTextStyle = Theme.of(context).textTheme.bodyText2;
+    final bodyTextStyle = Theme.of(context).textTheme.bodyMedium;
     return BlocConsumer<RepairTaskBloc, RepairTaskState>(
       listener: _blocListener,
       builder: (context, state) {
@@ -100,7 +99,7 @@ class _RepairTaskViewState extends StateBase<RepairTaskView> {
                     'CHẨN ĐOÁN, PHƯƠNG ÁN',
                     style: Theme.of(context)
                         .textTheme
-                        .caption
+                        .bodySmall
                         ?.copyWith(color: AppColor.gray767676),
                   ),
                   Text(
@@ -194,14 +193,14 @@ class _RepairTaskViewState extends StateBase<RepairTaskView> {
                       'LINH KIỆN: ',
                       style: Theme.of(context)
                           .textTheme
-                          .caption
+                          .bodySmall
                           ?.copyWith(color: AppColor.gray767676),
                     ),
                     TextButton(
                       onPressed: scanQR,
                       child: Text(
                         'Quét SKU',
-                        style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               color: state.viewModel.responseEntity?.status ==
                                       MaintenanceStatus.inProgress
                                   ? AppColor.blue0089D7
@@ -236,7 +235,7 @@ class _RepairTaskViewState extends StateBase<RepairTaskView> {
                           color: AppColor.greyD9,
                           child: Text(
                             materialItems[index].name,
-                            style: Theme.of(context).textTheme.caption,
+                            style: Theme.of(context).textTheme.bodySmall,
                           ),
                         ),
                         ListView.builder(
@@ -248,7 +247,7 @@ class _RepairTaskViewState extends StateBase<RepairTaskView> {
                             '${i + 1}. ${materialItems[index].listSku[i]}',
                             style: Theme.of(context)
                                 .textTheme
-                                .bodyText2
+                                .bodyMedium
                                 ?.copyWith(height: 1.5),
                           ),
                         )
@@ -265,7 +264,7 @@ class _RepairTaskViewState extends StateBase<RepairTaskView> {
                 'BÁO CÁO KỸ THUẬT: ',
                 style: Theme.of(context)
                     .textTheme
-                    .caption
+                    .bodySmall
                     ?.copyWith(color: AppColor.gray767676),
               ),
               Text(
@@ -346,7 +345,7 @@ class _RepairTaskViewState extends StateBase<RepairTaskView> {
   Widget itemBuilder(String item, {Color textColor = Colors.black}) {
     return Text(
       item,
-      style: Theme.of(context).textTheme.bodyText2?.copyWith(color: textColor),
+      style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: textColor),
     );
   }
 
@@ -369,7 +368,7 @@ class _RepairTaskViewState extends StateBase<RepairTaskView> {
           },
           child: Text(
             'Bắt đầu công việc',
-            style: Theme.of(context).textTheme.headline3?.copyWith(
+            style: Theme.of(context).textTheme.displaySmall?.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.w500,
                 ),
@@ -391,7 +390,7 @@ class _RepairTaskViewState extends StateBase<RepairTaskView> {
           },
           child: Text(
             'Quay lại',
-            style: Theme.of(context).textTheme.headline3?.copyWith(
+            style: Theme.of(context).textTheme.displaySmall?.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.w500,
                 ),
@@ -417,11 +416,11 @@ class _RepairTaskViewState extends StateBase<RepairTaskView> {
             child: Text(
               'Lưu',
               style: state.viewModel.isChanged
-                  ? Theme.of(context).textTheme.headline3?.copyWith(
+                  ? Theme.of(context).textTheme.displaySmall?.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.w500,
                       )
-                  : Theme.of(context).textTheme.headline3?.copyWith(
+                  : Theme.of(context).textTheme.displaySmall?.copyWith(
                         color: Colors.black,
                         fontWeight: FontWeight.w500,
                       ),
@@ -445,11 +444,11 @@ class _RepairTaskViewState extends StateBase<RepairTaskView> {
             child: Text(
               'Kết thúc công việc',
               style: state.viewModel.isChanged
-                  ? Theme.of(context).textTheme.headline3?.copyWith(
+                  ? Theme.of(context).textTheme.displaySmall?.copyWith(
                         color: Colors.black,
                         fontWeight: FontWeight.w500,
                       )
-                  : Theme.of(context).textTheme.headline3?.copyWith(
+                  : Theme.of(context).textTheme.displaySmall?.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.w500,
                       ),

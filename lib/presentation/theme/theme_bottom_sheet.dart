@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class ThemeBottomSheet {
   static Widget bottomSheetForm(
     BuildContext context, {
@@ -28,7 +27,7 @@ class ThemeBottomSheet {
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: Text(
                         title,
-                        style: themeData.textTheme.headline5,
+                        style: themeData.textTheme.headlineSmall,
                       ),
                     ),
                   ),
@@ -89,7 +88,7 @@ class ThemeBottomSheet {
                     ),
                     child: Text(
                       title!,
-                      style: theme.textTheme.subtitle1,
+                      style: theme.textTheme.titleMedium,
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -112,7 +111,7 @@ class ThemeBottomSheet {
                           ),
                           child: Text(
                             e.key,
-                            style: theme.textTheme.headline5?.copyWith(
+                            style: theme.textTheme.headlineSmall?.copyWith(
                               color: Colors.blue,
                               fontWeight: FontWeight.normal,
                             ),
@@ -138,7 +137,7 @@ class ThemeBottomSheet {
               ),
               child: Text(
                 'Hủy',
-                style: theme.textTheme.button?.copyWith(
+                style: theme.textTheme.labelLarge?.copyWith(
                   color: Colors.blue,
                 ),
               ),

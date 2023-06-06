@@ -16,7 +16,7 @@ class LoadFailed extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Text(
             'Thất bại',
-            style: textTheme.subtitle1?.copyWith(
+            style: textTheme.titleMedium?.copyWith(
               color: AppColor.primaryColor,
             ),
           ),

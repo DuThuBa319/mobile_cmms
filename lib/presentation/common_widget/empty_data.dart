@@ -20,7 +20,7 @@ class EmptyData extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               'Không có dữ liệu',
-              style: Theme.of(context).textTheme.subtitle2,
+              style: Theme.of(context).textTheme.titleSmall,
             )
           ],
         ),

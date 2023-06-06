@@ -51,7 +51,7 @@ class CustomSubmitScreenForm extends StatefulWidget {
     this.onConfirm,
     this.title,
     this.des,
-    this.isBackButtonVisible = false,
+    this.isBackButtonVisible = true,
     this.mode = SubmitFormMode.fixed,
     this.isShowAppBar = true,
     this.resizeToAvoidBottomInset = true,
@@ -111,29 +111,39 @@ class _CustomSubmitScreenFormState extends State<CustomSubmitScreenForm>
 
   Widget _buildAppBar(BuildContext context) {
     final padding = MediaQuery.of(context).padding;
+    final _theme = Theme.of(context);
     return Container(
       padding: EdgeInsets.only(top: padding.top + 16),
       decoration: const BoxDecoration(
         color: AppColor.blue001D37,
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const SizedBox(width: 4),
           IconButton(
             onPressed: () => widget.onClosePressed != null
                 ? widget.onClosePressed?.call()
                 : Navigator.pop(context),
-            icon: Icon(
-              Icons.arrow_back,
-              size: 24,
-              color: widget.titleColor,
-            ),
+            icon: widget.isBackButtonVisible
+                ? Icon(
+                    Icons.arrow_back,
+                    size: 24,
+                    color: widget.titleColor,
+                  )
+                : Container(width: 24),
           ),
           const SizedBox(width: 4),
-          widget.isStockOutHeader
-              ? _buildStockOutOrderHeader()
-              : _buildStockInOrderHeader(),
+          Expanded(
+            child: Text(
+              widget.title ?? '',
+              textAlign: TextAlign.center,
+              style: _theme.textTheme.displaySmall?.copyWith(
+                color: widget.titleColor,
+              ),
+            ),
+          ),
           if (widget.rightActionButton != null) ...[_rightButton()],
           widget.rightIconButton,
         ],
@@ -152,7 +162,7 @@ class _CustomSubmitScreenFormState extends State<CustomSubmitScreenForm>
             const SizedBox(height: 8),
             Text(
               widget.title ?? '',
-              style: _theme.textTheme.headline3?.copyWith(
+              style: _theme.textTheme.displaySmall?.copyWith(
                 color: widget.titleColor,
               ),
             ),
@@ -164,7 +174,7 @@ class _CustomSubmitScreenFormState extends State<CustomSubmitScreenForm>
                   Expanded(
                     child: Text(
                       widget.des ?? '',
-                      style: _theme.textTheme.subtitle2,
+                      style: _theme.textTheme.titleSmall,
                     ),
                   ),
               ],
@@ -194,7 +204,7 @@ class _CustomSubmitScreenFormState extends State<CustomSubmitScreenForm>
                       const SizedBox(height: 8),
                       Text(
                         '${widget.title ?? ''}',
-                        style: _theme.textTheme.headline3?.copyWith(
+                        style: _theme.textTheme.displaySmall?.copyWith(
                           color: widget.titleColor,
                         ),
                       ),
@@ -203,7 +213,7 @@ class _CustomSubmitScreenFormState extends State<CustomSubmitScreenForm>
                       if (widget.des?.isNotEmpty == true)
                         Text(
                           widget.des ?? '',
-                          style: _theme.textTheme.subtitle2,
+                          style: _theme.textTheme.titleSmall,
                         ),
                     ],
                   ),
@@ -211,9 +221,9 @@ class _CustomSubmitScreenFormState extends State<CustomSubmitScreenForm>
                 const SizedBox(
                   width: 8,
                 ),
-                Column(
+                const Column(
                   mainAxisAlignment: MainAxisAlignment.end,
-                  children: const [
+                  children: [
                     SizedBox(
                       height: 8,
                     ),
@@ -366,7 +376,7 @@ class _CustomSubmitScreenFormState extends State<CustomSubmitScreenForm>
                   const SizedBox(width: 8),
                   Text(
                     e.title,
-                    style: Theme.of(context).textTheme.bodyText2,
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ],
               ),

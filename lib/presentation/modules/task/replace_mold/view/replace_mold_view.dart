@@ -25,7 +25,7 @@ class _ReplaceMoldViewState extends StateBase<ReplaceMoldView> {
   AudioPickerBloc get audioBloc => BlocProvider.of(context);
   @override
   Widget buildBase(BuildContext context) {
-    final bodyTextStyle = Theme.of(context).textTheme.bodyText2;
+    final bodyTextStyle = Theme.of(context).textTheme.bodyMedium;
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -37,7 +37,7 @@ class _ReplaceMoldViewState extends StateBase<ReplaceMoldView> {
             'KHUÔN ÉP: ',
             style: Theme.of(context)
                 .textTheme
-                .caption
+                .bodySmall
                 ?.copyWith(color: AppColor.gray767676),
           ),
 
@@ -55,7 +55,7 @@ class _ReplaceMoldViewState extends StateBase<ReplaceMoldView> {
                 'BÁO CÁO KỸ THUẬT: ',
                 style: Theme.of(context)
                     .textTheme
-                    .caption
+                    .bodySmall
                     ?.copyWith(color: AppColor.gray767676),
               ),
               Text(
@@ -63,7 +63,10 @@ class _ReplaceMoldViewState extends StateBase<ReplaceMoldView> {
                 style: bodyTextStyle,
               ),
               ImagePickerGridView(
-                  bloc: bloc, isEnable: false, receiveBloc: null),
+                bloc: bloc,
+                isEnable: false,
+                receiveBloc: null,
+              ),
             ],
           ),
           Text(
@@ -85,7 +88,7 @@ class _ReplaceMoldViewState extends StateBase<ReplaceMoldView> {
               onPressed: () {},
               child: Text(
                 'Lưu',
-                style: Theme.of(context).textTheme.headline3?.copyWith(
+                style: Theme.of(context).textTheme.displaySmall?.copyWith(
                       color: Colors.black,
                       fontWeight: FontWeight.w500,
                     ),
@@ -106,7 +109,7 @@ class _ReplaceMoldViewState extends StateBase<ReplaceMoldView> {
               },
               child: Text(
                 'Kết thúc công việc',
-                style: Theme.of(context).textTheme.headline3?.copyWith(
+                style: Theme.of(context).textTheme.displaySmall?.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.w500,
                     ),
@@ -119,6 +122,6 @@ class _ReplaceMoldViewState extends StateBase<ReplaceMoldView> {
   }
 
   Widget itemBuilder(String item) {
-    return Text(item, style: Theme.of(context).textTheme.bodyText2);
+    return Text(item, style: Theme.of(context).textTheme.bodyMedium);
   }
 }

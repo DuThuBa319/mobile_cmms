@@ -142,7 +142,7 @@ class _SubmitScreenFormState extends State<SubmitScreenForm>
             const SizedBox(height: 8),
             Text(
               widget.title ?? '',
-              style: _theme.textTheme.headline3?.copyWith(
+              style: _theme.textTheme.displaySmall?.copyWith(
                 color: widget.titleColor,
               ),
             ),
@@ -154,7 +154,7 @@ class _SubmitScreenFormState extends State<SubmitScreenForm>
                   Expanded(
                     child: Text(
                       widget.des ?? '',
-                      style: _theme.textTheme.subtitle2,
+                      style: _theme.textTheme.titleSmall,
                     ),
                   ),
               ],
@@ -184,7 +184,7 @@ class _SubmitScreenFormState extends State<SubmitScreenForm>
                       const SizedBox(height: 8),
                       Text(
                         '${widget.title ?? ''}',
-                        style: _theme.textTheme.headline3?.copyWith(
+                        style: _theme.textTheme.displaySmall?.copyWith(
                           color: widget.titleColor,
                         ),
                       ),
@@ -193,7 +193,7 @@ class _SubmitScreenFormState extends State<SubmitScreenForm>
                       if (widget.des?.isNotEmpty == true)
                         Text(
                           widget.des ?? '',
-                          style: _theme.textTheme.subtitle2,
+                          style: _theme.textTheme.titleSmall,
                         ),
                     ],
                   ),
@@ -356,7 +356,7 @@ class _SubmitScreenFormState extends State<SubmitScreenForm>
                   const SizedBox(width: 8),
                   Text(
                     e.title,
-                    style: Theme.of(context).textTheme.bodyText2,
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ],
               ),

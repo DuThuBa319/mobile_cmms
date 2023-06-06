@@ -112,7 +112,7 @@ class _AddMaterialViewState extends StateBase<AddMaterialView> {
                   },
                   child: Text(
                     'Thêm vật tư',
-                    style: Theme.of(context).textTheme.headline3?.copyWith(
+                    style: Theme.of(context).textTheme.displaySmall?.copyWith(
                           color: state.viewModel.isFinished == true
                               ? Colors.white
                               : Colors.black,

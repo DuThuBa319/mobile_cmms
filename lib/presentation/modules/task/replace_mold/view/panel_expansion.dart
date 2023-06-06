@@ -36,14 +36,14 @@ class _PanelExpansionState extends State<PanelExpansion> {
                   widget.expansionItem!.header,
                   style: Theme.of(context)
                       .textTheme
-                      .caption
+                      .bodySmall
                       ?.copyWith(fontSize: 14),
                 ),
                 Text(
                   widget.expansionItem!.itemID,
                   style: Theme.of(context)
                       .textTheme
-                      .caption
+                      .bodySmall
                       ?.copyWith(fontSize: 14),
                 )
               ],
@@ -65,10 +65,10 @@ class _PanelExpansionState extends State<PanelExpansion> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Wrap(
+                    const Wrap(
                       direction: Axis.vertical,
                       spacing: 10,
-                      children: const [
+                      children: [
                         Text('Tên khuôn:'),
                         Text('Tình trạng:'),
                         Text('Vệ sinh gần đây:'),

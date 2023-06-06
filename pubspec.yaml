@@ -59,11 +59,9 @@ dependencies:
   flutter_barcode_scanner: ^2.0.0
   flutter_sound: ^9.2.13
 
-  
-
   ffmpeg_kit_flutter: ^5.1.0
   full_screen_image: ^2.0.0
-  
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -96,7 +94,7 @@ dev_dependencies:
   cached_network_image: ^3.2.0
   flutter_easyloading: ^3.0.5
   fluttertoast: ^8.0.9
-  intl: ^0.17.0
+  intl: ^0.18.0
   flutter_statusbarcolor_ns: ^0.5.0
   app_tracking_transparency: ^2.0.3
   flutter_svg_provider: ^1.0.3
