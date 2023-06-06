@@ -168,11 +168,6 @@ class AddMaterialBloc extends AppBlocBase<AddMaterialEvent, AddMaterialState> {
       ),
     );
     try {
-      // if (event.imageFiles != null) await upLoadFile(event.imageFiles!);
-      // if (event.audioFiles != null) {
-      //   await upLoadFile(event.audioFiles!, type: 'audio/mpeg');
-      // }
-      // final newViewModel = state.viewModel.copyWith(allFiles: temp);
       final material = CreateMaterial(
         materialInfor: state.viewModel.selectedMaterialInfoId,
         sku: state.viewModel.sku,

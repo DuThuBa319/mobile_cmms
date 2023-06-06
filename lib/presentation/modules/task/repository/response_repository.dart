@@ -11,10 +11,6 @@ abstract class ResponseRepository {
   Future<MaintenanceResponseItem> getMaintenanceResponse({
     required String responseId,
   });
-  // Future<void> updateMaintenanceResponse({
-  //   required String maintenanceResponseId,
-  //   required MaintenanceResponseItem maintenanceResponseItem,
-  // });
   Future<void> updateMaintenanceResponse({
     required String maintenanceResponseId,
     required UpdateResponse updateResponse,

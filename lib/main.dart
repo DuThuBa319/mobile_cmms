@@ -48,9 +48,7 @@ Future<void> initOneSignal() async {
   // The promptForPushNotificationsWithUserResponse function will show the iOS or Android push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
   await OneSignal.shared
       .promptUserForPushNotificationPermission()
-      .then((accepted) {
-    print('Accepted permission: $accepted');
-  });
+      .then((accepted) {});
   final status = await Permission.notification.request();
   if (status.isDenied) {
     // We didn't ask for permission yet or the permission has been denied before but not permanently.

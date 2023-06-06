@@ -30,4 +30,15 @@ class ResponseUsecaseImpl extends ResponseUsecase {
 
     return responseEntity;
   }
+
+  @override
+  Future<void> updateMaintenanceResponse({
+    required String maintenanceResponseId,
+    required UpdateResponse updateResponse,
+  }) async {
+    await _repository.updateMaintenanceResponse(
+      maintenanceResponseId: maintenanceResponseId,
+      updateResponse: updateResponse,
+    );
+  }
 }

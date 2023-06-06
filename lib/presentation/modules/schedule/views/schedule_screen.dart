@@ -43,18 +43,6 @@ class _ScheduleState extends StateBase<ScheduleScreen> {
           isShowBottomAppBar: true,
           child: Column(
             children: [
-              // IconButton(
-              //   onPressed: () {
-              //     bloc.add(
-              //       CreateWorkOrderEvent(
-              //         newWorkOrderModel:
-              //             WorkOrderModel(device: [deviceObjectModel!]),
-              //       ),
-              //     );
-              //   },
-              //   icon: const Icon(Icons.add),
-              //   iconSize: 25,
-              // ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

@@ -3,7 +3,8 @@ part of 'add_material_view.dart';
 extension AddMaterialViewAction on _AddMaterialViewState {
   void _blocListener(BuildContext context, AddMaterialState state) {
     if (state.status == BlocStatusState.loading) {
-      showToast('Đang tải dữ liệu');
+      if (state is GetMaterialInfoCodeState) showToast('Đang tải dữ liệu');
+      if (state is CreateMaterialState) showToast('Đang gửi dữ liệu');
       showDialog(
         barrierDismissible: false,
         context: context,
@@ -22,7 +23,7 @@ extension AddMaterialViewAction on _AddMaterialViewState {
             child: AlertDialog(
               title: const Text('Phản hồi'),
               content: Text(
-                'Đã gửi dữ liệu thành công',
+                'Thành công thêm vật liệu',
                 style: Theme.of(context).textTheme.caption,
               ),
               actions: [
@@ -39,7 +40,6 @@ extension AddMaterialViewAction on _AddMaterialViewState {
         );
       } else {
         if (state is ChangeStatusState) {
-          showToast('Đã gửi dữ liệu thành công');
         } else {
           showToast('Đã tải dữ liệu thành công');
         }
@@ -61,7 +61,11 @@ extension AddMaterialViewAction on _AddMaterialViewState {
           builder: (BuildContext context) => Center(
             child: AlertDialog(
               title: const Text('Phản hồi'),
-              content: const Text('Gửi dữ liệu không thành công'),
+              content: Text('Thêm vật tư không thành công',
+                  style: Theme.of(context)
+                      .textTheme
+                      .caption!
+                      .copyWith(color: Colors.red)),
               actions: [
                 TextButton(
                   child: const Text('Thực hiện lại'),

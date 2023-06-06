@@ -10,7 +10,6 @@ import '../../../../../domain/entities/cmms/inspection_report_entity.dart';
 import '../../../../../domain/entities/cmms/maintenance_response_entity.dart';
 import '../../../../base/base.dart';
 import '../../../../base/state_base/bloc_status_state.dart';
-import '../../repository/response_repository.dart';
 import '../../usecase/response_usecase.dart';
 
 part 'general_check_event.dart';
@@ -20,10 +19,10 @@ part 'general_check_state.dart';
 class GeneralCheckBloc
     extends AppBlocBase<GeneralCheckEvent, GeneralCheckState> {
   final ResponseUsecase _usecase;
-  final ResponseRepository _repository;
 
-  GeneralCheckBloc(this._usecase, this._repository)
-      : super(GeneralCheckInitialState()) {
+  GeneralCheckBloc(
+    this._usecase,
+  ) : super(GeneralCheckInitialState()) {
     on<GetMaintenanceResponseEvent>(_onGetMaintenanceResponses);
     on<DropdownChangedEvent>(_onDropdownChanged);
     on<StartTaskEvent>(_onStartTask);
@@ -166,7 +165,7 @@ class GeneralCheckBloc
     Emitter<GeneralCheckState> emit,
   ) async {
     emit(
-      UpdateMaintenanceResponseState(
+      StartTaskState(
         status: BlocStatusState.loading,
         viewModel: state.viewModel,
       ),
@@ -181,7 +180,7 @@ class GeneralCheckBloc
         updateResponse: update,
         isChanged: false,
       );
-      await _repository.updateMaintenanceResponse(
+      await _usecase.updateMaintenanceResponse(
         maintenanceResponseId: state.viewModel.responseEntity!.id!,
         updateResponse: update,
       );
@@ -202,7 +201,7 @@ class GeneralCheckBloc
     Emitter<GeneralCheckState> emit,
   ) async {
     emit(
-      UpdateMaintenanceResponseState(
+      FinishTaskState(
         status: BlocStatusState.loading,
         viewModel: state.viewModel,
       ),
@@ -216,7 +215,7 @@ class GeneralCheckBloc
       final newViewModel = state.viewModel.copyWith(
         updateResponse: update,
       );
-      await _repository.updateMaintenanceResponse(
+      await _usecase.updateMaintenanceResponse(
         maintenanceResponseId: state.viewModel.responseEntity!.id!,
         updateResponse: update,
       );
@@ -254,7 +253,7 @@ class GeneralCheckBloc
       final newViewModel = state.viewModel.copyWith(
         updateResponse: update,
       );
-      await _repository.updateMaintenanceResponse(
+      await _usecase.updateMaintenanceResponse(
         maintenanceResponseId: id,
         updateResponse: update,
       );

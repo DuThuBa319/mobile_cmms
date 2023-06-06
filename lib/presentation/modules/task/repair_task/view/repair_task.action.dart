@@ -2,134 +2,132 @@ part of 'repair_task_view.dart';
 
 extension RepairTaskViewAction on _RepairTaskViewState {
   void _blocListener(BuildContext context, RepairTaskState state) {
-    BuildContext? dialogContext;
-    if (state is GetMaintenanceResponseState &&
-        state.status == BlocStatusState.loading) {
-      showToast('Đang tải dữ liệu');
-    }
-    if (state is GetMaintenanceResponseState &&
-        state.status == BlocStatusState.success) {
-      showToast('Đã tải dữ liệu thành công');
-      if (state.viewModel.responseEntity!.status ==
-          MaintenanceStatus.inProgress) {
-        isInProgress = true;
-      } else {
-        isInProgress = false;
+    if (state.status == BlocStatusState.loading) {
+      if (state is GetMaintenanceResponseState) {
+        showToast('Đang tải dữ liệu');
       }
-      listCauseSelected = state.viewModel.listCausesSelected!;
-      listCorrectionSelected = state.viewModel.listCorrectionsSelected!;
-      receiveBloc.add(
-        ReceiveInfoInitialEvent(
-          listCauseSelected: listCauseSelected,
-          listCorrectionSelected: listCorrectionSelected,
-          imageFiles: state.viewModel.imageFiles,
-          audioFiles: state.viewModel.audioFiles,
-        ),
-      );
+      if (state is UpdateMaintenanceResponseState) {
+        showToast('Đang cập nhật dữ liệu');
+        showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (BuildContext context) => const Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      }
     }
-    if (state is GetMaintenanceResponseState &&
-        state.status == BlocStatusState.failure) {
+    if (state.status == BlocStatusState.success) {
+      if (state is GetMaintenanceResponseState) {
+        showToast('Đã tải dữ liệu thành công');
+        materialItems = state.viewModel.materialMenuItems!;
+        if (state.viewModel.responseEntity!.status ==
+            MaintenanceStatus.inProgress) {
+          isInProgress = true;
+        } else {
+          isInProgress = false;
+        }
+        listCauseSelected = state.viewModel.listCausesSelected!;
+        listCorrectionSelected = state.viewModel.listCorrectionsSelected!;
+        receiveBloc.add(
+          ReceiveInfoInitialEvent(
+            listCauseSelected: listCauseSelected,
+            listCorrectionSelected: listCorrectionSelected,
+            imageFiles: state.viewModel.imageFiles,
+            audioFiles: state.viewModel.audioFiles,
+          ),
+        );
+      }
+      if (state is UpdateMaintenanceResponseState) {
+        Navigator.pop(context);
+        showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (BuildContext context) => Center(
+            child: AlertDialog(
+              title: const Text('Phản hồi'),
+              content: Text(
+                'Cập nhật công việc thành công',
+                style: Theme.of(context).textTheme.caption,
+              ),
+              actions: [
+                TextButton(
+                  child: const Text('Thoát'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    widget.scheduleBloc!.add(
+                      GetListMaintenanceResponsesEvent(
+                        dateRequest: widget.selectedDate,
+                        maintenanceTypeRequest: 'Khắc phục',
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      }
+      if (state is StartTaskState) {
+        successAlert(
+          context,
+          alertText: 'Công việc đã bắt đầu',
+        );
+      }
+      if (state is FinishTaskState) {
+        successAlert(
+          context,
+          alertText: 'Công việc đã kết thúc',
+        );
+      }
+      if (state is GetMaterialState) {
+        materialItems = state.viewModel.materialMenuItems!;
+      }
+    }
+    if (state.status == BlocStatusState.failure) {
       showToast('Tải dữ liệu không thành công');
-    }
-    if (state is UpdateMaintenanceResponseState &&
-        state.status == BlocStatusState.loading) {
-      showToast('Đang cập nhật dữ liệu');
-      showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (BuildContext context) => const Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
-    }
-    if (state is UpdateMaintenanceResponseState &&
-        state.status == BlocStatusState.success) {
-      Navigator.pop(context);
-      showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (BuildContext context) => Center(
-          child: AlertDialog(
-            title: const Text('Phản hồi'),
-            content: Text(
-              'Đã cập nhật dữ liệu thành công',
-              style: Theme.of(context).textTheme.caption,
-            ),
-            actions: [
-              TextButton(
-                child: const Text('Thoát'),
-                onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                  widget.scheduleBloc!.add(
-                    GetListMaintenanceResponsesEvent(
-                      dateRequest: widget.selectedDate,
-                      maintenanceTypeRequest: 'Khắc phục',
-                    ),
-                  );
-                },
+      if (state is GetMaintenanceResponseState) {
+        failureAlert(
+          context,
+          alertText: 'Tải dữ liệu không thành công',
+        );
+      }
+      if (state is UpdateMaintenanceResponseState ||
+          state is FinishTaskState ||
+          state is StartTaskState) {
+        Navigator.pop(context);
+        failureAlert(
+          context,
+          alertText: 'Lưu thay đổi không thành công',
+        );
+      }
+      if (state is GetMaterialState) {
+        showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (BuildContext context) => Center(
+            child: AlertDialog(
+              title: const Text('Phản hồi'),
+              content: Text(
+                'Linh kiện không khả dụng',
+                style: Theme.of(context)
+                    .textTheme
+                    .caption!
+                    .copyWith(color: Colors.red),
               ),
-            ],
-          ),
-        ),
-      );
-
-      // Navigator.of(context, rootNavigator: true).pop();
-    }
-    if (state is UpdateMaintenanceResponseState &&
-        state.status == BlocStatusState.failure) {
-      Navigator.pop(context);
-      showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (BuildContext context) => Center(
-          child: AlertDialog(
-            title: const Text('Phản hồi'),
-            content: Text(
-              'Cập nhật dữ liệu không thành công',
-              style: Theme.of(context).textTheme.caption,
+              actions: [
+                TextButton(
+                  child: const Text('Thực hiện lại'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
             ),
-            actions: [
-              TextButton(
-                child: const Text('Thực hiện lại'),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ],
           ),
-        ),
-      );
-    }
-    if (state is GetMaterialState && state.status == BlocStatusState.failure) {
-      //Navigator.pop(context);
-      showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (BuildContext context) => Center(
-          child: AlertDialog(
-            title: const Text('Phản hồi'),
-            content: Text(
-              'Linh kiện không khả dụng',
-              style: Theme.of(context).textTheme.caption,
-            ),
-            actions: [
-              TextButton(
-                child: const Text('Thực hiện lại'),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-    if (state is GetMaterialState ||
-        state is GetMaintenanceResponseState &&
-            state.status == BlocStatusState.success) {
-      //Navigator.pop(context);
-      materialItems = state.viewModel.materialMenuItems!;
+        );
+      }
     }
   }
 
@@ -193,4 +191,61 @@ extension RepairTaskViewAction on _RepairTaskViewState {
       bloc.add(GetMaterialEvent(sku: textController));
     }
   }
+}
+
+Future<dynamic> successAlert(
+  BuildContext context, {
+  required String alertText,
+}) {
+  return showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) => Center(
+      child: AlertDialog(
+        title: const Text('Phản hồi'),
+        content: Text(
+          alertText,
+          style: Theme.of(context)
+              .textTheme
+              .caption!
+              .copyWith(color: Colors.black),
+        ),
+        actions: [
+          TextButton(
+            child: Text('Thoát'),
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Future<dynamic> failureAlert(BuildContext context,
+    {required String alertText}) {
+  return showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) => Center(
+      child: AlertDialog(
+        title: const Text('Phản hồi'),
+        content: Text(
+          alertText,
+          style:
+              Theme.of(context).textTheme.caption!.copyWith(color: Colors.red),
+        ),
+        actions: [
+          TextButton(
+            child: Text('Thực hiện lại'),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
+    ),
+  );
 }

@@ -10,12 +10,6 @@ extension ScheduleAction on _ScheduleState {
     if (state is ScheduleGetWorkOrderState &&
         state.status == BlocStatusState.loading) {
       showToast('Đang tải dữ liệu');
-
-      //   showDialog(
-      //     context: context,
-      //     builder: (BuildContext context) => const Center(
-      //       child: CircularProgressIndicator(),
-      //     ),
       //   );
     }
     if (state is ScheduleGetWorkOrderState &&

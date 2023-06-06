@@ -22,7 +22,7 @@ extension MaintenanceRequestViewAction on _MaintenanceRequestViewState {
           child: AlertDialog(
             title: const Text('Phản hồi'),
             content: Text(
-              'Đã gửi dữ liệu thành công',
+              'Tạo yêu cầu thành công',
               style: Theme.of(context).textTheme.caption,
             ),
             actions: [
@@ -49,7 +49,11 @@ extension MaintenanceRequestViewAction on _MaintenanceRequestViewState {
         builder: (BuildContext context) => Center(
           child: AlertDialog(
             title: const Text('Phản hồi'),
-            content: const Text('Gửi dữ liệu không thành công'),
+            content: Text('Tạo yêu cầu không thành công',
+                style: Theme.of(context)
+                    .textTheme
+                    .caption!
+                    .copyWith(color: Colors.red)),
             actions: [
               TextButton(
                 child: const Text('Thực hiện lại'),

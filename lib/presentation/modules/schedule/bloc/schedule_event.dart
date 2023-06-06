@@ -9,11 +9,6 @@ class GetWorkOrderEvent extends ScheduleEvent {
   String? maintenanceTypeRequest;
 }
 
-class CreateWorkOrderEvent extends ScheduleEvent {
-  CreateWorkOrderEvent({this.newWorkOrderModel});
-  WorkOrderModel? newWorkOrderModel;
-}
-
 class GetListMaintenanceResponsesEvent extends ScheduleEvent {
   GetListMaintenanceResponsesEvent({
     this.dateRequest,

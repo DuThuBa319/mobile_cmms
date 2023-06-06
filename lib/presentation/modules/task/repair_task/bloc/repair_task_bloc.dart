@@ -16,7 +16,6 @@ import '../../../../../domain/entities/cmms/correction_entity.dart';
 import '../../../../../domain/entities/cmms/maintenance_response_entity.dart';
 import '../../../../base/base.dart';
 import '../../../../base/state_base/bloc_status_state.dart';
-import '../../repository/response_repository.dart';
 import '../../usecase/response_usecase.dart';
 
 part 'repair_task_event.dart';
@@ -25,10 +24,8 @@ part 'repair_task_state.dart';
 @injectable
 class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
   final ResponseUsecase _usecase;
-  final ResponseRepository _repository;
 
-  RepairTaskBloc(this._usecase, this._repository)
-      : super(RepairTaskInitialState()) {
+  RepairTaskBloc(this._usecase) : super(RepairTaskInitialState()) {
     on<GetMaintenanceResponseEvent>(_onGetMaintenanceResponses);
     on<StartTaskEvent>(_onStartTask);
     on<FinishTaskEvent>(_onFinishTask);
@@ -143,7 +140,7 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
     Emitter<RepairTaskState> emit,
   ) async {
     emit(
-      UpdateMaintenanceResponseState(
+      StartTaskState(
         status: BlocStatusState.loading,
         viewModel: state.viewModel,
       ),
@@ -158,7 +155,7 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
         updateResponse: update,
         isChanged: false,
       );
-      await _repository.updateMaintenanceResponse(
+      await _usecase.updateMaintenanceResponse(
         maintenanceResponseId: state.viewModel.responseEntity!.id!,
         updateResponse: update,
       );
@@ -179,7 +176,7 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
     Emitter<RepairTaskState> emit,
   ) async {
     emit(
-      UpdateMaintenanceResponseState(
+      FinishTaskState(
         status: BlocStatusState.loading,
         viewModel: state.viewModel,
       ),
@@ -193,7 +190,7 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
       final newViewModel = state.viewModel.copyWith(
         updateResponse: update,
       );
-      await _repository.updateMaintenanceResponse(
+      await _usecase.updateMaintenanceResponse(
         maintenanceResponseId: state.viewModel.responseEntity!.id!,
         updateResponse: update,
       );
@@ -247,7 +244,7 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
       final newViewModel = state.viewModel.copyWith(
         updateResponse: update,
       );
-      await _repository.updateMaintenanceResponse(
+      await _usecase.updateMaintenanceResponse(
         maintenanceResponseId: id,
         updateResponse: update,
       );

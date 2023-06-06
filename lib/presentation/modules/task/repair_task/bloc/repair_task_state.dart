@@ -136,6 +136,20 @@ class GetMaterialState extends RepairTaskState {
   }) : super(viewModel, status: status);
 }
 
+class StartTaskState extends RepairTaskState {
+  StartTaskState({
+    _ViewModel viewModel = const _ViewModel(),
+    BlocStatusState status = BlocStatusState.initial,
+  }) : super(viewModel, status: status);
+}
+
+class FinishTaskState extends RepairTaskState {
+  FinishTaskState({
+    _ViewModel viewModel = const _ViewModel(),
+    BlocStatusState status = BlocStatusState.initial,
+  }) : super(viewModel, status: status);
+}
+
 final _factories = <
     Type,
     Function(
@@ -161,6 +175,14 @@ final _factories = <
         status: status,
       ),
   GetMaterialState: (viewModel, status) => GetMaterialState(
+        viewModel: viewModel,
+        status: status,
+      ),
+  StartTaskState: (viewModel, status) => StartTaskState(
+        viewModel: viewModel,
+        status: status,
+      ),
+  FinishTaskState: (viewModel, status) => FinishTaskState(
         viewModel: viewModel,
         status: status,
       ),

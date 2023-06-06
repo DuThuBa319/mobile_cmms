@@ -219,10 +219,8 @@ _i1.GetIt $initGetIt(
       _i54.ExampleTempHumidUsecaseImpl(gh<_i53.ExampleTempHumidRepository>()));
   gh.factory<_i55.ExampleUsecase>(
       () => _i55.ExampleUsecaseImpl(gh<_i52.ExampleRepository>()));
-  gh.factory<_i56.GeneralCheckBloc>(() => _i56.GeneralCheckBloc(
-        gh<_i35.ResponseUsecase>(),
-        gh<_i34.ResponseRepository>(),
-      ));
+  gh.factory<_i56.GeneralCheckBloc>(
+      () => _i56.GeneralCheckBloc(gh<_i35.ResponseUsecase>()));
   gh.factory<_i57.HomeInteractor>(
       () => _i57.HomeInteractorImpl(gh<_i18.HomeRepository>()));
   gh.factory<_i58.MainScreenRepository>(() =>
@@ -240,10 +238,8 @@ _i1.GetIt $initGetIt(
   gh.factory<_i61.MaintenanceRequestUsecase>(() =>
       _i61.MaintenanceRequestUsecaseImpl(
           gh<_i60.MaintenanceRequestRepository>()));
-  gh.factory<_i62.RepairTaskBloc>(() => _i62.RepairTaskBloc(
-        gh<_i35.ResponseUsecase>(),
-        gh<_i34.ResponseRepository>(),
-      ));
+  gh.factory<_i62.RepairTaskBloc>(
+      () => _i62.RepairTaskBloc(gh<_i35.ResponseUsecase>()));
   gh.factory<_i63.RequestBloc>(
       () => _i63.RequestBloc(gh<_i61.MaintenanceRequestUsecase>()));
   gh.factory<_i64.ScheduleRepository>(() => _i64.ScheduleRepositoryImpl(
@@ -267,10 +263,8 @@ _i1.GetIt $initGetIt(
   gh.factory<_i72.HomeBloc>(() => _i72.HomeBloc(gh<_i57.HomeInteractor>()));
   gh.factory<_i73.MainScreenBloc>(
       () => _i73.MainScreenBloc(gh<_i59.MainScreenUsecase>()));
-  gh.factory<_i74.ScheduleBloc>(() => _i74.ScheduleBloc(
-        gh<_i65.ScheduleUsecase>(),
-        gh<_i64.ScheduleRepository>(),
-      ));
+  gh.factory<_i74.ScheduleBloc>(
+      () => _i74.ScheduleBloc(gh<_i65.ScheduleUsecase>()));
   return getIt;
 }
 

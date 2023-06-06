@@ -81,6 +81,20 @@ class UpdateMaintenanceResponseState extends GeneralCheckState {
   }) : super(viewModel, status: status);
 }
 
+class StartTaskState extends GeneralCheckState {
+  StartTaskState({
+    _ViewModel viewModel = const _ViewModel(),
+    BlocStatusState status = BlocStatusState.initial,
+  }) : super(viewModel, status: status);
+}
+
+class FinishTaskState extends GeneralCheckState {
+  FinishTaskState({
+    _ViewModel viewModel = const _ViewModel(),
+    BlocStatusState status = BlocStatusState.initial,
+  }) : super(viewModel, status: status);
+}
+
 final _factories = <
     Type,
     Function(
@@ -102,6 +116,14 @@ final _factories = <
         status: status,
       ),
   GeneralCheckChangedState: (viewModel, status) => GeneralCheckChangedState(
+        viewModel: viewModel,
+        status: status,
+      ),
+  StartTaskState: (viewModel, status) => StartTaskState(
+        viewModel: viewModel,
+        status: status,
+      ),
+  FinishTaskState: (viewModel, status) => FinishTaskState(
         viewModel: viewModel,
         status: status,
       ),
