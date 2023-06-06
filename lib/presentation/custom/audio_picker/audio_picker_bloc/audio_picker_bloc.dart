@@ -149,6 +149,7 @@ class AudioPickerBloc extends AppBlocBase<AudioPickerEvent, AudioPickerState> {
     );
     try {
       final temp = state.viewModel.audioInfos ?? [];
+      // ignore: cascade_invocations
       temp.removeAt(event.index!);
 
       final newViewModel = state.viewModel.copyWith(audioInfos: temp);

@@ -47,7 +47,7 @@ class _RowTileState extends State<RowTile> {
                   widget.title!,
                   style: Theme.of(context)
                       .textTheme
-                      .caption
+                      .bodySmall
                       ?.copyWith(color: AppColor.gray767676),
                 ),
               ),
@@ -196,7 +196,7 @@ class _CheckDropDownState extends State<CheckDropDown> {
       padding: const EdgeInsets.only(top: 4),
       child: Text(
         item,
-        style: Theme.of(context).textTheme.bodyText2?.copyWith(fontSize: 14),
+        style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 14),
         textAlign: TextAlign.center,
       ),
     );
@@ -209,7 +209,7 @@ class _CheckDropDownState extends State<CheckDropDown> {
       padding: const EdgeInsets.only(top: 4),
       child: Text(
         item,
-        style: Theme.of(context).textTheme.bodyText2?.copyWith(
+        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               fontSize: 14,
               color: AppColor.gray767676,
             ),

@@ -94,7 +94,7 @@ class InfoVertical extends StatelessWidget {
                           child: Text(
                             trailingAmount ?? '--',
                             textAlign: TextAlign.center,
-                            style: _themeData.textTheme.subtitle2,
+                            style: _themeData.textTheme.titleSmall,
                           ),
                         )
                       : const SizedBox()

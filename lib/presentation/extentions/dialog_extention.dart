@@ -15,7 +15,6 @@ Future<dynamic> showNoticeDialog({
       Navigator.of(context, rootNavigator: useRootNavigator).pop();
     }
   };
-  final trans = translate(context);
   return showDialog(
     context: context,
     barrierDismissible: barrierDismissible,
@@ -26,11 +25,11 @@ Future<dynamic> showNoticeDialog({
       final showAndroidDialog = () => AlertDialog(
             title: Text(
               title ?? 'Thông báo',
-              style: theme.textTheme.headline5,
+              style: theme.textTheme.headlineSmall,
             ),
             content: Text(
               message,
-              style: theme.textTheme.bodyText2,
+              style: theme.textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
             actions: [
@@ -53,7 +52,7 @@ Future<dynamic> showNoticeDialog({
           title: Text(title ?? 'Thông báo'),
           content: Text(
             message,
-            style: theme.textTheme.bodyText2,
+            style: theme.textTheme.bodyMedium,
             textAlign: TextAlign.center,
           ),
           actions: <Widget>[
@@ -128,7 +127,7 @@ Future<dynamic> showNoticeConfirmDialog({
       Navigator.of(context, rootNavigator: useRootNavigator).pop();
     }
   };
-  final trans = translate(context);
+  // final trans = translate(context);
   return showDialog(
     context: context,
     barrierDismissible: barrierDismissible,
@@ -139,11 +138,11 @@ Future<dynamic> showNoticeConfirmDialog({
       final showAndroidDialog = () => AlertDialog(
             title: Text(
               title,
-              style: theme.textTheme.headline5,
+              style: theme.textTheme.headlineSmall,
             ),
             content: Text(
               message,
-              style: theme.textTheme.bodyText2,
+              style: theme.textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
             actions: [
@@ -155,7 +154,7 @@ Future<dynamic> showNoticeConfirmDialog({
                 child: Text(
                   titleBtnCancel ?? 'Hủy',
                   style: styleBtnLeft ??
-                      theme.textTheme.button?.copyWith(
+                      theme.textTheme.labelLarge?.copyWith(
                         color: AppColor.primaryColor,
                       ),
                 ),
@@ -168,7 +167,7 @@ Future<dynamic> showNoticeConfirmDialog({
                 child: Text(
                   titleBtnDone ?? 'Xác nhận',
                   style: styleBtnRight ??
-                      theme.textTheme.button?.copyWith(
+                      theme.textTheme.labelLarge?.copyWith(
                         color: AppColor.primaryColor,
                       ),
                 ),
@@ -196,7 +195,7 @@ Future<dynamic> showNoticeConfirmDialog({
             child: Text(
               title,
               style: style ??
-                  theme.textTheme.button!.copyWith(
+                  theme.textTheme.labelLarge!.copyWith(
                     color: Colors.blue,
                     fontWeight: FontWeight.normal,
                   ),
@@ -207,13 +206,13 @@ Future<dynamic> showNoticeConfirmDialog({
         return CupertinoAlertDialog(
           title: Text(
             title,
-            style: theme.textTheme.headline5!.copyWith(fontSize: 17),
+            style: theme.textTheme.headlineSmall!.copyWith(fontSize: 17),
           ),
           content: Padding(
             padding: const EdgeInsets.only(top: 8),
             child: Text(
               message,
-              style: theme.textTheme.bodyText2!.copyWith(fontSize: 13),
+              style: theme.textTheme.bodyMedium!.copyWith(fontSize: 13),
               textAlign: TextAlign.center,
             ),
           ),
@@ -316,11 +315,11 @@ Future<void> showActionDialog(
         return AlertDialog(
           title: Text(
             title,
-            style: Theme.of(context).textTheme.headline5,
+            style: Theme.of(context).textTheme.headlineSmall,
           ),
           content: Text(
             message,
-            style: Theme.of(context).textTheme.bodyText2,
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
           actions: [
             ...actions.entries
@@ -375,7 +374,7 @@ Future<void> showActionDialog(
                 },
                 child: Text(
                   e.key,
-                  style: theme.textTheme.headline5?.copyWith(
+                  style: theme.textTheme.headlineSmall?.copyWith(
                     color: Colors.blue,
                     fontWeight: FontWeight.normal,
                   ),
@@ -386,12 +385,12 @@ Future<void> showActionDialog(
           ],
           title: Text(
             title,
-            style: theme.textTheme.subtitle2,
+            style: theme.textTheme.titleSmall,
             textAlign: TextAlign.center,
           ),
           message: Text(
             message,
-            style: theme.textTheme.subtitle1,
+            style: theme.textTheme.titleMedium,
             textAlign: TextAlign.center,
           ),
           cancelButton: CupertinoActionSheetAction(
@@ -403,7 +402,7 @@ Future<void> showActionDialog(
             },
             child: Text(
               'Hủy',
-              style: theme.textTheme.headline5?.copyWith(
+              style: theme.textTheme.headlineSmall?.copyWith(
                 color: Colors.blue,
                 fontWeight: FontWeight.normal,
               ),
@@ -425,7 +424,7 @@ Future<dynamic> showNegativeSnackBar({
     context: context,
     message: message,
     backgroundColor: const Color(0xFFFADDD6),
-    messageStyle: theme.textTheme.bodyText1?.copyWith(
+    messageStyle: theme.textTheme.bodyLarge?.copyWith(
       fontWeight: FontWeight.bold,
       color: Colors.red,
     ),
@@ -452,7 +451,7 @@ Future<dynamic> showPositiveSnackBar({
   return showSnackBar(
     context: context,
     message: message,
-    messageStyle: theme.textTheme.bodyText1?.copyWith(
+    messageStyle: theme.textTheme.bodyLarge?.copyWith(
       fontWeight: FontWeight.bold,
     ),
     icon: Container(
@@ -490,7 +489,7 @@ Future<dynamic> showSnackBar({
     messageText: Text(
       message,
       style: messageStyle ??
-          theme.textTheme.bodyText1?.copyWith(fontWeight: FontWeight.normal),
+          theme.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.normal),
     ),
     duration: const Duration(seconds: 4),
   ).show(context);

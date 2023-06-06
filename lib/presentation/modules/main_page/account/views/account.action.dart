@@ -1,30 +1,6 @@
 part of 'account_screen.dart';
 
 extension AccountAction on _AccountScreenState {
-  void _blocListener(BuildContext context, AccountState state) {
-    if (_refreshController.isRefresh) {
-      _refreshController.refreshCompleted();
-    }
-  }
-
-  void _onRefresh() {
-    bloc.add(GetUserEvent());
-  }
-
-  void gotoDetailScreen() {}
-
-  Future<void> goToProfile() async {
-    final user = bloc.state.viewModel.user;
-    final isNeedRefresh = await Navigator.of(context).pushNamed(
-      RouteList.profile,
-      arguments: user,
-    );
-
-    if (isNeedRefresh is bool && isNeedRefresh == true) {
-      unawaited(_refreshController.requestRefresh());
-    }
-  }
-
   void logOut() {
     showNoticeConfirmDialog(
       context: context,
@@ -33,12 +9,12 @@ extension AccountAction on _AccountScreenState {
       titleBtnDone: 'Đồng ý',
       titleBtnCancel: 'Hủy bỏ',
       onConfirmed: () {
-        bloc.logout(context);
+        userDataData.setUser(null);
+        Navigator.popUntil(
+          context,
+          (route) => route.settings.name == RouteList.login,
+        );
       },
     );
   }
-
-  void deleteAccount() {}
-
-  void changePassword() {}
 }

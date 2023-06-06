@@ -53,7 +53,7 @@ extension RepairTaskViewAction on _RepairTaskViewState {
             title: const Text('Phản hồi'),
             content: Text(
               'Đã cập nhật dữ liệu thành công',
-              style: Theme.of(context).textTheme.caption,
+              style: Theme.of(context).textTheme.bodySmall,
             ),
             actions: [
               TextButton(
@@ -87,7 +87,7 @@ extension RepairTaskViewAction on _RepairTaskViewState {
             title: const Text('Phản hồi'),
             content: Text(
               'Cập nhật dữ liệu không thành công',
-              style: Theme.of(context).textTheme.caption,
+              style: Theme.of(context).textTheme.bodySmall,
             ),
             actions: [
               TextButton(
@@ -111,7 +111,7 @@ extension RepairTaskViewAction on _RepairTaskViewState {
             title: const Text('Phản hồi'),
             content: Text(
               'Linh kiện không khả dụng',
-              style: Theme.of(context).textTheme.caption,
+              style: Theme.of(context).textTheme.bodySmall,
             ),
             actions: [
               TextButton(

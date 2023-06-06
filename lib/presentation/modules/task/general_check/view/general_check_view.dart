@@ -127,7 +127,7 @@ class _GeneralCheckViewState extends StateBase<GeneralCheckView> {
           },
           child: Text(
             'Bắt đầu công việc',
-            style: Theme.of(context).textTheme.headline3?.copyWith(
+            style: Theme.of(context).textTheme.displaySmall?.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.w500,
                 ),
@@ -149,7 +149,7 @@ class _GeneralCheckViewState extends StateBase<GeneralCheckView> {
           },
           child: Text(
             'Quay lại',
-            style: Theme.of(context).textTheme.headline3?.copyWith(
+            style: Theme.of(context).textTheme.displaySmall?.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.w500,
                 ),
@@ -177,11 +177,11 @@ class _GeneralCheckViewState extends StateBase<GeneralCheckView> {
             child: Text(
               'Lưu',
               style: checkState.viewModel.isChanged
-                  ? Theme.of(context).textTheme.headline3?.copyWith(
+                  ? Theme.of(context).textTheme.displaySmall?.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.w500,
                       )
-                  : Theme.of(context).textTheme.headline3?.copyWith(
+                  : Theme.of(context).textTheme.displaySmall?.copyWith(
                         color: Colors.black,
                         fontWeight: FontWeight.w500,
                       ),
@@ -207,11 +207,11 @@ class _GeneralCheckViewState extends StateBase<GeneralCheckView> {
             child: Text(
               'Kết thúc công việc',
               style: checkState.viewModel.isChanged
-                  ? Theme.of(context).textTheme.headline3?.copyWith(
+                  ? Theme.of(context).textTheme.displaySmall?.copyWith(
                         color: Colors.black,
                         fontWeight: FontWeight.w500,
                       )
-                  : Theme.of(context).textTheme.headline3?.copyWith(
+                  : Theme.of(context).textTheme.displaySmall?.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.w500,
                       ),

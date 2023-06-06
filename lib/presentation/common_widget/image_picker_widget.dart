@@ -289,7 +289,7 @@ extension ImagePickerWidgetAction on _ImagePickerWidgetState {
               contentPadding: const EdgeInsets.only(top: 24),
               title: Text(
                 widget.title ?? 'Chọn hình ảnh',
-                style: Theme.of(context).textTheme.headline5,
+                style: Theme.of(context).textTheme.headlineSmall,
               ),
               content: Wrap(
                 children: [
@@ -316,7 +316,7 @@ extension ImagePickerWidgetAction on _ImagePickerWidgetState {
                                 'Máy ảnh',
                                 style: Theme.of(context)
                                     .textTheme
-                                    .bodyText1
+                                    .bodyLarge
                                     ?.copyWith(
                                       color: AppColor.primaryColor,
                                       fontWeight: FontWeight.bold,
@@ -347,7 +347,7 @@ extension ImagePickerWidgetAction on _ImagePickerWidgetState {
                                 'Thư viện',
                                 style: Theme.of(context)
                                     .textTheme
-                                    .bodyText1
+                                    .bodyLarge
                                     ?.copyWith(
                                       color: AppColor.primaryColor,
                                       fontWeight: FontWeight.bold,

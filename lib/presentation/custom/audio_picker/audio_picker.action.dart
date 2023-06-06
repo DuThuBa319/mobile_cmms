@@ -140,7 +140,7 @@ extension AudioPickerAction on _AudioListViewState {
           return AlertDialog(
             title: Text(
               'Recording',
-              style: Theme.of(context).textTheme.headline5,
+              style: Theme.of(context).textTheme.headlineSmall,
               textAlign: TextAlign.center,
             ),
             content: Container(

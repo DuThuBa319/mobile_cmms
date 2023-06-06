@@ -52,7 +52,7 @@ class CheckboxWithTitle extends StatelessWidget {
                   child: Text(
                     textAlign: TextAlign.start,
                     title,
-                    style: textTheme.bodyText1
+                    style: textTheme.bodyLarge
                         ?.copyWith(height: 1.4, fontSize: 20),
                   ),
                 ),

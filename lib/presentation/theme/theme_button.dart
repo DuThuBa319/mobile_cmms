@@ -8,7 +8,7 @@ import 'theme_color.dart';
 
 class ThemeButton {
   static TextStyle? getTextStyle(BuildContext context) {
-    return Theme.of(context).textTheme.button;
+    return Theme.of(context).textTheme.labelLarge;
   }
 
   static Widget primary({

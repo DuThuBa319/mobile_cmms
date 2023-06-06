@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../generated/assets.dart';
+import '../route/route_list.dart';
 import 'custom_bottom_navigation_bar_v2.dart';
 import 'custom_submit_screen_form.dart';
 
@@ -10,10 +11,14 @@ class CustomScreenForm extends StatefulWidget {
     this.child,
     this.title,
     this.isShowBottomAppBar = false,
+    this.isShowBackButton = true,
+    this.isMainScreen = false,
   });
   final Widget? child;
   final String? title;
   final bool isShowBottomAppBar;
+  final bool isShowBackButton;
+  final bool isMainScreen;
 
   @override
   State<CustomScreenForm> createState() => _CustomScreenFormState();
@@ -23,7 +28,7 @@ class _CustomScreenFormState extends State<CustomScreenForm> {
   @override
   Widget build(BuildContext context) {
     return CustomSubmitScreenForm(
-      isBackButtonVisible: false,
+      isBackButtonVisible: widget.isShowBackButton,
       titleColor: Colors.white,
       title: widget.title,
       isShowBottomButton: false,
@@ -40,22 +45,39 @@ class _CustomScreenFormState extends State<CustomScreenForm> {
   Widget customBottomAppBar() {
     return CustomBottomNavigationBarV2(
       selectedIdx: null,
-      onItemSelection: null,
+      onItemSelection: (index) async {
+        if (index == 3) {
+          if (widget.isMainScreen) {
+            await Navigator.pushNamed(context, RouteList.account);
+          } else {
+            Navigator.popUntil(
+              context,
+              (route) => route.settings.name == RouteList.home,
+            );
+            await Navigator.pushNamed(context, RouteList.account);
+          }
+        }
+        return true;
+      },
       items: <BottomBarItemData>[
         BottomBarItemData(
           icon: Assets.icHome,
+          selectedIcon: Assets.icHome,
           label: 'Home',
         ),
         BottomBarItemData(
           icon: Assets.icHistory,
+          selectedIcon: Assets.icHistory,
           label: 'History',
         ),
         BottomBarItemData(
           icon: Assets.icNotification,
+          selectedIcon: Assets.icNotification,
           label: 'Notification',
         ),
         BottomBarItemData(
           icon: Assets.icAccount,
+          selectedIcon: Assets.icAccount,
           label: 'Account',
         )
       ],

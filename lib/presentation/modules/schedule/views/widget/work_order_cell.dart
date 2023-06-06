@@ -113,7 +113,7 @@ class _WorkOrderCellState extends State<WorkOrderCell> {
                 children: [
                   Text(
                     updateTime ?? '--',
-                    style: Theme.of(context).textTheme.subtitle1,
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                   statusContainer(
                     width: 94,
@@ -129,7 +129,7 @@ class _WorkOrderCellState extends State<WorkOrderCell> {
               DefaultTextStyle(
                 style: Theme.of(context)
                     .textTheme
-                    .bodyText2!
+                    .bodyMedium!
                     .copyWith(height: 1.7),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

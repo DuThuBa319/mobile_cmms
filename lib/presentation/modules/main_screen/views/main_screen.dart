@@ -23,12 +23,17 @@ class _MainScreenState extends State<MainScreen> {
     return CustomScreenForm(
       title: 'Home',
       isShowBottomAppBar: true,
+      isShowBackButton: false,
+      isMainScreen: true,
       child: const MainScreenView(),
     );
   }
 
   Future initPermission() async {
-    if (await Permission.manageExternalStorage.isDenied) {
+    final status = await Permission.manageExternalStorage.request();
+    if (status == PermissionStatus.denied ||
+        status == PermissionStatus.permanentlyDenied ||
+        status == PermissionStatus.restricted) {
       await showDialog(
         barrierDismissible: false,
         context: context,
@@ -37,7 +42,7 @@ class _MainScreenState extends State<MainScreen> {
             title: const Text('Phản hồi'),
             content: Text(
               'Vui lòng cho phép truy cập tất cả file',
-              style: Theme.of(context).textTheme.caption,
+              style: Theme.of(context).textTheme.bodySmall,
             ),
             actions: [
               TextButton(

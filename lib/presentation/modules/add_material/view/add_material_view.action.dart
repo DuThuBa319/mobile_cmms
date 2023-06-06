@@ -23,7 +23,7 @@ extension AddMaterialViewAction on _AddMaterialViewState {
               title: const Text('Phản hồi'),
               content: Text(
                 'Đã gửi dữ liệu thành công',
-                style: Theme.of(context).textTheme.caption,
+                style: Theme.of(context).textTheme.bodySmall,
               ),
               actions: [
                 TextButton(

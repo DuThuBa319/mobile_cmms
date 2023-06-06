@@ -68,7 +68,7 @@ class _HomeScreenState extends StateBase<HomeScreen> {
                   children: [
                     Text(
                       'Chào mừng đến với CHA CMMS',
-                      style: textTheme.subtitle1?.copyWith(
+                      style: textTheme.titleMedium?.copyWith(
                         color: Colors.white,
                       ),
                     ),
@@ -79,7 +79,7 @@ class _HomeScreenState extends StateBase<HomeScreen> {
                           final user = userDataData.getUser();
                           return Text(
                             user?.name ?? '',
-                            style: textTheme.subtitle2?.copyWith(
+                            style: textTheme.titleSmall?.copyWith(
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                             ),
@@ -123,7 +123,7 @@ class _HomeScreenState extends StateBase<HomeScreen> {
           //   padding: const EdgeInsets.symmetric(horizontal: 16),
           //   child: Text(
           //     translate(context).recently_activity_title.toUpperCase(),
-          //     style: textTheme.subtitle1?.copyWith(fontWeight: FontWeight.bold),
+          //     style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
           //   ),
           // ),
           // const SizedBox(height: 8),
@@ -150,7 +150,7 @@ class _HomeScreenState extends StateBase<HomeScreen> {
           const SizedBox(height: 12),
           Text(
             title,
-            style: textTheme.bodyText1,
+            style: textTheme.bodyLarge,
           ),
         ],
       ),

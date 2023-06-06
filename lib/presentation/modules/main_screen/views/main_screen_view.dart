@@ -65,7 +65,7 @@ class _MainScreenViewState extends StateBase<MainScreenView> {
             padding: const EdgeInsets.fromLTRB(23, 24, 0, 8),
             child: Text(
               'Gần đây',
-              style: Theme.of(context).textTheme.caption,
+              style: Theme.of(context).textTheme.bodySmall,
             ),
           ),
           Builder(
@@ -95,7 +95,7 @@ class _MainScreenViewState extends StateBase<MainScreenView> {
                         'Xảy ra lỗi khi tải dữ liệu',
                         style: Theme.of(context)
                             .textTheme
-                            .caption
+                            .bodySmall
                             ?.copyWith(color: Colors.red),
                       ),
                       IconButton(
@@ -207,7 +207,7 @@ class _MainScreenViewState extends StateBase<MainScreenView> {
         ),
         subtitle: Text(
           updatedTime!,
-          style: Theme.of(context).textTheme.subtitle1?.copyWith(
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 height: 2,
               ),
         ),

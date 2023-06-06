@@ -117,7 +117,7 @@ class _SelectInfoScreenState extends State<SelectInfoScreen> {
                     },
                     child: Text(
                       'Lưu',
-                      style: Theme.of(context).textTheme.headline3?.copyWith(
+                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
                             color: Colors.black,
                             fontWeight: FontWeight.w500,
                           ),

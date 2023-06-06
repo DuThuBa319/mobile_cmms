@@ -50,7 +50,7 @@ extension ExampleAction on _ExampleState {
               'Chọn sai thời gian.',
               style: Theme.of(context)
                   .textTheme
-                  .headline5
+                  .headlineSmall
                   ?.copyWith(color: Colors.red),
             ),
           ),

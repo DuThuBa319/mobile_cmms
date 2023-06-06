@@ -1,13 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../../../domain/entities/cmms/mold_entity.dart';
-import '../chart_obj.dart';
-import '../equipment/performance_index.dart';
-import '../equipment_material.dart';
-
-import '../maintenance_response/maintenance_response.dart';
-import 'product.dart';
-import 'standard.dart';
 
 part 'mold.g.dart';
 

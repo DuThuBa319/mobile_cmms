@@ -194,13 +194,13 @@ class TabItem extends StatelessWidget {
             duration: duration,
             style: selected
                 ? selectedTextStyle ??
-                    themeData.textTheme.bodyText1!.copyWith(
+                    themeData.textTheme.bodyLarge!.copyWith(
                       color: AppColor.subText,
                       fontWeight:
                           selected ? FontWeight.bold : FontWeight.normal,
                     )
                 : textStyle ??
-                    themeData.textTheme.bodyText1!.copyWith(
+                    themeData.textTheme.bodyLarge!.copyWith(
                       color: selected ? Colors.white : AppColor.subText,
                       fontWeight:
                           selected ? FontWeight.bold : FontWeight.normal,

@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 
+import '../../data/models/user_model.dart';
+
 class User extends Equatable {
   final String? avatar;
   final DateTime? createdAt;
@@ -30,4 +32,8 @@ class User extends Equatable {
         status,
         dob,
       ];
+
+  UserModel convertToModel() {
+    return UserModel(id: id, name: name);
+  }
 }

@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
 import '../../../common/services/permission_service.dart';
-import '../../base/base.dart';
 import '../../base/state_base/bloc_status_state.dart';
 
 import '../../theme/theme_color.dart';
@@ -101,7 +100,7 @@ class _AudioListViewState extends State<AudioListView> {
                             const SizedBox(width: 20),
                             Text(
                               audioInfos[index].name ?? '',
-                              style: Theme.of(context).textTheme.bodyText1,
+                              style: Theme.of(context).textTheme.bodyLarge,
                             ),
                           ],
                         ),
@@ -109,7 +108,7 @@ class _AudioListViewState extends State<AudioListView> {
                           displayTime(
                             audioInfos[index].duration!,
                           ),
-                          style: Theme.of(context).textTheme.subtitle2,
+                          style: Theme.of(context).textTheme.titleSmall,
                         ),
                       ],
                     ),

@@ -23,7 +23,7 @@ extension MaintenanceRequestViewAction on _MaintenanceRequestViewState {
             title: const Text('Phản hồi'),
             content: Text(
               'Đã gửi dữ liệu thành công',
-              style: Theme.of(context).textTheme.caption,
+              style: Theme.of(context).textTheme.bodySmall,
             ),
             actions: [
               TextButton(
@@ -196,7 +196,7 @@ extension MaintenanceRequestViewAction on _MaintenanceRequestViewState {
               title: const Text('Phản hồi'),
               content: Text(
                 'Vui lòng chọn KTV',
-                style: Theme.of(context).textTheme.caption,
+                style: Theme.of(context).textTheme.bodySmall,
               ),
               actions: [
                 TextButton(
