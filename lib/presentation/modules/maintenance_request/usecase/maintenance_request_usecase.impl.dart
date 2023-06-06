@@ -56,4 +56,13 @@ class MaintenanceRequestUsecaseImpl extends MaintenanceRequestUsecase {
 
     return responseEntities;
   }
+
+  @override
+  Future<bool> createMaintenanceRequest({
+    CreateRequest? createRequest,
+  }) {
+    return _repository.createMaintenanceRequest(
+      createRequest: createRequest,
+    );
+  }
 }

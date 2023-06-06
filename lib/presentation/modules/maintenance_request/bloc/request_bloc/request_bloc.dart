@@ -12,15 +12,15 @@ import '../../../../../data/models/cmms/cmms_enum.dart';
 import '../../../../../data/models/cmms/post/create_request.dart';
 import '../../../../base/base.dart';
 import '../../../../base/state_base/bloc_status_state.dart';
-import '../../repository/maintenance_request_repository.dart';
+import '../../usecase/maintenance_request_usecase.dart';
 
 part 'request_event.dart';
 part 'request_state.dart';
 
 @injectable
 class RequestBloc extends AppBlocBase<RequestEvent, RequestState> {
-  final MaintenanceRequestRepository _repository;
-  RequestBloc(this._repository) : super(RequestInitialState()) {
+  final MaintenanceRequestUsecase _usecase;
+  RequestBloc(this._usecase) : super(RequestInitialState()) {
     on<MakeRequestEvent>(_onMakeRequest);
   }
 
@@ -64,7 +64,7 @@ class RequestBloc extends AppBlocBase<RequestEvent, RequestState> {
             ? event.objectCode
             : null,
       );
-      final isSuccess = await _repository.createMaintenanceRequest(
+      final isSuccess = await _usecase.createMaintenanceRequest(
         createRequest: request,
       );
       emit(

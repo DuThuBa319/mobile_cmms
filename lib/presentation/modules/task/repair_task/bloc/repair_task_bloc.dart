@@ -62,22 +62,20 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
 
       final responseEntity =
           await _usecase.getMaintenanceResponse(responseId: event.responseId);
-      for (final cause in responseEntity!.cause!) {
-        final causeEntity = cause.getCauseEntity();
-        listCausesSelected.add(causeEntity);
+      listCausesSelected.addAll(responseEntity!.causeEntities!);
+      for (final cause in responseEntity.causeEntities!) {
         listCauseId.add(cause.id!);
       }
-      for (final correction in responseEntity.correction!) {
-        final correctionEntity = correction.getCorrectionEntity();
-        listCorrectionsSelected.add(correction.getCorrectionEntity());
+      listCorrectionsSelected.addAll(responseEntity.correctionEntities!);
+      for (final correction in responseEntity.correctionEntities!) {
         listCorrectionId.add(correction.id!);
       }
-      for (final material in responseEntity.materials!) {
-        listSku.add(material.sku!);
-        final materialEntity = material.getMaterialEntity();
+      for (final materialEntity in responseEntity.materials!) {
+        listSku.add(materialEntity.sku!);
+
         var isExisted = false;
         for (var i = 0; i < materialList.length; i++) {
-          if (materialEntity.materialInfo!.name == materialList[i].name) {
+          if (materialEntity.materialInfoEntity!.name == materialList[i].name) {
             isExisted = true;
             materialList[i].listSku.add(materialEntity.sku!);
           }
@@ -86,7 +84,7 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
           materialList.add(
             MaterialMenuItem(
               listSku: [materialEntity.sku!],
-              name: materialEntity.materialInfo!.name!,
+              name: materialEntity.materialInfoEntity!.name!,
             ),
           );
         }
@@ -414,7 +412,8 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
         final listSku = state.viewModel.listSku;
         listSku?.add(event.sku!);
         for (var i = 0; i < materialList!.length; i++) {
-          if (responseMaterial.materialInfo!.name == materialList[i].name) {
+          if (responseMaterial.materialInfoEntity!.name ==
+              materialList[i].name) {
             isExisted = true;
             materialList[i].listSku.add(event.sku!);
             break;
@@ -424,7 +423,7 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
           materialList.add(
             MaterialMenuItem(
               listSku: [event.sku!],
-              name: responseMaterial.materialInfo!.name!,
+              name: responseMaterial.materialInfoEntity!.name!,
             ),
           );
         }

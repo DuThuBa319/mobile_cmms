@@ -22,14 +22,12 @@ class Materials {
   });
 
   MaterialEntity getMaterialEntity() {
-    final result = MaterialEntity(
+    return MaterialEntity(
       materialId: materialId,
-      materialInfo: materialInfor,
+      materialInfoEntity: materialInfor!.getMaterialInfoEntity(),
       sku: sku,
       status: status,
     );
-
-    return result;
   }
 
   factory Materials.fromJson(Map<String, dynamic> json) =>

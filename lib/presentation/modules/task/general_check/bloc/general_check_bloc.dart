@@ -49,10 +49,10 @@ class GeneralCheckBloc
       final listCauseId = <String>[];
       final listCorrectionId = <String>[];
       final listSku = <String>[];
-      for (final cause in responseEntity!.cause!) {
+      for (final cause in responseEntity!.causeEntities!) {
         listCauseId.add(cause.id!);
       }
-      for (final correction in responseEntity.correction!) {
+      for (final correction in responseEntity.correctionEntities!) {
         listCorrectionId.add(correction.id!);
       }
       for (final material in responseEntity.materials!) {

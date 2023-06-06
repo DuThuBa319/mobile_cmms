@@ -26,15 +26,13 @@ class MaterialInfo {
     this.materialInforId,
   });
   MaterialInfoEntity getMaterialInfoEntity() {
-    final result = MaterialInfoEntity(
+    return MaterialInfoEntity(
       name: name,
       code: code,
       unit: unit,
       minimumQuantity: minimumQuantity,
       materialInforId: materialInforId,
     );
-
-    return result;
   }
 
   factory MaterialInfo.fromJson(Map<String, dynamic> json) =>

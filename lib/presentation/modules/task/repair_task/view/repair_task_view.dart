@@ -89,7 +89,8 @@ class _RepairTaskViewState extends StateBase<RepairTaskView> {
                 estProcessTime: state.viewModel.responseEntity?.estProcessTime,
                 actualStartTime:
                     state.viewModel.responseEntity?.actualStartDate,
-                equipmentCode: state.viewModel.responseEntity?.equipment?.code,
+                equipmentCode:
+                    state.viewModel.responseEntity?.equipmentEntity?.code,
               ),
               Wrap(
                 spacing: 5,

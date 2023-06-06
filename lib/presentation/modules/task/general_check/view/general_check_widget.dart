@@ -65,10 +65,13 @@ class CheckDropDown extends StatefulWidget {
     required this.index,
     required this.checkState,
     required this.bloc,
+    required this.taskDropdownControllers,
   });
   int index;
   GeneralCheckState checkState;
   GeneralCheckBloc bloc;
+  List<DropdownController<String, DropdownData<String>>>
+      taskDropdownControllers;
   @override
   State<CheckDropDown> createState() => _CheckDropDownState();
 }
@@ -102,7 +105,7 @@ class _CheckDropDownState extends State<CheckDropDown> {
               child: DropdownWidget<String>(
                 enable: widget.checkState.viewModel.responseEntity?.status ==
                     MaintenanceStatus.inProgress,
-                controller: taskDropdownControllers[widget.index],
+                controller: widget.taskDropdownControllers[widget.index],
                 itemBuilder:
                     widget.checkState.viewModel.responseEntity?.status ==
                             MaintenanceStatus.inProgress

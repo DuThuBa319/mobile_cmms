@@ -30,6 +30,13 @@ class Employee {
     return list;
   }
 
+  EmployeeEntity getEmployeeEntity() {
+    return EmployeeEntity(
+      personId: id,
+      personName: name,
+    );
+  }
+
   factory Employee.fromJson(Map<String, dynamic> json) =>
       _$EmployeeFromJson(json);
 

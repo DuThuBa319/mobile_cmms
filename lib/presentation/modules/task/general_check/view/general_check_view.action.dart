@@ -10,6 +10,16 @@ extension GeneralCheckViewAction on _GeneralCheckViewState {
     if (state is GetMaintenanceResponseState &&
         state.status == BlocStatusState.success) {
       showToast('Đã tải dữ liệu thành công');
+
+      taskDropdownControllers = List.generate(
+        20,
+        (index) => DropdownController<String, DropdownData<String>>(
+          value: DropdownData<String>(
+            value: state.viewModel.inspectionReports![index].inspectionStatus,
+            validation: null,
+          ),
+        ),
+      );
       if (state.viewModel.responseEntity!.status ==
           MaintenanceStatus.inProgress) {
         isInProgress = true;

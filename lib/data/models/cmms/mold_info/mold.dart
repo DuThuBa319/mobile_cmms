@@ -1,13 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../../../domain/entities/cmms/mold_entity.dart';
-import '../chart_obj.dart';
-import '../equipment/performance_index.dart';
-import '../equipment_material.dart';
-
-import '../maintenance_response/maintenance_response.dart';
-import 'product.dart';
-import 'standard.dart';
 
 part 'mold.g.dart';
 
@@ -57,6 +50,14 @@ class Mold {
     list.add(result);
 
     return list;
+  }
+
+  MoldEntity? getMoldEntity() {
+    return MoldEntity(
+      name: name,
+      code: code,
+      modId: moldId,
+    );
   }
 
   factory Mold.fromJson(Map<String, dynamic> json) => _$MoldFromJson(json);

@@ -54,6 +54,14 @@ class Equipment {
     return list;
   }
 
+  EquipmentEntity? getEquipmentEntity() {
+    return EquipmentEntity(
+      name: name,
+      code: code,
+      type: type,
+    );
+  }
+
   factory Equipment.fromJson(Map<String, dynamic> json) =>
       _$EquipmentFromJson(json);
 

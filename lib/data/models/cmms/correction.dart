@@ -26,15 +26,13 @@ class Correction {
   });
 
   CorrectionEntity getCorrectionEntity() {
-    final result = CorrectionEntity(
+    return CorrectionEntity(
       code: code,
       estProcessTime: estProcessTime,
       id: id,
       name: name,
       note: note,
     );
-
-    return result;
   }
 
   factory Correction.fromJson(Map<String, dynamic> json) =>

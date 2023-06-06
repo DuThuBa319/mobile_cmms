@@ -26,12 +26,10 @@ class Cause {
   });
 
   CauseEntity getCauseEntity() {
-    final result = CauseEntity(
+    return CauseEntity(
       name: name,
       id: id,
     );
-
-    return result;
   }
 
   factory Cause.fromJson(Map<String, dynamic> json) => _$CauseFromJson(json);

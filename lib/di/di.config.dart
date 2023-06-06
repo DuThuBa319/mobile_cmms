@@ -245,7 +245,7 @@ _i1.GetIt $initGetIt(
         gh<_i34.ResponseRepository>(),
       ));
   gh.factory<_i63.RequestBloc>(
-      () => _i63.RequestBloc(gh<_i60.MaintenanceRequestRepository>()));
+      () => _i63.RequestBloc(gh<_i61.MaintenanceRequestUsecase>()));
   gh.factory<_i64.ScheduleRepository>(() => _i64.ScheduleRepositoryImpl(
         gh<_i47.WorkOrderApiRepository>(),
         gh<_i21.MaintenanceResponseRepository>(),
@@ -256,10 +256,8 @@ _i1.GetIt $initGetIt(
       () => _i66.SelectInfoBloc(gh<_i38.SelectInfoUsecase>()));
   gh.factory<_i67.SplashBloc>(
       () => _i67.SplashBloc(gh<_i39.SplashInteractor>()));
-  gh.factory<_i68.AddMaterialBloc>(() => _i68.AddMaterialBloc(
-        gh<_i51.AddMaterialUsecase>(),
-        gh<_i50.AddMaterialRepository>(),
-      ));
+  gh.factory<_i68.AddMaterialBloc>(
+      () => _i68.AddMaterialBloc(gh<_i51.AddMaterialUsecase>()));
   gh.factory<_i69.ExampleBloc>(
       () => _i69.ExampleBloc(gh<_i55.ExampleUsecase>()));
   gh.factory<_i70.ExampleTempHumidBloc>(
@@ -267,10 +265,8 @@ _i1.GetIt $initGetIt(
   gh.factory<_i71.GetRequestInfoBloc>(
       () => _i71.GetRequestInfoBloc(gh<_i61.MaintenanceRequestUsecase>()));
   gh.factory<_i72.HomeBloc>(() => _i72.HomeBloc(gh<_i57.HomeInteractor>()));
-  gh.factory<_i73.MainScreenBloc>(() => _i73.MainScreenBloc(
-        gh<_i59.MainScreenUsecase>(),
-        gh<_i58.MainScreenRepository>(),
-      ));
+  gh.factory<_i73.MainScreenBloc>(
+      () => _i73.MainScreenBloc(gh<_i59.MainScreenUsecase>()));
   gh.factory<_i74.ScheduleBloc>(() => _i74.ScheduleBloc(
         gh<_i65.ScheduleUsecase>(),
         gh<_i64.ScheduleRepository>(),

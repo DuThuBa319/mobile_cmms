@@ -39,6 +39,7 @@ class DropdownWidget<T> extends StatelessWidget {
       valueListenable: controller,
       builder: (ctx, value, w) {
         return DropdownButtonFormField<T>(
+          menuMaxHeight: MediaQuery.of(context).size.height / 2,
           value: value.value,
           items: items.map((e) {
             return DropdownMenuItem<T>(

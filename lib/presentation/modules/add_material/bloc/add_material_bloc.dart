@@ -7,7 +7,6 @@ import '../../../../data/models/cmms/post/create_material.dart';
 import '../../../../domain/entities/cmms/material_info_entity.dart';
 import '../../../base/base.dart';
 import '../../../base/state_base/bloc_status_state.dart';
-import '../repository/add_material_repository.dart';
 import '../usecase/add_material_usecase.dart';
 
 part 'add_material_event.dart';
@@ -16,9 +15,8 @@ part 'add_material_state.dart';
 @injectable
 class AddMaterialBloc extends AppBlocBase<AddMaterialEvent, AddMaterialState> {
   final AddMaterialUsecase _usecase;
-  final AddMaterialRepository _repository;
-  AddMaterialBloc(this._usecase, this._repository)
-      : super(AddMaterialInitialState()) {
+
+  AddMaterialBloc(this._usecase) : super(AddMaterialInitialState()) {
     on<GetMaterialInfoCodeEvent>(_onGetMaterialInfoCodeCode);
     on<GetMaterialInfoNameEvent>(_onGetMaterialInfoName);
     on<ChangeStatusEvent>(_onChangeStatus);
@@ -180,7 +178,7 @@ class AddMaterialBloc extends AppBlocBase<AddMaterialEvent, AddMaterialState> {
         sku: state.viewModel.sku,
         status: state.viewModel.selectedStatus,
       );
-      await _repository.createMaterial(
+      await _usecase.createMaterial(
         createMaterial: material,
       );
       emit(

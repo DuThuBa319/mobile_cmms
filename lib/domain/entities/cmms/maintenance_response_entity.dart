@@ -4,39 +4,39 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../../data/models/cmms/cmms_enum.dart';
-import '../../../data/models/cmms/correction.dart';
-import '../../../data/models/cmms/equipment/equipment.dart';
-import '../../../data/models/cmms/maintenance_response/cause.dart';
-import '../../../data/models/cmms/maintenance_response/employee.dart';
 import '../../../data/models/cmms/maintenance_response/maintenance_request.dart';
-import '../../../data/models/cmms/material/material.dart';
-import '../../../data/models/cmms/mold_info/mold.dart';
+import 'cause_entity.dart';
+import 'correction_entity.dart';
+import 'employee_entity.dart';
+import 'equipment_entity.dart';
 import 'inspection_report_entity.dart';
+import 'material_entity.dart';
+import 'mold_entity.dart';
 
 class MaintenanceResponseEntity {
   String? id;
   DateTime? plannedStart;
   DateTime? plannedFinish;
   String? code;
-  List<Cause>? cause;
-  List<Correction>? correction;
+  List<CauseEntity>? causeEntities;
+  List<CorrectionEntity>? correctionEntities;
   int? estProcessTime;
   DateTime? actualStartTime;
   DateTime? actualFinishTime;
   MaintenanceStatus? status;
   DateTime? createdAt;
   DateTime? updatedAt;
-  Employee? responsiblePerson;
+  EmployeeEntity? responsiblePerson;
   int? priority;
   String? problem;
   List<String>? images;
   List<String>? sounds;
-  List<Materials>? materials;
+  List<MaterialEntity>? materials;
   String? note;
   MaintenanceRequest? request;
   MaintenanceObject? maintenanceObject;
-  Equipment? equipment;
-  Mold? mold;
+  EquipmentEntity? equipmentEntity;
+  MoldEntity? moldEntity;
   DateTime? dueDate;
   MaintenanceType? type;
   List<InspectionReportEntity>? inspectionReportEntity;
@@ -47,15 +47,15 @@ class MaintenanceResponseEntity {
     this.code,
     this.actualFinishTime,
     this.actualStartTime,
-    this.cause,
-    this.correction,
+    this.causeEntities,
+    this.correctionEntities,
     this.createdAt,
-    this.equipment,
+    this.equipmentEntity,
     this.estProcessTime,
     this.images,
     this.maintenanceObject,
     this.materials,
-    this.mold,
+    this.moldEntity,
     this.note,
     this.priority,
     this.problem,
@@ -239,11 +239,11 @@ class MaintenanceResponseEntity {
   }
 
   String get objectCode {
-    if (equipment == null) {
-      return mold!.code!;
+    if (equipmentEntity == null) {
+      return moldEntity!.code!;
     }
-    if (equipment != null) {
-      return equipment!.code!;
+    if (equipmentEntity != null) {
+      return equipmentEntity!.code!;
     }
     return '--';
   }

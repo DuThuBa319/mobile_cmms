@@ -19,4 +19,13 @@ class AddMaterialUsecaseImpl extends AddMaterialUsecase {
 
     return responseEntities;
   }
+
+  @override
+  Future<bool> createMaterial({
+    CreateMaterial? createMaterial,
+  }) {
+    return _repository.createMaterial(
+      createMaterial: createMaterial,
+    );
+  }
 }

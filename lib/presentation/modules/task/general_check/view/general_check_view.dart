@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../data/models/cmms/cmms_enum.dart';
 import '../../../../base/base.dart';
 import '../../../../base/state_base/bloc_status_state.dart';
+import '../../../../common_widget/export.dart';
 import '../../../../common_widget/loading.dart';
 import '../../../../custom/general_report_container.dart';
 import '../../../../theme/theme_color.dart';
@@ -28,6 +29,16 @@ class GeneralCheckView extends StatefulWidget {
 }
 
 class _GeneralCheckViewState extends StateBase<GeneralCheckView> {
+  List<DropdownController<String, DropdownData<String>>>
+      taskDropdownControllers = List.generate(
+    20,
+    (index) => DropdownController<String, DropdownData<String>>(
+      value: DropdownData<String>(
+        value: listWork[index].inspectionStatus,
+        validation: null,
+      ),
+    ),
+  );
   bool isInProgress = false;
   @override
   GeneralCheckBloc get bloc => BlocProvider.of(context);
@@ -68,7 +79,7 @@ class _GeneralCheckViewState extends StateBase<GeneralCheckView> {
                   actualStartTime:
                       state.viewModel.responseEntity?.actualStartDate,
                   equipmentCode:
-                      state.viewModel.responseEntity?.equipment?.code,
+                      state.viewModel.responseEntity?.equipmentEntity?.code,
                 ),
                 RowTile(title: 'KIỂM TRA ĐIỆN:'),
                 ListView.separated(
@@ -80,6 +91,7 @@ class _GeneralCheckViewState extends StateBase<GeneralCheckView> {
                     index: index,
                     checkState: state,
                     bloc: bloc,
+                    taskDropdownControllers: taskDropdownControllers,
                   ),
                   separatorBuilder: (context, index) {
                     if (index == 6) {
