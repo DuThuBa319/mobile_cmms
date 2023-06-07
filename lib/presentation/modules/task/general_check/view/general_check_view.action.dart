@@ -39,46 +39,22 @@ extension GeneralCheckViewAction on _GeneralCheckViewState {
       }
       if (state is UpdateMaintenanceResponseState) {
         Navigator.pop(context);
-        showDialog(
-          barrierDismissible: false,
-          context: context,
-          builder: (BuildContext context) => Center(
-            child: AlertDialog(
-              title: const Text('Phản hồi'),
-              content: Text(
-                'Cập nhật công việc thành công',
-                style: Theme.of(context).textTheme.caption,
-              ),
-              actions: [
-                TextButton(
-                  child: const Text('Thoát'),
-                  onPressed: () {
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                    widget.scheduleBloc!.add(
-                      GetListMaintenanceResponsesEvent(
-                        dateRequest: widget.selectedDate,
-                        maintenanceTypeRequest: 'Đã lên lịch',
-                      ),
-                    );
-                  },
-                ),
-              ],
-            ),
-          ),
-        );
+        successAlert(context, state,
+            alertText: 'Cập nhật công việc thành công',
+            scheduleBloc: widget.scheduleBloc,
+            selectedDate: widget.selectedDate);
       }
       if (state is StartTaskState) {
-        successAlert(
-          context,
-          alertText: 'Công việc đã bắt đầu',
-        );
+        successAlert(context, state,
+            alertText: 'Công việc đã bắt đầu',
+            scheduleBloc: widget.scheduleBloc,
+            selectedDate: widget.selectedDate);
       }
       if (state is FinishTaskState) {
-        successAlert(
-          context,
-          alertText: 'Công việc đã kết thúc',
-        );
+        successAlert(context, state,
+            alertText: 'Công việc đã kết thúc',
+            scheduleBloc: widget.scheduleBloc,
+            selectedDate: widget.selectedDate);
       }
       if (state.status == BlocStatusState.failure) {
         showToast('Tải dữ liệu không thành công');
@@ -131,37 +107,6 @@ Future<dynamic> commonAlert(BuildContext context,
   );
 }
 
-Future<dynamic> successAlert(
-  BuildContext context, {
-  required String alertText,
-}) {
-  return showDialog(
-    barrierDismissible: false,
-    context: context,
-    builder: (BuildContext context) => Center(
-      child: AlertDialog(
-        title: const Text('Phản hồi'),
-        content: Text(
-          alertText,
-          style: Theme.of(context)
-              .textTheme
-              .caption!
-              .copyWith(color: Colors.black),
-        ),
-        actions: [
-          TextButton(
-            child: Text('Thoát'),
-            onPressed: () {
-              Navigator.pop(context);
-              Navigator.pop(context);
-            },
-          ),
-        ],
-      ),
-    ),
-  );
-}
-
 Future<dynamic> failureAlert(BuildContext context,
     {required String alertText}) {
   return showDialog(
@@ -180,6 +125,44 @@ Future<dynamic> failureAlert(BuildContext context,
             child: Text('Thực hiện lại'),
             onPressed: () {
               Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Future<dynamic> successAlert(BuildContext context, GeneralCheckState state,
+    {ScheduleBloc? scheduleBloc,
+    String? selectedDate,
+    required String alertText}) {
+  return showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) => Center(
+      child: AlertDialog(
+        title: const Text('Phản hồi'),
+        content: Text(
+          alertText,
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
+        actions: [
+          TextButton(
+            child: const Text('Thoát'),
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pop(context);
+              scheduleBloc!.add(
+                GetListMaintenanceResponsesEvent(
+                  dateRequest: selectedDate,
+                  maintenanceTypeRequest:
+                      state.viewModel.responseEntity!.type ==
+                              MaintenanceType.reactive
+                          ? 'Khắc phục'
+                          : 'Đã lên lịch',
+                ),
+              );
             },
           ),
         ],

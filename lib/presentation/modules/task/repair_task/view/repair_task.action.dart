@@ -40,46 +40,22 @@ extension RepairTaskViewAction on _RepairTaskViewState {
       }
       if (state is UpdateMaintenanceResponseState) {
         Navigator.pop(context);
-        showDialog(
-          barrierDismissible: false,
-          context: context,
-          builder: (BuildContext context) => Center(
-            child: AlertDialog(
-              title: const Text('Phản hồi'),
-              content: Text(
-                'Cập nhật công việc thành công',
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-              actions: [
-                TextButton(
-                  child: const Text('Thoát'),
-                  onPressed: () {
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                    widget.scheduleBloc!.add(
-                      GetListMaintenanceResponsesEvent(
-                        dateRequest: widget.selectedDate,
-                        maintenanceTypeRequest: 'Khắc phục',
-                      ),
-                    );
-                  },
-                ),
-              ],
-            ),
-          ),
-        );
+        successAlert(context, state,
+            alertText: 'Cập nhật công việc thành công',
+            scheduleBloc: widget.scheduleBloc,
+            selectedDate: widget.selectedDate);
       }
       if (state is StartTaskState) {
-        successAlert(
-          context,
-          alertText: 'Công việc đã bắt đầu',
-        );
+        successAlert(context, state,
+            alertText: 'Công việc đã bắt đầu',
+            scheduleBloc: widget.scheduleBloc,
+            selectedDate: widget.selectedDate);
       }
       if (state is FinishTaskState) {
-        successAlert(
-          context,
-          alertText: 'Công việc đã kết thúc',
-        );
+        successAlert(context, state,
+            alertText: 'Công việc đã kết thúc',
+            scheduleBloc: widget.scheduleBloc,
+            selectedDate: widget.selectedDate);
       }
       if (state is GetMaterialState) {
         materialItems = state.viewModel.materialMenuItems!;
@@ -103,30 +79,7 @@ extension RepairTaskViewAction on _RepairTaskViewState {
         );
       }
       if (state is GetMaterialState) {
-        showDialog(
-          barrierDismissible: false,
-          context: context,
-          builder: (BuildContext context) => Center(
-            child: AlertDialog(
-              title: const Text('Phản hồi'),
-              content: Text(
-                'Linh kiện không khả dụng',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodySmall!
-                    .copyWith(color: Colors.red),
-              ),
-              actions: [
-                TextButton(
-                  child: const Text('Thực hiện lại'),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ],
-            ),
-          ),
-        );
+        failureAlert(context, alertText: 'Linh kiện không khả dụng');
       }
     }
   }
@@ -193,10 +146,10 @@ extension RepairTaskViewAction on _RepairTaskViewState {
   }
 }
 
-Future<dynamic> successAlert(
-  BuildContext context, {
-  required String alertText,
-}) {
+Future<dynamic> successAlert(BuildContext context, RepairTaskState state,
+    {ScheduleBloc? scheduleBloc,
+    String? selectedDate,
+    required String alertText}) {
   return showDialog(
     barrierDismissible: false,
     context: context,
@@ -205,10 +158,7 @@ Future<dynamic> successAlert(
         title: const Text('Phản hồi'),
         content: Text(
           alertText,
-          style: Theme.of(context)
-              .textTheme
-              .bodySmall!
-              .copyWith(color: Colors.black),
+          style: Theme.of(context).textTheme.bodySmall,
         ),
         actions: [
           TextButton(
@@ -216,6 +166,16 @@ Future<dynamic> successAlert(
             onPressed: () {
               Navigator.pop(context);
               Navigator.pop(context);
+              scheduleBloc!.add(
+                GetListMaintenanceResponsesEvent(
+                  dateRequest: selectedDate,
+                  maintenanceTypeRequest:
+                      state.viewModel.responseEntity!.type ==
+                              MaintenanceType.reactive
+                          ? 'Khắc phục'
+                          : 'Đã lên lịch',
+                ),
+              );
             },
           ),
         ],
