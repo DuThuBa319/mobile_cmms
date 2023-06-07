@@ -8,6 +8,7 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
 import '../../../../../common/services/firebase/firebase_storage_service.dart';
+import '../../../../../common/utils/singletons.dart';
 import '../../../../../data/models/cmms/cmms_enum.dart';
 import '../../../../../data/models/cmms/post/create_request.dart';
 import '../../../../base/base.dart';
@@ -35,6 +36,7 @@ class RequestBloc extends AppBlocBase<RequestEvent, RequestState> {
       ),
     );
     try {
+      final user = userDataData.getUser();
       final date =
           DateFormat('HH:mm dd-MM-yyyy').format(DateTime.now().toUtc());
       final imageUrls = await upLoadImageFile(
@@ -54,9 +56,9 @@ class RequestBloc extends AppBlocBase<RequestEvent, RequestState> {
             ? event.objectCode
             : null,
         maintenanceObject: event.maintenanceObject,
-        requester: event.requestorCode,
+        requester: user!.id,
         status: event.requestStatus,
-        responsiblePerson: event.requestorCode,
+        responsiblePerson: event.responsiblePersonCode,
         submissionDate: DateTime.now().toUtc(),
         images: imageUrls,
         sounds: audioUrls,

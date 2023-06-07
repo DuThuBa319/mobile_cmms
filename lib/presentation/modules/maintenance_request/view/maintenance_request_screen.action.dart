@@ -223,7 +223,7 @@ extension MaintenanceRequestViewAction on _MaintenanceRequestViewState {
             requestedCompletionDate: currentDate,
             type: maintenanceType,
             objectCode: objectCode,
-            requestorCode: state.viewModel.employeeId,
+            responsiblePersonCode: state.viewModel.employeeId,
             maintenanceObject: state.viewModel.maintenanceObject,
           ),
         );

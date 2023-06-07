@@ -221,9 +221,9 @@ class _CustomSubmitScreenFormState extends State<CustomSubmitScreenForm>
                 const SizedBox(
                   width: 8,
                 ),
-                const Column(
+                Column(
                   mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
+                  children: const [
                     SizedBox(
                       height: 8,
                     ),

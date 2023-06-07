@@ -94,7 +94,7 @@ dev_dependencies:
   cached_network_image: ^3.2.0
   flutter_easyloading: ^3.0.5
   fluttertoast: ^8.0.9
-  intl: ^0.18.0
+  intl: ^0.17.0
   flutter_statusbarcolor_ns: ^0.5.0
   app_tracking_transparency: ^2.0.3
   flutter_svg_provider: ^1.0.3

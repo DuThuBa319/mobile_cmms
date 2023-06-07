@@ -12,7 +12,7 @@ class MakeRequestEvent extends RequestEvent {
     this.objectCode,
     this.maintenanceObject = MaintenanceObject.equipment,
     this.requestStatus = RequestStatus.submitted,
-    this.requestorCode,
+    this.responsiblePersonCode,
     this.audioFiles,
     this.imageFiles,
   });
@@ -22,7 +22,7 @@ class MakeRequestEvent extends RequestEvent {
   String? problem;
   MaintenanceType? type;
   int? priority;
-  String? requestorCode;
+  String? responsiblePersonCode;
   String? objectCode;
   MaintenanceObject? maintenanceObject;
   RequestStatus? requestStatus;

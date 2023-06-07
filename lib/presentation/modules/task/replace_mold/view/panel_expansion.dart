@@ -65,10 +65,10 @@ class _PanelExpansionState extends State<PanelExpansion> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Wrap(
+                    Wrap(
                       direction: Axis.vertical,
                       spacing: 10,
-                      children: [
+                      children: const [
                         Text('Tên khuôn:'),
                         Text('Tình trạng:'),
                         Text('Vệ sinh gần đây:'),

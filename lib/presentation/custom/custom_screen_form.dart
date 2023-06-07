@@ -49,15 +49,17 @@ class _CustomScreenFormState extends State<CustomScreenForm> {
         if (index == 3) {
           if (widget.isMainScreen) {
             await Navigator.pushNamed(context, RouteList.account);
+            return false;
           } else {
             Navigator.popUntil(
               context,
               (route) => route.settings.name == RouteList.home,
             );
-            await Navigator.pushNamed(context, RouteList.account);
+            return true;
+            //   await Navigator.pushNamed(context, RouteList.account);
           }
         }
-        return true;
+        return false;
       },
       items: <BottomBarItemData>[
         BottomBarItemData(
