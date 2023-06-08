@@ -23,6 +23,7 @@ class _ViewModel {
   final int? soundCount;
   final List<MaterialMenuItem>? materialMenuItems;
   final List<String>? listSku;
+  final bool? materialResponseStatus;
   const _ViewModel({
     this.responseEntity,
     this.listCausesSelected,
@@ -39,6 +40,7 @@ class _ViewModel {
     this.soundCount,
     this.materialMenuItems,
     this.listSku,
+    this.materialResponseStatus,
   });
 
   // Using copyWith function to retains the before data and just "update some specific props" instead of "update all props"
@@ -58,6 +60,7 @@ class _ViewModel {
     int? soundCount,
     List<MaterialMenuItem>? materialMenuItems,
     List<String>? listSku,
+    bool? materialResponseStatus,
   }) {
     return _ViewModel(
       responseEntity: responseEntity ?? this.responseEntity,
@@ -76,6 +79,8 @@ class _ViewModel {
       soundCount: soundCount ?? this.soundCount,
       materialMenuItems: materialMenuItems ?? this.materialMenuItems,
       listSku: listSku ?? this.listSku,
+      materialResponseStatus:
+          materialResponseStatus ?? this.materialResponseStatus,
     );
   }
 }

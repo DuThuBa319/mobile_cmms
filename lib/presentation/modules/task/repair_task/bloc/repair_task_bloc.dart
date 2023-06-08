@@ -397,10 +397,14 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
       final responseMaterial = await _usecase.getMaterialItem(sku: event.sku!);
 
       if (responseMaterial!.status != MaterialStatus.available) {
+        final newViewModel = state.viewModel.copyWith(
+          isChanged: true,
+          materialResponseStatus: false,
+        );
         emit(
           state.copyWith(
-            status: BlocStatusState.failure,
-            viewModel: state.viewModel,
+            status: BlocStatusState.success,
+            viewModel: newViewModel,
           ),
         );
       } else {
@@ -428,6 +432,7 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
           isChanged: true,
           materialMenuItems: materialList,
           listSku: listSku,
+          materialResponseStatus: true,
         );
 
         emit(
@@ -439,7 +444,7 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
       }
     } catch (exception) {
       emit(
-        ReceiveInfosState(
+        state.copyWith(
           viewModel: state.viewModel,
           status: BlocStatusState.failure,
         ),

@@ -58,7 +58,11 @@ extension RepairTaskViewAction on _RepairTaskViewState {
             selectedDate: widget.selectedDate);
       }
       if (state is GetMaterialState) {
-        materialItems = state.viewModel.materialMenuItems!;
+        if (state.viewModel.materialResponseStatus == true) {
+          materialItems = state.viewModel.materialMenuItems!;
+        } else {
+          failureAlert(context, alertText: 'Linh kiện không khả dụng');
+        }
       }
     }
     if (state.status == BlocStatusState.failure) {
@@ -79,7 +83,7 @@ extension RepairTaskViewAction on _RepairTaskViewState {
         );
       }
       if (state is GetMaterialState) {
-        failureAlert(context, alertText: 'Linh kiện không khả dụng');
+        failureAlert(context, alertText: 'SKU không tồn tại');
       }
     }
   }
