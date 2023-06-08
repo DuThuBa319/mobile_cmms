@@ -216,7 +216,7 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
       ),
     );
     try {
-      final id = state.viewModel.responseEntity!.id!;
+      final id = state.viewModel.responseEntity!.code!;
       final imageUrls = state.viewModel.imageUrls;
       imageUrls!.addAll(
         await upLoadImageFile(

@@ -4,8 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
-import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
 
 import '../../../../../common/services/firebase/firebase_storage_service.dart';
 import '../../../../../common/utils/singletons.dart';
@@ -109,15 +107,15 @@ class RequestBloc extends AppBlocBase<RequestEvent, RequestState> {
     final uploadResults = <CloudStorageResult>[];
     final imageUrl = <String>[];
     for (var i = 0; i < imageFiles.length; i++) {
-      final dir = (await getApplicationDocumentsDirectory()).path;
-      //String dir = path.dirname(file.path);
-      final newPath = path.join(
-        dir,
-        'image $i.jpg',
-      );
-      final f = await File(imageFiles[i].path).copy(newPath);
+      // final dir = (await getApplicationDocumentsDirectory()).path;
+
+      // final newPath = path.join(
+      //   dir,
+      //   'image $i.jpg',
+      // );
+      // final f = await File(imageFiles[i].path).copy(newPath);
       result = await FirebaseStorageService.uploadFile(
-        file: f,
+        file: imageFiles[i],
         folder: '$folder',
       );
       imageUrl.add(result!.url!);
