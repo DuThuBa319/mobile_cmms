@@ -55,7 +55,7 @@ class DropdownWidget<T> extends StatelessWidget {
               : null,
           icon: Icon(
             iconData,
-            size: 26,
+            size: 16,
             color: iconColor ?? (Colors.black),
           ),
           iconSize: 16,

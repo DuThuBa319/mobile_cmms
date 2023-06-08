@@ -107,7 +107,7 @@ class _RepairTaskViewState extends StateBase<RepairTaskView> {
                     style: bodyTextStyle,
                   ),
                   Container(
-                    width: 378,
+                    width: 320,
                     height: 50,
                     margin: const EdgeInsets.only(bottom: 10, top: 10),
                     padding: const EdgeInsets.fromLTRB(12, 9, 16, 10),

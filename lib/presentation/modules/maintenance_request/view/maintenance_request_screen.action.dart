@@ -49,11 +49,13 @@ extension MaintenanceRequestViewAction on _MaintenanceRequestViewState {
         builder: (BuildContext context) => Center(
           child: AlertDialog(
             title: const Text('Phản hồi'),
-            content: Text('Tạo yêu cầu không thành công',
-                style: Theme.of(context)
-                    .textTheme
-                    .caption!
-                    .copyWith(color: Colors.red)),
+            content: Text(
+              'Tạo yêu cầu không thành công',
+              style: Theme.of(context)
+                  .textTheme
+                  .caption!
+                  .copyWith(color: Colors.red),
+            ),
             actions: [
               TextButton(
                 child: const Text('Thực hiện lại'),
@@ -151,11 +153,14 @@ extension MaintenanceRequestViewAction on _MaintenanceRequestViewState {
     }
   }
 
-  void selectTime(GetRequestInfoState state, BuildContext context) async {
+  Future<void> selectTime(
+    GetRequestInfoState state,
+    BuildContext context,
+  ) async {
     if (state.viewModel.isEnable!) {
-      DateTime? date = await pickDate();
+      final date = await pickDate();
       if (date == null) return;
-      TimeOfDay? time = await pickTime();
+      final time = await pickTime();
       if (time == null) return;
       currentDate =
           DateTime(date.year, date.month, date.day, time.hour, time.minute);
@@ -165,16 +170,18 @@ extension MaintenanceRequestViewAction on _MaintenanceRequestViewState {
 
   Future<DateTime?> pickDate() {
     return showDatePicker(
-        context: context,
-        initialDate: currentDate,
-        firstDate: DateTime(1900),
-        lastDate: DateTime(2100));
+      context: context,
+      initialDate: currentDate,
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2100),
+    );
   }
 
   Future<TimeOfDay?> pickTime() => showTimePicker(
-      context: context,
-      initialTime:
-          TimeOfDay(hour: currentDate.hour, minute: currentDate.minute));
+        context: context,
+        initialTime:
+            TimeOfDay(hour: currentDate.hour, minute: currentDate.minute),
+      );
 
   String? textCause({List<CauseEntity>? list}) {
     if (list == null) {

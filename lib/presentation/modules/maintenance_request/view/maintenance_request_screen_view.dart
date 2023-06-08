@@ -9,7 +9,6 @@ import '../../../../data/models/cmms/cmms_enum.dart';
 import '../../../../domain/entities/cmms/cause_entity.dart';
 import '../../../base/base.dart';
 import '../../../base/state_base/bloc_status_state.dart';
-import '../../../common_widget/date_picker/cupertino_date_picker_custom.dart';
 import '../../../common_widget/dropdown/dropdown_widget.dart';
 import '../../../custom/audio_picker/audio_picker_bloc/audio_picker_bloc.dart';
 import '../../../custom/audio_picker/audio_picker_widget.dart';
@@ -127,7 +126,7 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                   ),
                   const Text('Tên thiết bị'),
                   Container(
-                    width: 387,
+                    width: 380,
                     height: 30,
                     decoration: BoxDecoration(
                       color: AppColor.greyF3,
@@ -168,8 +167,15 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                           const Text('Chọn thời gian'),
                           Container(
                             height: 50,
-                            width: 168,
-                            margin: const EdgeInsets.only(top: 10, bottom: 15),
+                            width: 145,
+                            margin: const EdgeInsets.only(
+                              top: 10,
+                              bottom: 15,
+                            ),
+                            padding: const EdgeInsets.only(
+                              left: 5,
+                              right: 0,
+                            ),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(4),
@@ -181,7 +187,7 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                             child: Row(
                               children: [
                                 SizedBox(
-                                  width: 100,
+                                  width: 88,
                                   child: Text(
                                     DateFormat('HH:mm dd-MM-yyyy').format(
                                       state.viewModel.selectedDate ??
@@ -189,7 +195,7 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                                     ),
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                      fontSize: 12,
+                                      fontSize: 11,
                                       fontWeight: FontWeight.w500,
                                       color: state.viewModel.isEnable!
                                           ? Colors.black
@@ -204,7 +210,7 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                                   },
                                   icon: Icon(
                                     Icons.calendar_month,
-                                    size: 30,
+                                    size: 20,
                                     color: state.viewModel.isEnable!
                                         ? Colors.black
                                         : AppColor.gray767676,
@@ -243,7 +249,7 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
                     'Hiện tượng',
                   ),
                   Container(
-                    width: 387,
+                    width: 380,
                     height: 50,
                     margin: const EdgeInsets.only(bottom: 17, top: 10),
                     padding: const EdgeInsets.fromLTRB(12, 9, 16, 10),
@@ -395,7 +401,7 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
         );
       },
       child: Container(
-        width: 387,
+        width: 380,
         height: 50,
         margin: const EdgeInsets.only(bottom: 17, top: 10),
         padding: const EdgeInsets.fromLTRB(12, 9, 16, 10),
@@ -426,8 +432,8 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
   }) {
     return Container(
       margin: const EdgeInsets.only(top: 10, bottom: 18),
-      width: 168,
-      height: 50,
+      width: 145,
+      height: 40,
       child: DropdownWidget<dynamic>(
         enable: true,
         controller: controller!,
@@ -444,8 +450,8 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
   Widget Dropdown2() {
     return Container(
       margin: const EdgeInsets.only(top: 10, bottom: 18),
-      width: 168,
-      height: 50,
+      width: 145,
+      height: 40,
       child: DropdownWidget<dynamic>(
         enable: false,
         controller: nullController,
@@ -461,7 +467,7 @@ class _MaintenanceRequestViewState extends StateBase<MaintenanceRequestView> {
 
   Widget itemBuilder1(dynamic item) {
     return Padding(
-      padding: const EdgeInsets.only(left: 8.0),
+      padding: const EdgeInsets.only(left: 0),
       child: Text(
         item.toString(),
         style: Theme.of(context)

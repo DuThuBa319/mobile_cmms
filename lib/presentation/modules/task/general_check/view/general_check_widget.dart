@@ -97,10 +97,10 @@ class _CheckDropDownState extends State<CheckDropDown> {
             ),
           ),
           Positioned(
-            right: 50,
+            right: 30,
             top: 0,
             child: Container(
-              width: 163,
+              width: 130,
               height: 60,
               child: DropdownWidget<String>(
                 enable: widget.checkState.viewModel.responseEntity?.status ==
@@ -144,8 +144,8 @@ class _CheckDropDownState extends State<CheckDropDown> {
             ),
           ),
           Positioned(
-            right: 0,
-            top: 5,
+            right: -10,
+            top: 0,
             child: (widget.checkState.viewModel.inspectionReports ??
                             [])[widget.index]
                         .inspectionStatus ==
@@ -194,12 +194,12 @@ class _CheckDropDownState extends State<CheckDropDown> {
 
   Widget isInProgressBuilder(String item) {
     return Container(
-      width: 120,
+      width: 90,
       height: 25,
-      padding: const EdgeInsets.only(top: 4),
+      padding: const EdgeInsets.only(top: 6),
       child: Text(
         item,
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 14),
+        style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 12),
         textAlign: TextAlign.center,
       ),
     );
@@ -207,13 +207,13 @@ class _CheckDropDownState extends State<CheckDropDown> {
 
   Widget IsNotInProgressBuilder(String item) {
     return Container(
-      width: 120,
+      width: 90,
       height: 25,
-      padding: const EdgeInsets.only(top: 4),
+      padding: const EdgeInsets.only(top: 6),
       child: Text(
         item,
         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontSize: 14,
+              fontSize: 12,
               color: AppColor.gray767676,
             ),
         textAlign: TextAlign.center,

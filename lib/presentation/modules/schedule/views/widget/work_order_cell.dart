@@ -131,42 +131,45 @@ class _WorkOrderCellState extends State<WorkOrderCell> {
                     .textTheme
                     .bodyMedium!
                     .copyWith(height: 1.7),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(left: 4),
-                      width: 212,
-                      height: 118,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('Thiết bị: Máy ép'),
-                          Text(
-                            'Thời gian: ${widget.maintenanceResponseEntity?.estProcessTime ?? '--'} phút',
-                          ),
-                          Expanded(
-                            child: Text(
-                              'Vấn đề: ${widget.maintenanceResponseEntity?.problem}',
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding: const EdgeInsets.only(right: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 180,
+                        height: 118,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text('Thiết bị: Máy ép'),
+                            Text(
+                              'Thời gian: ${widget.maintenanceResponseEntity?.estProcessTime ?? '--'} phút',
                             ),
-                          )
+                            Expanded(
+                              child: Text(
+                                'Vấn đề: ${widget.maintenanceResponseEntity?.problem}',
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Wrap(
+                        spacing: 0,
+                        direction: Axis.vertical,
+                        children: [
+                          Text(
+                            'Mã số: ${widget.maintenanceResponseEntity?.objectCode}',
+                          ),
                         ],
                       ),
-                    ),
-                    Wrap(
-                      spacing: 0,
-                      direction: Axis.vertical,
-                      children: [
-                        Text(
-                          'Mã số: ${widget.maintenanceResponseEntity?.objectCode}',
-                        ),
-                      ],
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               )
             ],
