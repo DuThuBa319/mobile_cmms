@@ -40,22 +40,31 @@ extension RepairTaskViewAction on _RepairTaskViewState {
       }
       if (state is UpdateMaintenanceResponseState) {
         Navigator.pop(context);
-        successAlert(context, state,
-            alertText: 'Cập nhật công việc thành công',
-            scheduleBloc: widget.scheduleBloc,
-            selectedDate: widget.selectedDate);
+        successAlert(
+          context,
+          state,
+          alertText: 'Cập nhật công việc thành công',
+          scheduleBloc: widget.scheduleBloc,
+          selectedDate: widget.selectedDate,
+        );
       }
       if (state is StartTaskState) {
-        successAlert(context, state,
-            alertText: 'Công việc đã bắt đầu',
-            scheduleBloc: widget.scheduleBloc,
-            selectedDate: widget.selectedDate);
+        successAlert(
+          context,
+          state,
+          alertText: 'Công việc đã bắt đầu',
+          scheduleBloc: widget.scheduleBloc,
+          selectedDate: widget.selectedDate,
+        );
       }
       if (state is FinishTaskState) {
-        successAlert(context, state,
-            alertText: 'Công việc đã kết thúc',
-            scheduleBloc: widget.scheduleBloc,
-            selectedDate: widget.selectedDate);
+        successAlert(
+          context,
+          state,
+          alertText: 'Công việc đã kết thúc',
+          scheduleBloc: widget.scheduleBloc,
+          selectedDate: widget.selectedDate,
+        );
       }
       if (state is GetMaterialState) {
         if (state.viewModel.materialResponseStatus == true) {
@@ -150,10 +159,13 @@ extension RepairTaskViewAction on _RepairTaskViewState {
   }
 }
 
-Future<dynamic> successAlert(BuildContext context, RepairTaskState state,
-    {ScheduleBloc? scheduleBloc,
-    String? selectedDate,
-    required String alertText}) {
+Future<dynamic> successAlert(
+  BuildContext context,
+  RepairTaskState state, {
+  ScheduleBloc? scheduleBloc,
+  String? selectedDate,
+  required String alertText,
+}) {
   return showDialog(
     barrierDismissible: false,
     context: context,

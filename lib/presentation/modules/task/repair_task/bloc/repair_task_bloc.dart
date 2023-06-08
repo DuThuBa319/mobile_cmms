@@ -216,12 +216,13 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
       ),
     );
     try {
-      final id = state.viewModel.responseEntity!.code!;
+      final id = state.viewModel.responseEntity!.id!;
+      final code = state.viewModel.responseEntity!.code!;
       final imageUrls = state.viewModel.imageUrls;
       imageUrls!.addAll(
         await upLoadImageFile(
           imageFiles: state.viewModel.imageFiles!,
-          folder: 'Maintenance Response/$id/images',
+          folder: 'Maintenance Response/$code/images',
           availableImage: state.viewModel.imageCount ?? 0,
         ),
       );
@@ -229,7 +230,7 @@ class RepairTaskBloc extends AppBlocBase<RepairTaskEvent, RepairTaskState> {
       audioUrls!.addAll(
         await upLoadAudioFile(
           audioFiles: state.viewModel.audioFiles!,
-          folder: 'Maintenance Response/$id/audios',
+          folder: 'Maintenance Response/$code/audios',
           availableAudio: state.viewModel.soundCount ?? 0,
         ),
       );
