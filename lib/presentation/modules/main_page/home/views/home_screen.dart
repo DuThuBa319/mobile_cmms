@@ -109,7 +109,7 @@ class _HomeScreenState extends StateBase<HomeScreen> {
         children: [
           TextButton(
             onPressed: () {
-              Navigator.pushNamed(context, RouteList.exampleTempHumid);
+              Navigator.pushNamed(context, RouteList.example);
             },
             child: const Text('Go to Example Screen'),
           ),

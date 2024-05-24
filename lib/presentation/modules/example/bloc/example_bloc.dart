@@ -27,18 +27,20 @@ class ExampleBloc extends AppBlocBase<ExampleEvent, ExampleState> {
         status: BlocStatusState.loading,
       ),
     );
-    final response = await _usecase.getWeather(
-      startDate: event.startDate,
-      endDate: event.endDate,
-      latitude: event.latitude,
-      longtitude: event.longtitude,
-    );
-    final newViewModel = state.viewModel.copyWith(weathers: response);
-    emit(
-      state.copyWith(
-        status: BlocStatusState.success,
-        viewModel: newViewModel,
-      ),
-    );
+    try {
+      final response = await _usecase.getWeather(
+        startDate: event.startDate,
+        endDate: event.endDate,
+        latitude: event.latitude,
+        longtitude: event.longtitude,
+      );
+      final newViewModel = state.viewModel.copyWith(weathers: response);
+      emit(
+        state.copyWith(
+          status: BlocStatusState.success,
+          viewModel: newViewModel,
+        ),
+      );
+    } catch (e) {}
   }
 }

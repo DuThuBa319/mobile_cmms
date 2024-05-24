@@ -45,7 +45,7 @@ class _PanelExpansionState extends State<PanelExpansion> {
                       .textTheme
                       .bodySmall
                       ?.copyWith(fontSize: 14),
-                )
+                ),
               ],
             ),
             trailing: Icon(
@@ -65,15 +65,15 @@ class _PanelExpansionState extends State<PanelExpansion> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Wrap(
+                    const Wrap(
                       direction: Axis.vertical,
                       spacing: 10,
-                      children: const [
+                      children: [
                         Text('Tên khuôn:'),
                         Text('Tình trạng:'),
                         Text('Vệ sinh gần đây:'),
                         Text('Đánh bóng gần đây:'),
-                        Text('Bảo trì:')
+                        Text('Bảo trì:'),
                       ],
                     ),
                     Wrap(
@@ -85,7 +85,7 @@ class _PanelExpansionState extends State<PanelExpansion> {
                         Text(widget.expansionItem!.tinhTrang),
                         Text(widget.expansionItem!.veSinh),
                         Text(widget.expansionItem!.danhBong),
-                        Text(widget.expansionItem!.baoTri)
+                        Text(widget.expansionItem!.baoTri),
                       ],
                     ),
                   ],

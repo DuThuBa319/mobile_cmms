@@ -69,7 +69,7 @@ android {
         }
     }
 
-    flavorDimensions "app"
+    flavorDimensions "app_name"
 
     productFlavors {
         dev {

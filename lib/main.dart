@@ -48,12 +48,14 @@ Future<void> initOneSignal() async {
   // The promptForPushNotificationsWithUserResponse function will show the iOS or Android push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
   await OneSignal.shared
       .promptUserForPushNotificationPermission()
-      .then((accepted) {});
-  final status = await Permission.notification.request();
-  if (status.isDenied) {
-    // We didn't ask for permission yet or the permission has been denied before but not permanently.
-    //  await openAppSettings();
-  }
+      .then((accepted) {
+    print('Accepted permission: $accepted');
+  });
+  // final status = await Permission.notification.request();
+  // if (status.isDenied) {
+  //   // We didn't ask for permission yet or the permission has been denied before but not permanently.
+  //   //  await openAppSettings();
+  // }
 
   OneSignal.shared.setNotificationWillShowInForegroundHandler(
       (OSNotificationReceivedEvent event) {
@@ -66,7 +68,9 @@ Future<void> initOneSignal() async {
       .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
     // Will be called whenever a notification is opened/button pressed.
   });
-
+  await OneSignal.shared.postNotification(
+    OSCreateNotification(playerIds: ['240914,'], content: 'Thong bao'),
+  );
   OneSignal.shared.setPermissionObserver((OSPermissionStateChanges changes) {
     // Will be called whenever the permission changes
     // (ie. user taps Allow on the permission prompt in iOS)
